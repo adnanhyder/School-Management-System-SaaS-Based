@@ -23,6 +23,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
 
               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <NavLink
+                  href={route("test.index")}
+                  active={route().current("test.index")}
+                >
+                  Adnan
+                </NavLink>
+                <NavLink
                   href={route("dashboard")}
                   active={route().current("dashboard")}
                 >
@@ -40,12 +46,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
                 >
                   All Tasks
                 </NavLink>
-                <NavLink
-                  href={route("adnsn.index")}
-                  active={route().current("adnsn.index")}
-                >
-                 Adnan
-                </NavLink>
+
                 <NavLink
                   href={route("user.index")}
                   active={route().current("user.index")}
