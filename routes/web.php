@@ -28,6 +28,9 @@ Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
     Route::resource('task', TaskController::class);
     Route::resource('user', UserController::class);
 
+
+    Route::resource('role', \App\Http\Controllers\RoleController::class);
+
 });
 
 Route::middleware('auth')->group(function () {

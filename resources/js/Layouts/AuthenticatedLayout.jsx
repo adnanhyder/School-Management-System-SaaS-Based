@@ -29,6 +29,12 @@ export default function AuthenticatedLayout({ user, header, children }) {
                   Adnan
                 </NavLink>
                 <NavLink
+                  href={route("role.index")}
+                  active={route().current("role.index")}
+                >
+                  Roles
+                </NavLink>
+                <NavLink
                   href={route("dashboard")}
                   active={route().current("dashboard")}
                 >
