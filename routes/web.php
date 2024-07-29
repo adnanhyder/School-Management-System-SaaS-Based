@@ -9,19 +9,21 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware(['role:test'])->group(function () {
-    Route::get('/admin', function () {
-        return 'Admin Area';
-    });
-});
+//Route::middleware(['role:test'])->group(function () {
+//    Route::get('/admin', function () {
+//        return 'Admin Area';
+//    });
+//});
 Route::redirect('/', '/dashboard');
-
+Route::redirect('/admin', '/dashboardAdmin');
 Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
-    Route::resource('test', TaskController::class);
 
+    Route::get('/admin', [DashboardController::class, 'admin'])
+        ->name('dashboardAdmin');
+
+    Route::resource('test', TaskController::class);
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
-
     Route::resource('project', ProjectController::class);
     Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
         ->name('task.myTasks');

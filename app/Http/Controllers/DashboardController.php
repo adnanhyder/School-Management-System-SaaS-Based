@@ -56,4 +56,10 @@ class DashboardController extends Controller
             )
         );
     }
+
+    public function admin(){
+        return inertia(
+            'DashboardAdmin'
+            );
+    }
 }

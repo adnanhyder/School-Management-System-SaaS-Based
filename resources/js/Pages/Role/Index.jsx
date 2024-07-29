@@ -30,7 +30,7 @@ export default function Index({ auth, success, roles, queryParams = null }) {
               <table>
                 <tbody>
                 <pre>{JSON.stringify(roles.data, null, 2)}</pre>
-                
+
               {roles.data.map((task) => (
                 <tr
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
