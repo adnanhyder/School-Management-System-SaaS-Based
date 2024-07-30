@@ -22083,7 +22083,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
 }
 
 .menu-sub {
-  display: none;
+
   flex-direction: column;
   margin: 0;
   padding: 0;

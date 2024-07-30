@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
     <!-- Core CSS -->
     <link rel="stylesheet" href="assets/vendor/css/core.css" class="template-customizer-core-css" />
-
+    <link rel="stylesheet" href="assets/css/demo.css" />
 
     <!-- Scripts -->
     @routes
@@ -26,6 +26,11 @@
 
 <body class="font-sans antialiased">
     @inertia
+    <script src="assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="assets/vendor/libs/popper/popper.js"></script>
+    <script src="assets/vendor/js/bootstrap.js"></script>
+
+
 </body>
 
 </html>
