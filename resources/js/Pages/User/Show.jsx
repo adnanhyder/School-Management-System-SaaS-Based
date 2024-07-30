@@ -1,6 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { USER_STATUS_CLASS_MAP, USER_STATUS_TEXT_MAP } from "@/constants.jsx";
 import TasksTable from "../Task/TasksTable";
 export default function Show({ auth, user, tasks, queryParams }) {
   return (
