@@ -25,6 +25,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
                 <NavLink
                   href={route("test.index")}
                   active={route().current("test.index")}
+                  className={'menu-link menu-toggle '}
                 >
                   Adnan
                 </NavLink>
