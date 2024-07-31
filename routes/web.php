@@ -15,7 +15,7 @@ use Inertia\Inertia;
 //    });
 //});
 Route::redirect('/', '/dashboard');
-Route::redirect('/admin', '/dashboardAdmin');
+
 Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
 
     Route::get('/admin', [DashboardController::class, 'admin'])

@@ -11,7 +11,7 @@ export default function Aside() {
 
 
   return (
-    <div>
+    <>
       {/* Menu */}
       <aside
         id="layout-menu"
@@ -20,7 +20,7 @@ export default function Aside() {
         <div className="app-brand demo">
           <a href="index.html" className="app-brand-link">
             <span className="app-brand-logo demo">
-               <img src={'logoawa.png'} className={'logo sized-100px'}/>
+               <img src={'/logoawa.png'} className={'logo sized-100px'}/>
             </span>
           </a>
           <a
@@ -37,138 +37,81 @@ export default function Aside() {
             <a href="#" className="menu-link">
               <i className="menu-icon tf-icons bx bx-home-smile"/>
               <div className="text-truncate" data-i18n="Dashboards">
-                Dashboards
+                Dashboard
               </div>
 
             </a>
 
           </li>
-          {/* Layouts */}
+
+          {/* Users Management */}
+          <li className="menu-header small text-uppercase">
+            <span className="menu-header-text">Management</span>
+          </li>
           <li className="menu-item">
-            <a href={route("test.index")} className={`menu-link menu-toggle ${openSubMenus['clients'] ? 'open' : ''}`}
+            <a href="#" className={`menu-link menu-toggle ${openSubMenus['users'] ? 'open' : ''}`}
+               onClick={() => toggleSubMenu('users')}>
+              <i className="menu-icon tf-icons bx bx-user"/>
+              <div className="text-truncate" data-i18n="Layouts">
+                Users
+              </div>
+            </a>
+            <ul className={`menu-sub ${openSubMenus['users'] ? 'open' : ''}`}>
+              <li className="menu-item">
+                <NavLink
+                  href={route("user.index")}
+                  active={route().current("user.index")}
+                  className={'menu-link text-truncate'}
+                >
+                  All Users
+                </NavLink>
+              </li>
+            </ul>
+          </li>
+          <li className="menu-item">
+            <a href="#" className={`menu-link menu-toggle ${openSubMenus['role'] ? 'open' : ''}`}
+               onClick={() => toggleSubMenu('role')}>
+              <i className="menu-icon tf-icons bx bx-sync"/>
+              <div className="text-truncate" data-i18n="Layouts">
+                Roles
+              </div>
+            </a>
+            <ul className={`menu-sub ${openSubMenus['role'] ? 'open' : ''}`}>
+              <li className="menu-item">
+                <NavLink
+                  href={route("role.index")}
+                  active={route().current("role.index")}
+                  className={'menu-link text-truncate'}
+                >
+                  All Roles
+                </NavLink>
+              </li>
+            </ul>
+          </li>
+          <li className="menu-item">
+            <a href="#" className={`menu-link menu-toggle ${openSubMenus['clients'] ? 'open' : ''}`}
                onClick={() => toggleSubMenu('clients')}>
-              <i className="menu-icon tf-icons bx bx-layout"/>
+              <i className="menu-icon tf-icons bx bxs-user-account"/>
               <div className="text-truncate" data-i18n="Layouts">
                 Clients
               </div>
             </a>
-            <NavLink
-              href={route("test.index")}
-              active={route().current("test.index")}
-            >
-              Adnan
-            </NavLink>
-            <ul className={`menu-sub ${openSubMenus['clients'] ? 'open' : ''}`}>
-              <li className="menu-item">
-                <a href="layouts-without-menu.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Without menu">
-                    Without menu
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-without-navbar.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Without navbar">
-                    Without navbar
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-fluid.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Fluid">
-                    Fluid
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-container.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Container">
-                    Container
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-blank.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Blank">
-                    Blank
-                  </div>
-                </a>
-              </li>
-            </ul>
           </li>
 
-
-          {/* Apps & Pages */}
-          <li className="menu-header small text-uppercase">
-            <span className="menu-header-text">Apps &amp; Pages</span>
-          </li>
           <li className="menu-item">
-            <a
-              href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-email.html"
-              target="_blank"
-              className="menu-link"
-            >
-              <i className="menu-icon tf-icons bx bx-envelope"/>
-              <div className="text-truncate" data-i18n="Email">
-                Email
-              </div>
-              <div className="badge rounded-pill bg-label-primary text-uppercase fs-tiny ms-auto">
-                Pro
-              </div>
-            </a>
-          </li>
-
-          {/* Layouts */}
-          <li className="menu-item">
-            <a href="#" className={`menu-link menu-toggle ${openSubMenus['chat'] ? 'open' : ''}`}
-               onClick={() => toggleSubMenu('chat')}>
-              <i className="menu-icon tf-icons bx bx-chat"/>
+            <a href="#" className={`menu-link menu-toggle ${openSubMenus['clients'] ? 'open' : ''}`}
+               onClick={() => toggleSubMenu('clients')}>
+              <i className="menu-icon tf-icons bx bx-task"/>
               <div className="text-truncate" data-i18n="Layouts">
-                Chat
+                All Task
               </div>
             </a>
-            <ul className={`menu-sub ${openSubMenus['chat'] ? 'open' : ''}`}>
-              <li className="menu-item">
-                <a href="layouts-without-menu.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Without menu">
-                    Without menu
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-without-navbar.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Without navbar">
-                    Without navbar
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-fluid.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Fluid">
-                    Fluid
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-container.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Container">
-                    Container
-                  </div>
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="layouts-blank.html" className="menu-link">
-                  <div className="text-truncate" data-i18n="Blank">
-                    Blank
-                  </div>
-                </a>
-              </li>
-            </ul>
+
           </li>
 
         </ul>
       </aside>
       {/* / Menu */}
-    </div>
+    </>
   )
 }

@@ -9,3 +9,42 @@
 .dark-mode {
     background: #000;
 }
+.md-black-text{
+    color: #000000;
+}
+
+.text-gray-100 {
+    color: #000000;
+}
+td {
+    color: #000000;
+}
+form input , form label  {
+    background: #fff !important;
+    color: #000 !important;
+}
+.bg-emerald-500 {
+    background-color: #aea1ea;
+}
+a.rounded:hover {
+    background-color: #6d00f1 !important;
+    color: #fff;
+}
+button.rounded:hover {
+    background-color: #6d00f1 !important;
+}
+button.rounded{
+    background-color: #aea1ea;
+}
+thead{
+    background-color: #aea1ea !important;
+    color:#fff !important;
+}
+input{
+    background:#fff !important;
+    color: #000 !important;
+}
+
+main , p , div {
+    color: #000 !important;
+}

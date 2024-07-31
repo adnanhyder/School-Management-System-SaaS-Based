@@ -57,9 +57,11 @@ class DashboardController extends Controller
         );
     }
 
-    public function admin(){
-        return inertia(
-            'DashboardAdmin'
-            );
+    public function admin()
+    {
+        $user = auth()->user();
+        return inertia('DashboardAdmin',
+            ['user' => $user]
+        );
     }
 }

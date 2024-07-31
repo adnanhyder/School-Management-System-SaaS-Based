@@ -1,7 +1,7 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth }) {
@@ -19,24 +19,18 @@ export default function Create({ auth }) {
   };
 
   return (
-    <AuthenticatedLayout
+    <AdminLayout
       user={auth.user}
-      header={
-        <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Create new User
-          </h2>
-        </div>
-      }
+
     >
       <Head title="Users" />
-
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <h2 className="text-black text-2xl font-semibold">User Create</h2>
+      <div className="">
+        <div className="">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <form
               onSubmit={onSubmit}
-              className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+              className=""
             >
               <div className="mt-4">
                 <InputLabel htmlFor="user_name" value="User Name" />
@@ -121,6 +115,6 @@ export default function Create({ auth }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
   );
 }
