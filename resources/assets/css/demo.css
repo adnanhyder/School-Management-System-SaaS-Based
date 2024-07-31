@@ -1,0 +1,25 @@
+.menu-sub {
+    background: #fff;
+    overflow: hidden;
+    color: #000;
+    line-height: 50px;
+    max-height: 0;
+    transition: max-height 0.5s ease-in-out !important;
+}
+.menu-sub:target {
+    height: 50px;
+}
+.app-brand-link {
+    text-align: center;
+    margin: 5px auto;
+}
+.sized-100px{
+    width:50px;
+    margin-top:10px;
+    text-align: center;
+    margin: auto;
+}
+.menu-sub.open {
+    overflow: visible;
+    max-height: 1000px;
+}
