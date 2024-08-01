@@ -48,3 +48,35 @@ input{
 main , p , div {
     color: #000 !important;
 }
+#svg {
+    font-size: 50px !important;
+    width: 150px !important;
+    height: 150px;
+}
+.min-h-screen.flex.flex-col.sm\:justify-center.items-center.pt-6.sm\:pt-0.bg-gray-100.dark\:bg-gray-900 {
+    background: #fff;
+}
+.app-brand #svg{
+    width:100px !important;
+}
+.text-gray-200 {
+    --tw-text-opacity: 1;
+    color: rgb(25, 25, 26);
+}
+.bg-gray-950 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(3 7 18 / var(--tw-bg-opacity));
+    color: #fff !important;
+}
+#project_description {
+    background: #fff;
+}
+textarea , select {
+    color: #000 !important;
+    background: #fff !important;
+}
+.hover\:bg-gray-950:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgba(3, 7, 18, 0.53);
+    color: #fff !important;
+}

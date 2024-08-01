@@ -2,7 +2,7 @@ import Aside from "@/Components/Aside";
 import Navbar from "@/Components/Navbar";
 import AdminFooter from "@/Components/AdminFooter";
 
-export default function AdminLayout({user, children}) {
+export default function AdminLayout({user, header, children}) {
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
@@ -19,6 +19,13 @@ export default function AdminLayout({user, children}) {
             {/* Content wrapper */}
             <div className="content-wrapper">
               <div className="container-xxl flex-grow-1 container-p-y">
+                {header && (
+                  <header className="">
+                    <div className="">
+                      {header}
+                    </div>
+                  </header>
+                )}
                 <main>{children}</main>
               </div>
 

@@ -14,7 +14,7 @@ use Inertia\Inertia;
 //        return 'Admin Area';
 //    });
 //});
-Route::redirect('/', '/dashboard');
+Route::redirect('/', '/admin');
 
 Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
 
@@ -29,8 +29,6 @@ Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
         ->name('task.myTasks');
     Route::resource('task', TaskController::class);
     Route::resource('user', UserController::class);
-
-
     Route::resource('role', \App\Http\Controllers\RoleController::class);
 
 });

@@ -6,13 +6,14 @@ import {
   TASK_STATUS_CLASS_MAP,
   TASK_STATUS_TEXT_MAP,
 } from "@/constants.jsx";
+import AdminLayout from "@/Layouts/AdminLayout";
 export default function Show({ auth, task }) {
   return (
-    <AuthenticatedLayout
+    <AdminLayout
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+          <h2 className="text-black text-2xl font-semibold">
             {`Task "${task.name}"`}
           </h2>
           <Link
@@ -25,8 +26,8 @@ export default function Show({ auth, task }) {
       }
     >
       <Head title={`Task "${task.name}"`} />
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="">
+        <div className="">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div>
               <img
@@ -118,6 +119,6 @@ export default function Show({ auth, task }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
   );
 }

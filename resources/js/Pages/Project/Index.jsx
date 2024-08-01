@@ -8,6 +8,7 @@ import {
 } from "@/constants.jsx";
 import { Head, Link, router } from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
+import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Index({ auth, projects, queryParams = null, success }) {
   queryParams = queryParams || {};
@@ -49,13 +50,11 @@ export default function Index({ auth, projects, queryParams = null, success }) {
   };
 
   return (
-    <AuthenticatedLayout
+    <AdminLayout
       user={auth.user}
       header={
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Projects
-          </h2>
+          <h2 className="text-black text-2xl font-semibold">Projects</h2>
           <Link
             href={route("project.create")}
             className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
@@ -67,8 +66,8 @@ export default function Index({ auth, projects, queryParams = null, success }) {
     >
       <Head title="Projects" />
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="">
+        <div className="">
           {success && (
             <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
               {success}
@@ -219,6 +218,6 @@ export default function Index({ auth, projects, queryParams = null, success }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
   );
 }

@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import NavLink from "@/Components/NavLink";
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import {Link} from "@inertiajs/react";
 export default function Aside() {
   const [openSubMenus, setOpenSubMenus] = useState({});
   const toggleSubMenu = (index) => {
@@ -17,12 +19,10 @@ export default function Aside() {
         id="layout-menu"
         className="layout-menu menu-vertical menu bg-menu-theme"
       >
-        <div className="app-brand demo">
-          <a href="index.html" className="app-brand-link">
-            <span className="app-brand-logo demo">
-               <img src={'/logoawa.png'} className={'logo sized-100px'}/>
-            </span>
-          </a>
+        <div className="app-brand" >
+          <Link href="/">
+            <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+          </Link>
           <a
             href="#"
             className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
@@ -88,6 +88,27 @@ export default function Aside() {
               </li>
             </ul>
           </li>
+
+          <li className="menu-item">
+            <a href="#" className={`menu-link menu-toggle ${openSubMenus['project'] ? 'open' : ''}`}
+               onClick={() => toggleSubMenu('project')}>
+              <i className="menu-icon tf-icons bx bxl-product-hunt"/>
+              <div className="text-truncate" data-i18n="Layouts">
+                Projects
+              </div>
+            </a>
+            <ul className={`menu-sub ${openSubMenus['project'] ? 'open' : ''}`}>
+              <li className="menu-item">
+                <NavLink
+                  href={route("project.index")}
+                  active={route().current("project.index")}
+                  className={'menu-link text-truncate'}
+                >
+                  All Projects
+                </NavLink>
+              </li>
+            </ul>
+          </li>
           <li className="menu-item">
             <a href="#" className={`menu-link menu-toggle ${openSubMenus['clients'] ? 'open' : ''}`}
                onClick={() => toggleSubMenu('clients')}>
@@ -99,14 +120,24 @@ export default function Aside() {
           </li>
 
           <li className="menu-item">
-            <a href="#" className={`menu-link menu-toggle ${openSubMenus['clients'] ? 'open' : ''}`}
-               onClick={() => toggleSubMenu('clients')}>
+            <a href="#" className={`menu-link menu-toggle ${openSubMenus['tasks'] ? 'open' : ''}`}
+               onClick={() => toggleSubMenu('tasks')}>
               <i className="menu-icon tf-icons bx bx-task"/>
               <div className="text-truncate" data-i18n="Layouts">
-                All Task
+                Tasks
               </div>
             </a>
-
+            <ul className={`menu-sub ${openSubMenus['tasks'] ? 'open' : ''}`}>
+              <li className="menu-item">
+                <NavLink
+                  href={route("task.index")}
+                  active={route().current("task.index")}
+                  className={'menu-link text-truncate'}
+                >
+                  All Task
+                </NavLink>
+              </li>
+            </ul>
           </li>
 
         </ul>

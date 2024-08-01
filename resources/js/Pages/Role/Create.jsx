@@ -15,7 +15,7 @@ export default function Create({ auth }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    post(route("user.store"));
+    post(route("role.store"));
   };
 
   return (
@@ -33,10 +33,10 @@ export default function Create({ auth }) {
               className=""
             >
               <div className="mt-4">
-                <InputLabel htmlFor="user_name" value="User Name" />
+                <InputLabel htmlFor="user_name" value="Role" />
 
                 <TextInput
-                  id="user_name"
+                  id="role"
                   type="text"
                   name="name"
                   value={data.name}
@@ -47,62 +47,12 @@ export default function Create({ auth }) {
 
                 <InputError message={errors.name} className="mt-2" />
               </div>
-              <div className="mt-4">
-                <InputLabel htmlFor="user_email" value="User Email" />
 
-                <TextInput
-                  id="user_email"
-                  type="text"
-                  name="email"
-                  value={data.email}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("email", e.target.value)}
-                />
 
-                <InputError message={errors.email} className="mt-2" />
-              </div>
-
-              <div className="mt-4">
-                <InputLabel htmlFor="user_password" value="Password" />
-
-                <TextInput
-                  id="user_password"
-                  type="password"
-                  name="password"
-                  value={data.password}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData("password", e.target.value)}
-                />
-
-                <InputError message={errors.password} className="mt-2" />
-              </div>
-
-              <div className="mt-4">
-                <InputLabel
-                  htmlFor="user_password_confirmation"
-                  value="Confirm Password"
-                />
-
-                <TextInput
-                  id="user_password_confirmation"
-                  type="password"
-                  name="password_confirmation"
-                  value={data.password_confirmation}
-                  className="mt-1 block w-full"
-                  onChange={(e) =>
-                    setData("password_confirmation", e.target.value)
-                  }
-                />
-
-                <InputError
-                  message={errors.password_confirmation}
-                  className="mt-2"
-                />
-              </div>
 
               <div className="mt-4 text-right">
                 <Link
-                  href={route("user.index")}
+                  href={route("role.index")}
                   className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                 >
                   Cancel

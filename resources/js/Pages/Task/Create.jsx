@@ -5,6 +5,7 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Create({ auth, projects, users }) {
   const { data, setData, post, errors, reset } = useForm({
@@ -22,11 +23,11 @@ export default function Create({ auth, projects, users }) {
   };
 
   return (
-    <AuthenticatedLayout
+    <AdminLayout
       user={auth.user}
       header={
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+          <h2 className="text-black text-2xl font-semibold">
             Create new Task
           </h2>
         </div>
@@ -34,8 +35,8 @@ export default function Create({ auth, projects, users }) {
     >
       <Head title="Tasks" />
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="">
+        <div className="">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <form
               onSubmit={onSubmit}
@@ -193,6 +194,6 @@ export default function Create({ auth, projects, users }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
   );
 }

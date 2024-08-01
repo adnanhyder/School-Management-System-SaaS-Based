@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -34,8 +35,8 @@ class RoleController extends Controller
             $query->where("status", request("status"));
         }
 
-        $roles = $query->orderBy($sortField, $sortDirection)
-            ->paginate(50)
+        $roles = $query
+            ->paginate(5000)
             ->onEachSide(1);
 
         return inertia("Role/Index", [
@@ -50,116 +51,69 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
-        $users = User::query()->orderBy('name', 'asc')->get();
 
-        return inertia("Task/Create", [
-            'projects' => ProjectResource::collection($projects),
-            'users' => UserResource::collection($users),
-        ]);
+        return inertia("Role/Create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
-        /** @var $image \Illuminate\Http\UploadedFile */
-        $image = $data['image'] ?? null;
-        $data['created_by'] = Auth::id();
-        $data['updated_by'] = Auth::id();
-        if ($image) {
-            $data['image_path'] = $image->store('task/' . Str::random(), 'public');
-        }
-        Task::create($data);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
 
-        return to_route('task.index')
-            ->with('success', 'Task was created');
+        Role::create($validatedData);
+
+        return to_route('role.index')
+            ->with('success', 'Role was created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Role $task)
     {
-        return inertia('Task/Show', [
-            'task' => new TaskResource($task),
-        ]);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $task)
+    public function edit(Role $role)
     {
-        $projects = Project::query()->orderBy('name', 'asc')->get();
-        $users = User::query()->orderBy('name', 'asc')->get();
-
-        return inertia("Task/Edit", [
-            'task' => new TaskResource($task),
-            'projects' => ProjectResource::collection($projects),
-            'users' => UserResource::collection($users),
+        return inertia("Role/Edit", [
+            'role' => new RoleResource($role),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update( Request $request , Role $role)
     {
-        $data = $request->validated();
-        $image = $data['image'] ?? null;
-        $data['updated_by'] = Auth::id();
-        if ($image) {
-            if ($task->image_path) {
-                Storage::disk('public')->deleteDirectory(dirname($task->image_path));
-            }
-            $data['image_path'] = $image->store('task/' . Str::random(), 'public');
-        }
-        $task->update($data);
 
-        return to_route('task.index')
-            ->with('success', "Task \"$task->name\" was updated");
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $role->update($validatedData);
+
+        return to_route('role.index')
+            ->with('success', 'Role was updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Role $role)
     {
-        $name = $task->name;
-        $task->delete();
-        if ($task->image_path) {
-            Storage::disk('public')->deleteDirectory(dirname($task->image_path));
-        }
-        return to_route('task.index')
-            ->with('success', "Task \"$name\" was deleted");
+        $name = $role->name;
+        $role->delete();
+
+        return to_route('role.index')
+            ->with('success', "Role \"$name\" was deleted");
     }
 
-    public function myTasks()
-    {
-        $user = auth()->user();
-        $query = Task::query()->where('assigned_user_id', $user->id);
-
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-        if (request("status")) {
-            $query->where("status", request("status"));
-        }
-
-        $tasks = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
-            ->onEachSide(1);
-
-        return inertia("Task/Index", [
-            "tasks" => TaskResource::collection($tasks),
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
-    }
 }

@@ -32,7 +32,7 @@ export default function Navbar({user}){
               >
                 <div className="avatar avatar-online">
                   <img
-                    src="../assets/img/avatars/1.png"
+                    src="/assets/img/avatars/1.png"
                     alt=""
                     className="w-px-40 h-auto rounded-circle"
                   />
@@ -45,7 +45,7 @@ export default function Navbar({user}){
                       <div className="flex-shrink-0 me-3">
                         <div className="avatar avatar-online">
                           <img
-                            src="../assets/img/avatars/1.png"
+                            src="/assets/img/avatars/1.png"
                             alt=""
                             className="w-px-40 h-auto rounded-circle"
                           />
@@ -53,9 +53,9 @@ export default function Navbar({user}){
                       </div>
                       <div className="flex-grow-1">
                         <h6 className="mb-0">{user.name}</h6>
-                        {/*<small className="text-muted">{user.roles.map((role, index) => (*/}
-                        {/*  <li key={index}>{role.name}</li>*/}
-                        {/*))}</small>*/}
+                        <small className="text-muted">{user.roles.map((role, index) => (
+                          <li key={index}>{role.name}</li>
+                        ))}</small>
                       </div>
                     </div>
                   </a>
