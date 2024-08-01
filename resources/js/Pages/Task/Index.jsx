@@ -6,9 +6,6 @@ import TasksTable from "./TasksTable";
 import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Index({ auth, success, tasks, queryParams = null }) {
-  console.log(success)
-  console.log(tasks)
-  console.log(auth)
   return (
     <AdminLayout
       user={auth.user}

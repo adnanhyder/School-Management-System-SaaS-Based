@@ -137,6 +137,15 @@ export default function Aside() {
                   All Task
                 </NavLink>
               </li>
+              <li className="menu-item">
+                <NavLink
+                  href={route("task.myTasks")}
+                  active={route().current("task.myTasks")}
+                  className={'menu-link text-truncate'}
+                >
+                  My Tasks
+                </NavLink>
+              </li>
             </ul>
           </li>
 

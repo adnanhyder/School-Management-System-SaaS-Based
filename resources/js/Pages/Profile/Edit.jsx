@@ -6,10 +6,11 @@ import { Head } from '@inertiajs/react';
 import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
+
     return (
         <AdminLayout
             user={auth.user}
-            header={<h2 className="">Profile</h2>}
+
         >
             <Head title="Profile" />
 

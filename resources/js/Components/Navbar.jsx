@@ -53,9 +53,15 @@ export default function Navbar({user}){
                       </div>
                       <div className="flex-grow-1">
                         <h6 className="mb-0">{user.name}</h6>
-                        <small className="text-muted">{user.roles.map((role, index) => (
-                          <li key={index}>{role.name}</li>
-                        ))}</small>
+                        {user?.roles && (
+                          <small className="text-muted">
+                            <ul>
+                              {user.roles.map((role, index) => (
+                                <li key={index}>{role.name}</li>
+                              ))}
+                            </ul>
+                          </small>
+                        )}
                       </div>
                     </div>
                   </a>

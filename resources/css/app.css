@@ -80,3 +80,22 @@ textarea , select {
     background-color: rgba(3, 7, 18, 0.53);
     color: #fff !important;
 }
+.text-lg.font-medium.text-gray-900.dark\:text-gray-100 {
+    color: #000;
+}
+.false.rounded.btn-primary.btn-xl {
+    color: #fff;
+    /* width: 50px; */
+    padding: 10px;
+}
+.menu-vertical .menu-inner > .menu-item .menu-link {
+    margin: 0;
+}
+.menu-link.text-truncate {
+    line-height: 26px;
+    font-size: 16px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
