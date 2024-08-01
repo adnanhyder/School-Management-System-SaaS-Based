@@ -34,13 +34,15 @@ export default function Aside() {
         <ul className="menu-inner py-1">
           {/* Dashboards */}
           <li className="menu-item active open">
-            <a href="#" className="menu-link">
+            <NavLink
+              href={route("dashboardAdmin")}
+              active={route().current("dashboardAdmin")}
+              className={'menu-link text-truncate'}
+            >
               <i className="menu-icon tf-icons bx bx-home-smile"/>
-              <div className="text-truncate" data-i18n="Dashboards">
-                Dashboard
-              </div>
+              Dashboard
+            </NavLink>
 
-            </a>
 
           </li>
 
