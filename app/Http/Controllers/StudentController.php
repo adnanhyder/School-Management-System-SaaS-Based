@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateSchoolRequest;
-use App\Http\Resources\SchoolResource;
-use App\Models\School;
+use App\Http\Resources\StudentResource;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
-class SchoolController extends Controller
+class StudentController extends Controller
 {
     protected $dynamicParam = [
-        'name' => 'school'
+        'name' => 'student'
     ];
     protected $success_rep;
     protected $index_route;
@@ -23,12 +22,12 @@ class SchoolController extends Controller
 
     public function index()
     {
-        $schools = School::query()->paginate(10)
+        $schools = Student::query()->paginate(10)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
             [
-                'receivedItem' => SchoolResource::collection($schools),
+                'receivedItem' => StudentResource::collection($schools),
                 'dynamicParam' => $this->dynamicParam,
                 'success' => session('success'),
             ]
@@ -54,19 +53,19 @@ class SchoolController extends Controller
             'phone' => 'numeric',
         ]);
         $data = $request->all();
-        $data['created_by'] = auth()->id();
+        $data['school_id'] = 2;
 
-        School::create($data);
+        Student::create($data);
 
         $success = " $this->success_rep  was created";
 
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function edit(School $school)
+    public function edit(Student $student)
     {
-        $getschool = new SchoolResource($school);
-        $data = $getschool->toArray(request());
+        $get_item = new StudentResource($student);
+        $data = $get_item->toArray(request());
         $route = $this->success_rep . '/Edit';
         return inertia($route, [
                 'item' => $data,
@@ -75,7 +74,7 @@ class SchoolController extends Controller
         );
     }
 
-    public function update(Request $request, School $school)
+    public function update(Request $request, Student $student)
     {
         $request->validate([
             'name' => 'required',
@@ -83,21 +82,21 @@ class SchoolController extends Controller
             'phone' => 'nullable',
         ]);
 
-        $school->update($request->all());
+        $student->update($request->all());
         $success = " $this->success_rep  was updated";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function destroy(School $school)
+    public function destroy(Student $student)
     {
-        $school->delete();
+        $student->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function show(School $school)
+    public function show(Student $student)
     {
-        $data = new SchoolResource($school);
+        $data = new StudentResource($student);
         $route = $this->success_rep . '/Show';
         return inertia($route, [
             'item' => $data,

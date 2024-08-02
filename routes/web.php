@@ -4,14 +4,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-
+Route::get('/dashboard', [DashboardController::class, 'admin']);
 Route::redirect('/', '/dashboard');
-Route::redirect('/dashboard', '/admin');
+
 Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'admin'])
         ->name('dashboardAdmin');
@@ -26,6 +27,7 @@ Route::middleware(['auth', 'verified' , 'role:admin'])->group(function () {
 
 Route::middleware(['auth', 'verified' ,'role:company,admin'])->group(function () {
     Route::resource('school', SchoolController::class);
+    Route::resource('student', StudentController::class);
 });
 
 

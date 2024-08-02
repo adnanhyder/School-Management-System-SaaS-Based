@@ -21,7 +21,7 @@ export default function Create({ auth , dynamicParam  }) {
 
     >
       <Head title="Users" />
-      <h2 className="text-black text-2xl font-semibold">Create School</h2>
+      <h2 className="text-black text-2xl font-semibold text-first-large">Create {dynamicParam.name}</h2>
 
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 

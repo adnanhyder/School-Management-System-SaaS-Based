@@ -10,6 +10,7 @@ export default function Show({ auth , item , dynamicParam }) {
     >
       <Head title={`User ${item.name}`} />
       <h2 className="text-black text-2xl font-semibold text-first-large">Show {dynamicParam.name}</h2>
+
       <div className="">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
