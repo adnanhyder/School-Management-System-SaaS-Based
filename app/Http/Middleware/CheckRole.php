@@ -13,11 +13,11 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next , $role )   {
+    public function handle(Request $request, Closure $next , ...$roles )   {
         //$user = $request->user();
         $user = $request->user()->load('roles');
-
-        if (! $user->roles->contains('name', $role)) {
+        $userRoles = $user->roles->pluck('name')->toArray();
+        if (!array_intersect($roles, $userRoles)) {
             abort(403);
         }
 

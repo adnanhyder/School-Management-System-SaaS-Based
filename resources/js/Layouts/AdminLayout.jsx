@@ -3,7 +3,6 @@ import Navbar from "@/Components/Navbar";
 import AdminFooter from "@/Components/AdminFooter";
 
 export default function AdminLayout({user, header, children}) {
-  console.log(user);
   return (
     <>
       <div className="layout-wrapper layout-content-navbar">
