@@ -9,7 +9,7 @@ export default function AdminLayout({user, header, children}) {
         <div className="layout-container">
           {/* Layout wrapper */}
 
-          <Aside/>
+          <Aside user={user} />
           {/* Layout container */}
           <div className="layout-page">
 

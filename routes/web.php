@@ -14,15 +14,18 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/login');
 
 // Routes accessible by both 'company' and 'admin' roles
-Route::middleware(['auth', 'verified', 'role:company,admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:school,admin'])->group(function () {
+    Route::get('/admin', [DashboardController::class, 'admin'])
+        ->name('dashboard.admin');
+
+
     Route::resource('school', SchoolController::class);
     Route::resource('student', StudentController::class);
 });
 
 // Routes accessible only by 'admin' role
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin', [DashboardController::class, 'admin'])
-        ->name('dashboard.admin');
+
     Route::resource('task', TaskController::class);
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class);
@@ -32,7 +35,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 });
 
 // Routes accessible only by 'company' role (if needed)
-Route::middleware(['auth', 'verified', 'role:company'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
+    //only for test purpose
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('company.dashboard');
 });

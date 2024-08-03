@@ -13,7 +13,7 @@ export default function Dashboard({
   activeTasks,
 }) {
   return (
-    <AuthenticatedLayout
+    <AdminLayout
       user={auth.user}
       header={
         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -109,6 +109,6 @@ export default function Dashboard({
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </AdminLayout>
   );
 }
