@@ -23,21 +23,14 @@ export default function AuthenticatedLayout({ user, header, children }) {
 
               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <NavLink
-                  href={route("test.index")}
-                  active={route().current("test.index")}
-                  className={'menu-link menu-toggle '}
-                >
-                  Adnan
-                </NavLink>
-                <NavLink
                   href={route("role.index")}
                   active={route().current("role.index")}
                 >
                   Roles
                 </NavLink>
                 <NavLink
-                  href={route("dashboard")}
-                  active={route().current("dashboard")}
+                  href={route("company.dashboard")}
+                  active={route().current("company.dashboard")}
                 >
                   Dashboard
                 </NavLink>
@@ -55,8 +48,8 @@ export default function AuthenticatedLayout({ user, header, children }) {
                 </NavLink>
 
                 <NavLink
-                  href={route("user.index")}
-                  active={route().current("user.index")}
+                  href={route("profile.edit")}
+                  active={route().current("profile.edit")}
                 >
                   Users
                 </NavLink>
@@ -117,8 +110,8 @@ export default function AuthenticatedLayout({ user, header, children }) {
         >
           <div className="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink
-              href={route("dashboard")}
-              active={route().current("dashboard")}
+              href={route("company.dashboard")}
+              active={route().current("company.dashboard")}
             >
               Dashboard
             </ResponsiveNavLink>

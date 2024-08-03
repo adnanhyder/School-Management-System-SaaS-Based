@@ -35,8 +35,8 @@ export default function Aside() {
           {/* Dashboards */}
           <li className="menu-item active open">
             <NavLink
-              href={route("dashboardAdmin")}
-              active={route().current("dashboardAdmin")}
+              href={route("dashboard.admin")}
+              active={route().current("dashboard.admin")}
               className={'menu-link text-truncate'}
             >
               <i className="menu-icon tf-icons bx bx-home-smile"/>
