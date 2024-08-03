@@ -102,3 +102,6 @@ textarea , select {
 .text-first-large{
     text-transform: capitalize;
 }
+.block.text-lg.font-bold.text-gray-700.dark\:text-gray-300 {
+    color: #000c;
+}
