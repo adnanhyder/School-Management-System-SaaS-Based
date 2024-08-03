@@ -11,4 +11,12 @@ class School extends Model
 
     protected $fillable = [ 'name' ,'address' , 'phone' , 'created_by' ];
 
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'school_user');
+    }
+
+
+
 }

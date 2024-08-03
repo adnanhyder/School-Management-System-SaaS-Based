@@ -29,7 +29,6 @@ export default function AdminMenu() {
           </li>
         </ul>
       </li>
-
       <li className="menu-item">
         <a href="#" className={`menu-link menu-toggle ${openSubMenus['role'] ? 'open' : ''}`}
            onClick={() => toggleSubMenu('role')}>
@@ -50,8 +49,6 @@ export default function AdminMenu() {
           </li>
         </ul>
       </li>
-
-
       <li className="menu-item">
         <a href="#" className={`menu-link menu-toggle ${openSubMenus['project'] ? 'open' : ''}`}
            onClick={() => toggleSubMenu('project')}>
@@ -81,7 +78,6 @@ export default function AdminMenu() {
           </div>
         </a>
       </li>
-
       <li className="menu-item">
         <a href="#" className={`menu-link menu-toggle ${openSubMenus['tasks'] ? 'open' : ''}`}
            onClick={() => toggleSubMenu('tasks')}>

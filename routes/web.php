@@ -18,8 +18,6 @@ Route::middleware(['auth', 'verified', 'role:school,admin'])->group(function () 
     Route::get('/admin', [DashboardController::class, 'admin'])
         ->name('dashboard.admin');
 
-
-    Route::resource('school', SchoolController::class);
     Route::resource('student', StudentController::class);
 });
 
@@ -30,6 +28,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('project', ProjectController::class);
+    Route::resource('school', SchoolController::class);
     Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
         ->name('task.myTasks');
 });

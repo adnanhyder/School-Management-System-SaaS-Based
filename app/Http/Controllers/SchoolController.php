@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateSchoolRequest;
 use App\Http\Resources\SchoolResource;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SchoolController extends Controller
 {
@@ -41,7 +43,8 @@ class SchoolController extends Controller
         $route = $this->success_rep . '/Create';
         return inertia($route,
             [
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'users' => User::all(),
             ]
         );
     }
@@ -52,14 +55,18 @@ class SchoolController extends Controller
             'name' => 'required',
             'address' => 'nullable',
             'phone' => 'numeric',
+            'assignedUser' => 'required|exists:users,id',
         ]);
         $data = $request->all();
-        $data['created_by'] = auth()->id();
 
-        School::create($data);
+        $data['created_by'] = auth()->id();
+        $user_id = $data['assignedUser'] ;
+
+        $school_id = School::create($data);
+        $this->assignSchool( $user_id ,$school_id );
+
 
         $success = " $this->success_rep  was created";
-
         return to_route($this->index_route)->with('success', $success);
     }
 
@@ -67,10 +74,17 @@ class SchoolController extends Controller
     {
         $getschool = new SchoolResource($school);
         $data = $getschool->toArray(request());
+        $id_of_school = $getschool->users;
+        $pivot_data = $id_of_school->map(function ($data) {
+            return  User::findOrFail($data->pivot->user_id)->name;
+        })->implode(',');
+
         $route = $this->success_rep . '/Edit';
         return inertia($route, [
                 'item' => $data,
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'users' => User::all(),
+                'selectedUser' => $pivot_data,
             ]
         );
     }
@@ -82,8 +96,21 @@ class SchoolController extends Controller
             'address' => 'nullable',
             'phone' => 'nullable',
         ]);
+        $data = $request->only(['name', 'address', 'phone']);
+        $school->update($data);
+        $user_id = $request->input('assignedUser');
+        if($user_id) {
+            $existingAssociation = DB::table('school_user')->where('school_id', $school->id)->first();
 
-        $school->update($request->all());
+            if ($existingAssociation) {
+                // Update the existing record if found
+                DB::table('school_user')->where('school_id', $school->id)->update(['user_id' => $user_id]);
+            } else {
+                // Create a new record if not found
+                DB::table('school_user')->insert(['school_id' => $school->id, 'user_id' => $user_id]);
+            }
+        }
+
         $success = " $this->success_rep  was updated";
         return to_route($this->index_route)->with('success', $success);
     }
@@ -103,5 +130,12 @@ class SchoolController extends Controller
             'item' => $data,
             'dynamicParam' => $this->dynamicParam
         ]);
+    }
+
+    public function assignSchool( $user_id ,$school ){
+        $user = User::findOrFail($user_id);
+        $school = School::findOrFail($school->id);
+        $user->schools()->attach($school);
+        return 1 ;
     }
 }

@@ -3,8 +3,10 @@ import InputLabel from "@/Components/InputLabel";
 import AdminLayout from "@/Layouts/AdminLayout";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import SelectInput from "@/Components/SelectInput";
+import GenerateOptions from "@/Components/GenerateOptions";
 
-export default function Create({ auth, item , dynamicParam }) {
+export default function Create({ auth, item , dynamicParam , users , selectedUser = null}) {
   const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
     address: item.address || "",
@@ -66,6 +68,19 @@ export default function Create({ auth, item , dynamicParam }) {
           />
 
         </div>
+          <div className="mt-4">
+            <label className="col-12">Assign to User:</label>
+            Previous Selected = {selectedUser} <br />
+            <SelectInput
+              name="assignedUser"
+              onChange={(e) => setData("assignedUser", e.target.value)}
+            >
+              <GenerateOptions items={users}/>
+            </SelectInput>
+
+            <InputError message={errors.assignedUser} className="mt-2" />
+          </div>
+
         <div className="mt-4 text-right">
           <Link
             href={route(`${dynamicParam.name}.index`)}
