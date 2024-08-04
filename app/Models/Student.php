@@ -12,7 +12,7 @@ class Student extends Model
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = school_prefix().'student';
+        $this->table = school_prefix().'students';
     }
 
 

@@ -17,6 +17,8 @@ Route::redirect('/', '/login');
 Route::middleware(['auth', 'verified', 'role:school,admin'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'admin'])
         ->name('dashboard.admin');
+    Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
+
 
     Route::resource('student', StudentController::class);
 });

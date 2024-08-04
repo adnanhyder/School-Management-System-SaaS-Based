@@ -1,7 +1,27 @@
 import AdminLayout from "@/Layouts/AdminLayout"
-import {Head, Link} from "@inertiajs/react";
+import {Head, Link, useForm} from "@inertiajs/react";
+import SelectInput from "@/Components/SelectInput";
+import GenerateOptions from "@/Components/GenerateOptions";
+import InputError from "@/Components/InputError";
+import {useEffect} from "react";
 
-export default function DashboardAdmin(auth) {
+export default function DashboardAdmin(auth , {item , selectedItem , dynamicParam}) {
+  const { data, setData, post, errors, reset } = useForm({
+    Id: item.Id || "",
+    _method: "PUT",
+  });
+  useEffect(() => {
+    return () => {
+      handleSubmit(new Event('submit'));
+    };
+  }, [data]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    post(route(`${dynamicParam.name}.selectSchool`, item.id));
+  };
+
+  console.log(auth);
   return (
 
         <AdminLayout
@@ -9,25 +29,19 @@ export default function DashboardAdmin(auth) {
         >
 
           <Head title="Dashboard"/>
+          <form onSubmit={handleSubmit}>
+          <div className="mt-4">
+            Previous Selected = {selectedItem} <br />
+            <label className="col-12">Select New Value</label>
+            <SelectInput
+              name="schoolId"
+              onChange={(e) => setData("Id", e.target.value)}
+            >
+              <GenerateOptions items={auth.user} />
+            </SelectInput>
 
-          <div className="card">
-            <div className="d-flex align-items-start row">
-              <div className="col-sm-7">
-                <div className="card-body">
-                  <h5 className="card-title text-primary mb-3">Congratulations John! 🎉</h5>
-                  <p className="mb-6">You have done 72% more sales today.Check your new badge in your profile</p>
-
-                  <a href="javascript:;" className="btn btn-sm btn-outline-primary">View Badges</a>
-                </div>
-              </div>
-              <div className="col-sm-5 text-center text-sm-left">
-                <div className="card-body pb-0 px-0 px-md-6">
-                  <img src="../assets/img/illustrations/man-with-laptop.png" height="175" className="scaleX-n1-rtl"
-                       alt="View Badge User"/>
-                </div>
-              </div>
-            </div>
           </div>
+          </form>
           <hr className="my-5 " />
           <div className="row">
             <div className="col-8">

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskResource;
+use App\Models\School;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+
+
     public function index()
     {
         $user = auth()->user();
@@ -59,9 +62,16 @@ class DashboardController extends Controller
 
     public function admin()
     {
-        $user = auth()->user();
+        $dynamicParam = [
+            'name' => 'school'
+        ];
         return inertia('DashboardAdmin',
-            ['user' => $user]
+            [
+                'dynamicParam' => $dynamicParam,
+                'item' => '',
+                'success' => session('success'),
+
+            ]
         );
     }
 }
