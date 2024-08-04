@@ -31,14 +31,11 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('adnan@123'),
             'email_verified_at' => time()
         ]);
-        Role::factory()->create([
-            'id' => 1,
-            'name' => 'admin',
-        ]);
+
 
         Project::factory()
-            ->count(30)
-            ->hasTasks(30)
+            ->count(1)
+            ->hasTasks(2)
             ->create();
     }
 }

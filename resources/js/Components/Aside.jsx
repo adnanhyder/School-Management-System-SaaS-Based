@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import NavLink from "@/Components/NavLink";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
@@ -8,7 +8,14 @@ import AdminMenu from "@/Layouts/Menu/AdminMenu";
 
 export default function Aside({user}) {
   const {openSubMenus, toggleSubMenu} = useSubMenu();
-  const roleNames = user?.roles.map(role => role.name);
+
+  const [roleNames, setRoleNames] = useState([]);
+
+  useEffect(() => {
+    if (user?.roles) {
+      setRoleNames(user.roles.map(role => role.name));
+    }
+  }, [user]);
 
 
   return (

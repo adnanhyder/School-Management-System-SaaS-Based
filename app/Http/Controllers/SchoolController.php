@@ -7,6 +7,7 @@ use App\Http\Resources\SchoolResource;
 use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class SchoolController extends Controller
@@ -100,14 +101,14 @@ class SchoolController extends Controller
         $school->update($data);
         $user_id = $request->input('assignedUser');
         if($user_id) {
-            $existingAssociation = DB::table('school_user')->where('school_id', $school->id)->first();
+            $existingAssociation = DB::table(school_prefix().'school_user')->where('school_id', $school->id)->first();
 
             if ($existingAssociation) {
                 // Update the existing record if found
-                DB::table('school_user')->where('school_id', $school->id)->update(['user_id' => $user_id]);
+                DB::table(school_prefix().'school_user')->where('school_id', $school->id)->update(['user_id' => $user_id]);
             } else {
                 // Create a new record if not found
-                DB::table('school_user')->insert(['school_id' => $school->id, 'user_id' => $user_id]);
+                DB::table(school_prefix().'school_user')->insert(['school_id' => $school->id, 'user_id' => $user_id]);
             }
         }
 

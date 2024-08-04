@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     //only for test purpose
     Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('company.dashboard');
+        ->name('school.dashboard');
 });
 
 // Routes accessible only by any role (if needed)

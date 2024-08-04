@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Config;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -51,6 +52,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Role::class);
     }
+    public function schoolObject()
+    {
+        return $this->belongsToMany(School::class);
+    }
 
     public function hasRole(string $role): bool
     {
@@ -59,7 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function schools()
     {
-        return $this->belongsToMany(School::class, 'school_user');
+        return $this->belongsToMany(School::class, school_prefix().'school_user');
     }
 
 }
