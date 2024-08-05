@@ -5,11 +5,12 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Edit({ auth, item, dynamicParam }) {
-  const { data, setData, put, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
     email: item.email || "",
     phone: item.phone || "",
     gender: item.gender || "",
+    roll_number: item.roll_number || "",
     blood_group: item.blood_group || "",
     city: item.city || "",
     address: item.address || "",
@@ -25,15 +26,16 @@ export default function Edit({ auth, item, dynamicParam }) {
     previous_school: item.previous_school || "",
     previous_grade: item.previous_grade || "",
     sports: item.sports || "",
-    profile_picture: item.profile_picture || "",
+    image : "",
     status: item.status || "",
     notes: item.notes || "",
     _method: "PUT",
+
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    put(route(`${dynamicParam.name}.update`, item.id));
+    post(route(`${dynamicParam.name}.update`, item.id));
   };
 
   const getInputType = (field) => {
@@ -43,12 +45,17 @@ export default function Edit({ auth, item, dynamicParam }) {
       case "phone":
       case "parent_phone":
       case "emergency_contact_phone":
+      case "roll_number":
         return "number";
       case "dob":
       case "admission_date":
         return "date";
       case "notes":
         return "textarea";
+      case "_method":
+        return "method_put";
+      case "image":
+        return "file";
       default:
         return "text";
     }
@@ -59,11 +66,25 @@ export default function Edit({ auth, item, dynamicParam }) {
       <Head title={`Edit ${dynamicParam.name}`} />
       <h2 className="text-black text-2xl font-semibold">Edit {dynamicParam.name}</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+
+        {item.profile_picture && (
+          <div className="mb-4">
+            <img  src={`/storage/${item.profile_picture}`} className="w-64" />
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           {Object.keys(data).map((field, index) => (
+
+
             <div className="mt-4" key={index}>
               <label className="block text-gray-700">
-                {field.replace("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}:
+                {getInputType(field) === "method_put" ? (
+                    <></>
+                  ) : (
+                    <>
+                      {field.replace("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}:
+                    </>
+                      )}
               </label>
               {getInputType(field) === "textarea" ? (
                 <textarea
@@ -73,7 +94,17 @@ export default function Edit({ auth, item, dynamicParam }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 />
-              ) : (
+              ) : getInputType(field) === "method_put" ? (
+                <></>
+              ) : getInputType(field) === 'file' ? (
+                <input
+                  id={field}
+                  type="file"
+                  name={field}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData(field, e.target.files[0])}
+                />
+              )  : (
                 <TextInput
                   id={field}
                   type={getInputType(field)}

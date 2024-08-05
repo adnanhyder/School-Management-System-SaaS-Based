@@ -109,6 +109,6 @@ textarea , select {
     color: red !important;
 }
 
-.ucfirst{
-
+.text-red-600 {
+    color: red !important;
 }
