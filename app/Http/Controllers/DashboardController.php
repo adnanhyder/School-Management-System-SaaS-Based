@@ -6,6 +6,7 @@ use App\Http\Resources\TaskResource;
 use App\Models\School;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -60,15 +61,19 @@ class DashboardController extends Controller
         );
     }
 
-    public function admin()
+    public function adminSchool()
     {
         $dynamicParam = [
             'name' => 'school'
         ];
+        $user = Auth::user();
+        $defaultSchool = $user->getDefaultSchool();
+
+
         return inertia('DashboardAdmin',
             [
                 'dynamicParam' => $dynamicParam,
-                'item' => '',
+                'item' => $defaultSchool,
                 'success' => session('success'),
 
             ]

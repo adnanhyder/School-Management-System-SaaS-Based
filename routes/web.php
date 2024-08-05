@@ -15,7 +15,7 @@ Route::redirect('/', '/login');
 
 // Routes accessible by both 'company' and 'admin' roles
 Route::middleware(['auth', 'verified', 'role:school,admin'])->group(function () {
-    Route::get('/admin', [DashboardController::class, 'admin'])
+    Route::get('/admin', [DashboardController::class, 'adminSchool'])
         ->name('dashboard.admin');
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 

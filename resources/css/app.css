@@ -108,3 +108,7 @@ textarea , select {
 .text-sm.text-red-600.dark\:text-red-400.mt-2 {
     color: red !important;
 }
+
+.ucfirst{
+
+}

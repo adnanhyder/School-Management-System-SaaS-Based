@@ -5,23 +5,23 @@ import GenerateOptions from "@/Components/GenerateOptions";
 import InputError from "@/Components/InputError";
 import {useEffect} from "react";
 
-export default function DashboardAdmin(auth , {item , selectedItem , dynamicParam}) {
-  const { data, setData, post, errors, reset } = useForm({
-    Id: item.Id || "",
-    _method: "PUT",
-  });
-  useEffect(() => {
-    return () => {
-      handleSubmit(new Event('submit'));
-    };
-  }, [data]);
-  const handleSubmit = (e) => {
-    e.preventDefault();
+export default function DashboardAdmin({auth , item , dynamicParam , success }) {
 
-    post(route(`${dynamicParam.name}.selectSchool`, item.id));
+  const { data, setData, patch, errors, reset } = useForm({
+    'school_id': '',
+    _method: "PUT",
+
+  });
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setData('school_id', value);
   };
 
-  console.log(auth);
+  useEffect(() => {
+    if (data.school_id) {
+      patch(route(`${dynamicParam.name}.selectSchool`));
+    }
+  }, [data.school_id]);
   return (
 
         <AdminLayout
@@ -29,15 +29,24 @@ export default function DashboardAdmin(auth , {item , selectedItem , dynamicPara
         >
 
           <Head title="Dashboard"/>
-          <form onSubmit={handleSubmit}>
+          <div>
+            {success && (
+              <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
+                {success}
+              </div>
+            )}
+          </div>
+          <form>
           <div className="mt-4">
-            Previous Selected = {selectedItem} <br />
-            <label className="col-12">Select New Value</label>
+            <span className={'text-first-large'}>Previous Selected = {item.name} <br /> </span>
+            <label className="col-12 ">Select New Value</label>
             <SelectInput
               name="schoolId"
-              onChange={(e) => setData("Id", e.target.value)}
+              value={data.school_id}
+              onChange={handleChange}
+              className={'text-first-large'}
             >
-              <GenerateOptions items={auth.user} />
+              <GenerateOptions items={auth.user.schools} />
             </SelectInput>
 
           </div>

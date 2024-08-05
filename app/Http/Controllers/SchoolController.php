@@ -7,6 +7,7 @@ use App\Http\Resources\SchoolResource;
 use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
@@ -141,29 +142,28 @@ class SchoolController extends Controller
     }
 
 
-    public function selectSchool(Request $request, School $school)
+    public function selectSchool(Request $request)
     {
+
         $request->validate([
-            'name' => 'required',
-            'address' => 'nullable',
-            'phone' => 'nullable',
+            'school_id' => 'numeric|required|exists:sch_schools,id',
         ]);
-        dd($request->all());
-        $school->update($data);
-        $user_id = $request->input('assignedUser');
-        if($user_id) {
-            $existingAssociation = DB::table(school_prefix().'school_user')->where('school_id', $school->id)->first();
 
-            if ($existingAssociation) {
-                // Update the existing record if found
-                DB::table(school_prefix().'school_user')->where('school_id', $school->id)->update(['user_id' => $user_id]);
-            } else {
-                // Create a new record if not found
-                DB::table(school_prefix().'school_user')->insert(['school_id' => $school->id, 'user_id' => $user_id]);
-            }
-        }
+        $user = Auth::user();
+        $school_id = $request->input('school_id');
 
+        DB::table(school_prefix().'school_user')
+            ->where('user_id', $user->id)
+            ->update(['selected_school_id' => null]);
+
+        DB::table(school_prefix().'school_user')
+            ->where('user_id', $user->id)
+            ->where('school_id', $school_id)
+            ->update(['selected_school_id' => 1]);
+
+        $defaultSchool = $user->getDefaultSchool();
         $success = " $this->success_rep  was updated";
-        return to_route($this->index_route)->with('success', $success);
+
+        return to_route('dashboard.admin')->with('success', $success);
     }
 }

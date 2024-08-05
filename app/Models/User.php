@@ -67,4 +67,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(School::class, school_prefix().'school_user');
     }
 
+    public function getDefaultSchool()
+    {
+        return $this->schools()->wherePivot('selected_school_id', 1)->first();
+    }
+
 }
