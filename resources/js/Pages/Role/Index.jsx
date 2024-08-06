@@ -13,7 +13,6 @@ export default function Index({ auth, users,roles, queryParams = null, success }
     }
     router.delete(route("role.destroy", role.id));
   };
-
   return (
     <AdminLayout
       user={auth.user}
