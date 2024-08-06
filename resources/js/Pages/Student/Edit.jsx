@@ -3,6 +3,7 @@ import InputLabel from "@/Components/InputLabel";
 import AdminLayout from "@/Layouts/AdminLayout";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import {getOptions} from "@/functions";
 
 export default function Edit({ auth, item, dynamicParam }) {
   const { data, setData, post, errors, reset } = useForm({
@@ -56,6 +57,9 @@ export default function Edit({ auth, item, dynamicParam }) {
         return "method_put";
       case "image":
         return "file";
+      case "status":
+      case "gender":
+        return "select";
       default:
         return "text";
     }
@@ -97,6 +101,7 @@ export default function Edit({ auth, item, dynamicParam }) {
               ) : getInputType(field) === "method_put" ? (
                 <></>
               ) : getInputType(field) === 'file' ? (
+                <>
                 <input
                   id={field}
                   type="file"
@@ -104,7 +109,27 @@ export default function Edit({ auth, item, dynamicParam }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.files[0])}
                 />
-              )  : (
+                  <ul className="instruciton">
+                    <li>The image dimensions should not exceed 500x500 pixels.
+                      The image size must not exceed 300 KB.
+                      The image must be a file of type: jpg, jpeg, png.</li>
+                  </ul>
+                </>
+              )  : getInputType(field) === 'select' ? (
+                <select
+                  id={field}
+                  name={field}
+                  value={data[field]}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData(field, e.target.value)}
+                >
+                  {getOptions(field).map((option, optionIndex) => (
+                    <option key={optionIndex} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              ) : (
                 <TextInput
                   id={field}
                   type={getInputType(field)}

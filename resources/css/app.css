@@ -112,3 +112,7 @@ textarea , select {
 .text-red-600 {
     color: red !important;
 }
+
+.white {
+    color: #fff;
+}

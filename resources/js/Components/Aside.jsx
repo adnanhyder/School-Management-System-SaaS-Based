@@ -3,7 +3,7 @@ import NavLink from "@/Components/NavLink";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {Link} from "@inertiajs/react";
 import SchoolMenu from "@/layouts/Menu/SchoolMenu"
-import useSubMenu from "@/functions";
+import {useSubMenu} from "@/functions";
 import AdminMenu from "@/Layouts/Menu/AdminMenu";
 
 export default function Aside({user}) {
