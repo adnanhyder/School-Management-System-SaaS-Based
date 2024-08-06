@@ -71,5 +71,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->schools()->wherePivot('selected_school_id', 1)->first();
     }
-
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
 }

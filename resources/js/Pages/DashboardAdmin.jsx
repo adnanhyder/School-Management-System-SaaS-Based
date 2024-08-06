@@ -5,7 +5,7 @@ import GenerateOptions from "@/Components/GenerateOptions";
 import InputError from "@/Components/InputError";
 import {useEffect} from "react";
 
-export default function DashboardAdmin({auth , item , dynamicParam , success }) {
+export default function DashboardAdmin({auth , item , dynamicParam , success , schools=null }) {
 
   const { data, setData, patch, errors, reset } = useForm({
     'school_id': '',
@@ -46,7 +46,7 @@ export default function DashboardAdmin({auth , item , dynamicParam , success }) 
               onChange={handleChange}
               className={'text-first-large'}
             >
-              <GenerateOptions items={auth.user.schools} />
+              <GenerateOptions items={auth.user.schools ?? schools } />
             </SelectInput>
 
           </div>
