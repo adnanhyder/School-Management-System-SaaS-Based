@@ -77,13 +77,21 @@ export default function Create({ auth, dynamicParam }) {
                   onChange={(e) => setData(field, e.target.value)}
                 />
               ) : getInputType(field) === 'file' ? (
-                <input
-                  id={field}
-                  type="file"
-                  name={field}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData(field, e.target.files[0])}
-                />
+                  <>
+                    <input
+                        id={field}
+                        type="file"
+                        name={field}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.files[0])}
+                    />
+
+                    <ul className="instruciton">
+                      <li>The image dimensions should not exceed 500x500 pixels.
+                     The image size must not exceed 300 KB.
+                      The image must be a file of type: jpg, jpeg, png.</li>
+                    </ul>
+                  </>
               ) : (
                 <TextInput
                   id={field}

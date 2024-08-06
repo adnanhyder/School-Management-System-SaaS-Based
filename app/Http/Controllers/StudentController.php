@@ -19,22 +19,44 @@ class StudentController extends Controller
 
     protected $school_id ;
 
+    protected $imageError ;
+
     public function __construct()
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
         $this->index_route = $this->dynamicParam['name'].'.index';
         $this->school_id = Auth::user()->getDefaultSchool()->id;
+        $this->imageError = [
+            'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
+            'image.max' => 'Please upload image that has size under 300 KB.',
+            'image.mimes' => 'Please upload jpg, jpeg, png.',
+        ];
     }
 
     public function index()
     {
-        $schools = Student::query()->where("school_id",$this->school_id )->paginate(10)
+        $query = Student::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("phone")) {
+            $query->where("phone", "like", "%" . request("phone") . "%");
+        }  if (request("roll_number")) {
+            $query->where("roll_number", "like", "%" . request("roll_number") . "%");
+        }
+
+        $student = $query->where("school_id",$this->school_id )->orderBy($sortField, $sortDirection)->paginate(10)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
             [
-                'receivedItem' => StudentResource::collection($schools),
+                'receivedItem' => StudentResource::collection($student),
                 'dynamicParam' => $this->dynamicParam,
+                'queryParams' => request()->query() ?: null,
                 'success' => session('success'),
             ]
         );
@@ -57,13 +79,15 @@ class StudentController extends Controller
             'name' => 'required',
             'address' => 'nullable',
             'phone' => 'numeric',
-        ]);
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
+        ],$this->imageError);
         $data = $request->all();
         $data['school_id'] = $this->school_id;
         $image = $data['image'] ?? null;
 
         if ($image) {
             $filename = Str::random() . '.' . $image->getClientOriginalExtension();
+
             $data['profile_picture'] = $image->storeAs($this->dynamicParam['name'],$filename, 'public');
         }
 
@@ -88,12 +112,12 @@ class StudentController extends Controller
 
     public function update(Request $request, Student $student)
     {
-
         $request->validate([
             'name' => 'required',
             'address' => 'nullable',
             'phone' => 'nullable',
-        ]);
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
+        ] , $this->imageError);
         $data =  $request->all();
         $image = $data['image'] ?? null;
         if ($image) {

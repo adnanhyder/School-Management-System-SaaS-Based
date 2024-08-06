@@ -1,11 +1,43 @@
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 
-export default function Index({ auth, receivedItem, dynamicParam, queryParams = null, success }) {
+export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success}) {
   queryParams = queryParams || {};
+
+  const searchFieldChanged = (name, value) => {
+    if (value) {
+      queryParams[name] = value;
+    } else {
+      delete queryParams[name];
+    }
+
+    router.get(route(`${dynamicParam.name}.index`, queryParams));
+  };
+
+  const onKeyPress = (name, e) => {
+    if (e.key !== "Enter") return;
+
+    searchFieldChanged(name, e.target.value);
+  };
+
+  const sortChanged = (name) => {
+    if (name === queryParams.sort_field) {
+      if (queryParams.sort_direction === "asc") {
+        queryParams.sort_direction = "desc";
+      } else {
+        queryParams.sort_direction = "asc";
+      }
+    } else {
+      queryParams.sort_field = name;
+      queryParams.sort_direction = "asc";
+    }
+    router.get(route(`${dynamicParam.name}.index`), queryParams);
+  };
+
+
   const deleteItem = (item) => {
     if (!window.confirm("Are you sure you want to delete?")) {
       return;
@@ -24,7 +56,7 @@ export default function Index({ auth, receivedItem, dynamicParam, queryParams = 
       >
         Add new
       </Link>
-      <Head title="" />
+      <Head title=""/>
       <h2 className="text-black text-2xl font-semibold text-first-large">{dynamicParam.name}s</h2>
       <div className="py-1">
         <div className="">
@@ -39,11 +71,74 @@ export default function Index({ auth, receivedItem, dynamicParam, queryParams = 
                 <table className="col-12">
                   <thead>
                   <tr className="text-nowrap">
-                    <th className="px-3 py-3 ">Id</th>
-                    <th className="px-3 py-3 ">Name</th>
-                    <th className="px-3 py-3 ">Phone</th>
+                    <th className="px-3 py-3 white">Id</th>
+                    <TableHeading
+                      name="name"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      <span className="white">Name</span>
+                    </TableHeading>
+                    <TableHeading
+                      name="phone"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      <span className="white">Phone</span>
+                    </TableHeading>
+                    <TableHeading
+                      name="roll_number"
+                      sort_field={queryParams.sort_field}
+                      sort_direction={queryParams.sort_direction}
+                      sortChanged={sortChanged}
+                    >
+                      <span className="white">Roll Number</span>
+                    </TableHeading>
                     <th className="px-3 py-3 ">Address</th>
                     <th className="px-3 py-3 ">Actions</th>
+                  </tr>
+                  </thead>
+
+                  <thead>
+                  <tr>
+                    <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3">
+                      <TextInput
+                        className="w-full"
+                        defaultValue={queryParams.name}
+                        placeholder="Name"
+                        onBlur={(e) =>
+                          searchFieldChanged("name", e.target.value)
+                        }
+                        onKeyPress={(e) => onKeyPress("name", e)}
+                      />
+                    </th>
+                    <th className="px-3 py-3">
+                      <TextInput
+                        className="w-full"
+                        defaultValue={queryParams.phone}
+                        placeholder="Phone"
+                        onBlur={(e) =>
+                          searchFieldChanged("phone", e.target.value)
+                        }
+                        onKeyPress={(e) => onKeyPress("phone", e)}
+                      />
+                    </th>
+                    <th className="px-3 py-3">
+                      <TextInput
+                        className="w-full"
+                        defaultValue={queryParams.roll_number}
+                        placeholder="Roll number"
+                        onBlur={(e) =>
+                          searchFieldChanged("roll_number", e.target.value)
+                        }
+                        onKeyPress={(e) => onKeyPress("roll_number", e)}
+                      />
+                    </th>
+                    <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
                   </tr>
                   </thead>
 
@@ -63,9 +158,9 @@ export default function Index({ auth, receivedItem, dynamicParam, queryParams = 
                         </Link>
 
 
-
                       </th>
                       <td className="px-3 py-3">{singleItem.phone}</td>
+                      <td className="px-3 py-3">{singleItem.roll_number}</td>
                       <td className="px-3 py-3">{singleItem.address}</td>
                       <td className="px-3 py-3">
                         <Link
@@ -76,7 +171,7 @@ export default function Index({ auth, receivedItem, dynamicParam, queryParams = 
                           Edit
                         </Link>
                         <button
-                          onClick={(e) =>deleteItem(singleItem)}
+                          onClick={(e) => deleteItem(singleItem)}
                           className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                         >
                           Delete
@@ -86,7 +181,7 @@ export default function Index({ auth, receivedItem, dynamicParam, queryParams = 
                   ))}
                   </tbody>
                 </table>
-                <Pagination links={receivedItem.meta.links} />
+                <Pagination links={receivedItem.meta.links}/>
               </div>
             </div>
           </div>
