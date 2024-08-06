@@ -69,7 +69,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getDefaultSchool()
     {
-        return $this->schools()->wherePivot('selected_school_id', 1)->first();
+        $defaultSchool =   $this->schools()->wherePivot('selected_school_id', 1)->first();
+        if (!$defaultSchool) {
+            $firstSchool = $this->schools()->first();
+            if ($firstSchool) {
+                $this->schools()->updateExistingPivot($firstSchool->id, ['selected_school_id' => 1]);
+                return $firstSchool;
+            }
+        }
+
+        return $defaultSchool;
     }
     public function isAdmin()
     {

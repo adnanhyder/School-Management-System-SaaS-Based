@@ -15,17 +15,11 @@ Route::redirect('/', '/login');
 
 // Routes accessible by both 'company' and 'admin' roles
 Route::middleware(['auth', 'verified', 'role:school,admin'])->group(function () {
-    Route::get('/admin', [DashboardController::class, 'adminSchool'])
-        ->name('dashboard.admin');
-    Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 
-
-    Route::resource('student', StudentController::class);
 });
 
 // Routes accessible only by 'admin' role
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-
     Route::resource('task', TaskController::class);
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class);
@@ -33,13 +27,20 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::resource('school', SchoolController::class);
     Route::get('/task/my-tasks', [TaskController::class, 'myTasks'])
         ->name('task.myTasks');
+    Route::get('/admin', [DashboardController::class, 'admin'])
+        ->name('dashboard.admin');
+
+
 });
 
 // Routes accessible only by 'company' role (if needed)
 Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     //only for test purpose
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('school.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'school'])
+        ->name('dashboard.school');
+    Route::resource('student', StudentController::class);
+
+    Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });
 
 // Routes accessible only by any role (if needed)

@@ -24,21 +24,36 @@ export default function DashboardAdmin({auth , item , dynamicParam , success  })
   }, [data.school_id]);
   return (
 
-        <AdminLayout
-          user={auth.user}
-        >
+    <AdminLayout
+      user={auth.user}
+    >
 
-          <Head title="Dashboard"/>
-          <div>
-            {success && (
-              <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
-                {success}
-              </div>
-            )}
+      <Head title="Dashboard"/>
+      <div>
+        {success && (
+          <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
+            {success}
           </div>
-          <hr className="my-5 " />
-          <div className="row">
-            <div className="col-8">
+        )}
+      </div>
+      <form>
+        <div className="mt-4">
+          <span className={'text-first-large'}>Previous Selected = {item.name} <br /> </span>
+          <label className="col-12 ">Select New Value</label>
+          <SelectInput
+            name="schoolId"
+            value={data.school_id}
+            onChange={handleChange}
+            className={'text-first-large'}
+          >
+            <GenerateOptions items={auth.user.schools ?? schools } />
+          </SelectInput>
+
+        </div>
+      </form>
+      <hr className="my-5 " />
+      <div className="row">
+        <div className="col-8">
           <div className="card">
             <h5 className="card-header">Table Basic</h5>
             <div className="table-responsive text-nowrap">
@@ -201,10 +216,10 @@ export default function DashboardAdmin({auth , item , dynamicParam , success  })
               </table>
             </div>
           </div>
-            </div>
-          </div>
+        </div>
+      </div>
 
-        </AdminLayout>
+    </AdminLayout>
 
   );
 }

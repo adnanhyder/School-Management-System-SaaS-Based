@@ -6,7 +6,21 @@ export default function SchoolMenu(){
   const { openSubMenus, toggleSubMenu } = useSubMenu();
   return(
     <>
+      <li className="menu-item active open">
+        <NavLink
+          href={route("dashboard.school")}
+          active={route().current("dashboard.school")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Dashboard
+        </NavLink>
 
+
+      </li>
+      <li className="menu-header small text-uppercase">
+        <span className="menu-header-text">Management</span>
+      </li>
         <li className="menu-item">
           <a href="#" className={`menu-link menu-toggle ${openSubMenus['users'] ? 'open' : ''}`}
              onClick={() => toggleSubMenu('users')}>
@@ -22,7 +36,7 @@ export default function SchoolMenu(){
                 active={route().current("student.index")}
                 className={'menu-link text-truncate'}
               >
-                All Students
+                Admission
               </NavLink>
             </li>
           </ul>

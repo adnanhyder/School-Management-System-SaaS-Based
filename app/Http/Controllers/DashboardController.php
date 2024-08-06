@@ -61,25 +61,29 @@ class DashboardController extends Controller
         );
     }
 
-    public function adminSchool()
+    public function admin()
+    {
+
+        return inertia('DashboardAdmin',
+            [
+            ]
+        );
+    }
+
+    public function School()
     {
         $dynamicParam = [
             'name' => 'school'
         ];
         $user = Auth::user();
-        $isadmin = $user->isAdmin();
+
         $defaultSchool = $user->getDefaultSchool();
-        if ($isadmin) {
-            $defaultSchool = '';
-        }
 
-
-        return inertia('DashboardAdmin',
+        return inertia('DashboardSchool',
             [
                 'dynamicParam' => $dynamicParam,
                 'item' => $defaultSchool,
                 'success' => session('success'),
-                'schools' => School::all(),
 
             ]
         );

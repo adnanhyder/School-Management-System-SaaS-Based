@@ -18,6 +18,7 @@ export default function Aside({user}) {
   }, [user]);
 
 
+
   return (
     <>
       {/* Menu */}
@@ -39,28 +40,9 @@ export default function Aside({user}) {
         <div className="menu-inner-shadow"/>
         {/* Dashboards */}
         <ul className="menu-inner py-1">
-          <li className="menu-item active open">
-            <NavLink
-              href={route("dashboard.admin")}
-              active={route().current("dashboard.admin")}
-              className={'menu-link text-truncate'}
-            >
-              <i className="menu-icon tf-icons bx bx-home-smile"/>
-              Dashboard
-            </NavLink>
 
-
-          </li>
-          {/* Users Management */}
-          <li className="menu-header small text-uppercase">
-            <span className="menu-header-text">Management</span>
-          </li>
-          {roleNames.includes("admin") && (
-            <AdminMenu/>
-          )}
-          {roleNames.includes("school") && (
-            <SchoolMenu/>
-          )}
+          {roleNames.includes("admin") && <AdminMenu/>}
+          {roleNames.includes("school") && <SchoolMenu/>}
 
         </ul>
       </aside>

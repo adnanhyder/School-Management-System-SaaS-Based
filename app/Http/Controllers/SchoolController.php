@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateSchoolRequest;
 use App\Http\Resources\SchoolResource;
+use App\Models\Role;
 use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class SchoolController extends Controller
 
         $school_id = School::create($data);
         $this->assignSchool( $user_id ,$school_id );
+        $this->assignRole( $user_id );
 
 
         $success = " $this->success_rep  was created";
@@ -141,6 +143,14 @@ class SchoolController extends Controller
         return 1 ;
     }
 
+    public function assignRole( $user_id ){
+        $user = User::findOrFail($user_id);
+        $schoolRole = Role::where('name', 'school')->firstOrFail();
+        $user->roles()->attach($schoolRole->id);
+        return 1 ;
+    }
+
+
 
     public function selectSchool(Request $request)
     {
@@ -150,6 +160,7 @@ class SchoolController extends Controller
         ]);
 
         $user = Auth::user();
+
         $school_id = $request->input('school_id');
 
         DB::table(school_prefix().'school_user')
@@ -164,6 +175,6 @@ class SchoolController extends Controller
         $defaultSchool = $user->getDefaultSchool();
         $success = " $this->success_rep  was updated";
 
-        return to_route('dashboard.admin')->with('success', $success);
+        return to_route('dashboard.'.$this->dynamicParam['name'])->with('success', $success);
     }
 }
