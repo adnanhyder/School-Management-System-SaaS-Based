@@ -1,8 +1,7 @@
 import NavLink from "@/Components/NavLink";
 import React from "react";
 
-import useSubMenu from "@/functions";
-import SchoolMenu from "@/Layouts/Menu/SchoolMenu";
+import {useSubMenu} from "@/functions";
 
 export default function AdminMenu() {
   const {openSubMenus, toggleSubMenu} = useSubMenu();

@@ -1,7 +1,7 @@
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
-
+import {getOptions} from "@/functions";
 export default function Create({ auth, dynamicParam }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
@@ -24,7 +24,6 @@ export default function Create({ auth, dynamicParam }) {
     previous_school: "",
     previous_grade: "",
     sports: "",
-    profile_picture: "",
     status: "",
     notes: "",
     image: "",
@@ -51,13 +50,14 @@ export default function Create({ auth, dynamicParam }) {
         return "textarea";
       case "image":
         return "file";
+      case "status":
+      case "gender":
+        return "select";
       default:
         return "text";
-
     }
-
-
   };
+
 
   return (
     <AdminLayout user={auth.user}>
@@ -76,7 +76,23 @@ export default function Create({ auth, dynamicParam }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 />
-              ) : getInputType(field) === 'file' ? (
+              ): getInputType(field) === 'file' ? (
+                  <>
+                    <input
+                        id={field}
+                        type="file"
+                        name={field}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.files[0])}
+                    />
+
+                    <ul className="instruciton">
+                      <li>The image dimensions should not exceed 500x500 pixels.
+                        The image size must not exceed 300 KB.
+                        The image must be a file of type: jpg, jpeg, png.</li>
+                    </ul>
+                  </>
+              )  : getInputType(field) === 'file' ? (
                   <>
                     <input
                         id={field}
@@ -92,6 +108,20 @@ export default function Create({ auth, dynamicParam }) {
                       The image must be a file of type: jpg, jpeg, png.</li>
                     </ul>
                   </>
+              ) : getInputType(field) === 'select' ? (
+                  <select
+                      id={field}
+                      name={field}
+                      value={data[field]}
+                      className="mt-1 block w-full"
+                      onChange={(e) => setData(field, e.target.value)}
+                  >
+                    {getOptions(field).map((option, optionIndex) => (
+                        <option key={optionIndex} value={option}>
+                          {option}
+                        </option>
+                    ))}
+                  </select>
               ) : (
                 <TextInput
                   id={field}

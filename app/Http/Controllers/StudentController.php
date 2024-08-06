@@ -81,6 +81,8 @@ class StudentController extends Controller
             'phone' => 'numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
         ],$this->imageError);
+
+
         $data = $request->all();
         $data['school_id'] = $this->school_id;
         $image = $data['image'] ?? null;

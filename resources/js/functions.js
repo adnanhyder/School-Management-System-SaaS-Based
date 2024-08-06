@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useSubMenu = () => {
+export const useSubMenu = () => {
   const [openSubMenus, setOpenSubMenus] = useState({});
 
   const toggleSubMenu = (index) => {
@@ -16,7 +16,14 @@ const useSubMenu = () => {
   };
 };
 
-export default useSubMenu;
-
-
+export const getOptions = (field) => {
+  switch (field) {
+    case "status":
+      return ["Active", "Block"];
+    case "gender":
+      return ["Male", "Female", "Other"];
+    default:
+      return [];
+  }
+};
 
