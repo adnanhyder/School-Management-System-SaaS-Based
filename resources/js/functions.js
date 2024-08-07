@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 
 export const useSubMenu = () => {
   const [openSubMenus, setOpenSubMenus] = useState({});
@@ -27,3 +27,9 @@ export const getOptions = (field) => {
   }
 };
 
+export const isActive = (routeParam) => {
+  const currentRoute = route().current();
+  const isTrue = routeParam.includes(currentRoute);
+  console.log(isTrue)
+  return isTrue;
+}
