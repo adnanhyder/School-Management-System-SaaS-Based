@@ -12,6 +12,12 @@ export default function SchoolMenu() {
       'student.index',
       'student.create',
       'student.edit'
+    ],
+    class: [
+      'class',
+      'class.index',
+      'class.create',
+      'class.edit'
     ]
   }
   return (
@@ -31,13 +37,14 @@ export default function SchoolMenu() {
       <li className="menu-header small text-uppercase">
         <span className="menu-header-text">Management</span>
       </li>
+
       <li className="menu-item">
         <a href="#"
-           className={`menu-link menu-toggle ${isActive(menuLink.student) ? 'open' : ''} ${openSubMenus['student.index'] ? 'open' : ''}`}
+           className={`menu-link menu-toggle ${isActive(menuLink.student , menuLink.class) ? 'open' : ''} ${openSubMenus['student.index'] ? 'open' : ''}`}
            onClick={() => toggleSubMenu('student.index')}>
           <i className="menu-icon tf-icons bx bx-user"/>
           <div className="text-truncate" data-i18n="Layouts">
-            Students
+            Academics
           </div>
         </a>
 
@@ -49,7 +56,25 @@ export default function SchoolMenu() {
               active={route().current("student.index")}
               className={'menu-link text-truncate'}
             >
-              Admission
+              Students
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink
+              href={route("teacher.index")}
+              active={route().current("teacher.index")}
+              className={'menu-link text-truncate'}
+            >
+              Teachers
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink
+              href={route("class.index")}
+              active={route().current("class.index")}
+              className={'menu-link text-truncate'}
+            >
+              Class
             </NavLink>
           </li>
           <li className="menu-item">
@@ -58,11 +83,12 @@ export default function SchoolMenu() {
               active={route().current("student.create")}
               className={'menu-link text-truncate'}
             >
-              Create Student
+              Assign Class
             </NavLink>
           </li>
         </ul>
       </li>
+
 
     </>
   );

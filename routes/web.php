@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,8 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'school'])
         ->name('dashboard.school');
     Route::resource('student', StudentController::class);
+    Route::resource('class', ClassesController::class);
+    Route::resource('teacher', TeacherController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });
