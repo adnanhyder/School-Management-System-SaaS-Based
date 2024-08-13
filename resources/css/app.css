@@ -116,3 +116,6 @@ textarea , select {
 .white {
     color: #fff;
 }
+.active.menu-link.text-truncate {
+    color: #0b25ff;
+}
