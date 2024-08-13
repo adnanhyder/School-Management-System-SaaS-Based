@@ -89,11 +89,11 @@ class ClassesController extends Controller
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function edit(Classes $item)
+    public function edit(Classes $class)
     {
 
-        $get_item = new ClassesResource($item);
-        dd($get_item);
+
+        $get_item = new ClassesResource($class);
         $data = $get_item->toArray(request());
 
         $route = $this->success_rep . '/Edit';
@@ -105,29 +105,28 @@ class ClassesController extends Controller
         );
     }
 
-    public function update(Request $request, Classes $item)
+    public function update(Request $request, Classes $class)
     {
         $request->validate([
             'name' => 'required',
         ], $this->imageError);
         $data = $request->all();
-        $item->update($data);
+        $class->update($data);
         $success = " $this->success_rep  was updated";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function destroy(Classes $classes)
+    public function destroy(Classes $class)
     {
 
-        $classes->delete();
+        $class->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function show(Classes $item)
+    public function show(Classes $class)
     {
-        $data = new ClassesResource($item);
-        dd($data);
+        $data = new ClassesResource($class);
         $route = $this->success_rep . '/Show';
         return inertia($route, [
             'item' => $data,

@@ -34,8 +34,45 @@ export default function SchoolMenu() {
 
 
       </li>
-      <li className="menu-header small text-uppercase">
-        <span className="menu-header-text">Management</span>
+      <li className="menu-item">
+        <NavLink
+          href={route("student.index")}
+          active={route().current("student.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Students
+        </NavLink>
+      </li>
+      <li className="menu-item">
+        <NavLink
+          href={route("teacher.index")}
+          active={route().current("teacher.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Teachers
+        </NavLink>
+      </li>
+      <li className="menu-item">
+        <NavLink
+          href={route("class.index")}
+          active={route().current("class.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Class
+        </NavLink>
+      </li>
+      <li className="menu-item">
+        <NavLink
+          href={route("student.create")}
+          active={route().current("student.create")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Assign Class
+        </NavLink>
       </li>
 
       <li className="menu-item">
@@ -52,38 +89,12 @@ export default function SchoolMenu() {
           className={`menu-sub ${isActive(menuLink.student) ? 'open' : ''} ${openSubMenus['student.index'] ? 'open' : ''}`}>
           <li className="menu-item">
             <NavLink
-              href={route("student.index")}
-              active={route().current("student.index")}
-              className={'menu-link text-truncate'}
-            >
-              Students
-            </NavLink>
-          </li>
-          <li className="menu-item">
-            <NavLink
-              href={route("teacher.index")}
-              active={route().current("teacher.index")}
-              className={'menu-link text-truncate'}
-            >
-              Teachers
-            </NavLink>
-          </li>
-          <li className="menu-item">
-            <NavLink
-              href={route("class.index")}
-              active={route().current("class.index")}
-              className={'menu-link text-truncate'}
-            >
-              Class
-            </NavLink>
-          </li>
-          <li className="menu-item">
-            <NavLink
               href={route("student.create")}
               active={route().current("student.create")}
               className={'menu-link text-truncate'}
             >
-              Assign Class
+              <i className="menu-icon tf-icons bx bx-home-smile"/>
+              Dummy
             </NavLink>
           </li>
         </ul>

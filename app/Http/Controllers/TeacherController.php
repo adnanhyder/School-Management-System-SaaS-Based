@@ -6,6 +6,8 @@ use App\Http\Resources\TeacherResource;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TeacherController extends Controller
 {
@@ -41,9 +43,10 @@ class TeacherController extends Controller
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
-        if (request("section")) {
-            $query->where("section", "like", "%" . request("section") . "%");
+        if (request("department")) {
+            $query->where("department", "like", "%" . request("department") . "%");
         }
+
 
         $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
             ->onEachSide(1);
@@ -73,14 +76,20 @@ class TeacherController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
 
         ], $this->imageError);
 
 
         $data = $request->all();
+
         $data['school_id'] = $this->school_id;
+        $image = $data['image'] ?? null;
+        if ($image) {
+            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
 
-
+            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
+        }
         Teacher::create($data);
 
         $success = " $this->success_rep  was created";
@@ -88,12 +97,11 @@ class TeacherController extends Controller
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function edit(Teacher $item)
+    public function edit(Teacher $teacher)
     {
 
-        $get_item = new TeacherResource($item);
+        $get_item = new TeacherResource($teacher);
         $data = $get_item->toArray(request());
-
         $route = $this->success_rep . '/Edit';
 
         return inertia($route, [
@@ -103,29 +111,41 @@ class TeacherController extends Controller
         );
     }
 
-    public function update(Request $request, Teacher $item)
+    public function update(Request $request, Teacher $teacher)
     {
         $request->validate([
             'name' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
+
         ], $this->imageError);
         $data = $request->all();
-        $item->update($data);
+
+        $image = $data['image'] ?? null;
+        if ($image) {
+            if ($teacher->image) {
+                Storage::disk('public')->delete($teacher->image);
+            }
+            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
+            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
+        }
+        $teacher->update($data);
         $success = " $this->success_rep  was updated";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function destroy(Teacher $item)
+    public function destroy(Teacher $teacher)
     {
-
-        $item->delete();
+        if ($teacher->profile_picture) {
+            Storage::disk('public')->delete($teacher->profile_picture);
+        }
+        $teacher->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function show(Teacher $item)
+    public function show(Teacher $teacher)
     {
-        $data = new TeacherResource($item);
-        dd($data);
+        $data = new TeacherResource($teacher);
         $route = $this->success_rep . '/Show';
         return inertia($route, [
             'item' => $data,

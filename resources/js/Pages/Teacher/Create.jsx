@@ -5,8 +5,26 @@ import {getOptions} from "@/functions";
 export default function Create({ auth, dynamicParam }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
-    section: "",
+    email: "",
+    phone: "",
+    gender: "",
+    dob: "", // Date of Birth
+    city: "",
+    address: "",
 
+    employee_id: "", // Unique ID for the teacher
+    department: "", // Department or subject area
+    designation: "", // Job title (e.g., "Professor", "Lecturer")
+    qualification: "", // Educational qualifications (e.g., "M.Sc., Ph.D.")
+    experience: "", // Years of teaching experience
+    subjects_taught: "", // List of subjects the teacher teaches
+    joining_date: "", // Date of joining the institution
+
+    emergency_name: "",
+    emergency_phone: "",
+    medical_conditions: "",
+    notes: "", // Any additional notes or comments
+    image: "",
   });
 
   const handleSubmit = (e) => {
@@ -20,10 +38,11 @@ export default function Create({ auth, dynamicParam }) {
         return "email";
       case "phone":
       case "parent_phone":
-      case "emergency_contact_phone":
+      case "emergency_phone":
       case "roll_number":
         return "number";
       case "dob":
+      case "joining_date":
       case "admission_date":
         return "date";
       case "notes":
@@ -57,51 +76,51 @@ export default function Create({ auth, dynamicParam }) {
                   onChange={(e) => setData(field, e.target.value)}
                 />
               ): getInputType(field) === 'file' ? (
-                  <>
-                    <input
-                        id={field}
-                        type="file"
-                        name={field}
-                        className="mt-1 block w-full"
-                        onChange={(e) => setData(field, e.target.files[0])}
-                    />
+                <>
+                  <input
+                    id={field}
+                    type="file"
+                    name={field}
+                    className="mt-1 block w-full"
+                    onChange={(e) => setData(field, e.target.files[0])}
+                  />
 
-                    <ul className="instruciton">
-                      <li>The image dimensions should not exceed 500x500 pixels.
-                        The image size must not exceed 300 KB.
-                        The image must be a file of type: jpg, jpeg, png.</li>
-                    </ul>
-                  </>
-              )  : getInputType(field) === 'file' ? (
-                  <>
-                    <input
-                        id={field}
-                        type="file"
-                        name={field}
-                        className="mt-1 block w-full"
-                        onChange={(e) => setData(field, e.target.files[0])}
-                    />
-
-                    <ul className="instruciton">
-                      <li>The image dimensions should not exceed 500x500 pixels.
-                     The image size must not exceed 300 KB.
+                  <ul className="instruciton">
+                    <li>The image dimensions should not exceed 500x500 pixels.
+                      The image size must not exceed 300 KB.
                       The image must be a file of type: jpg, jpeg, png.</li>
-                    </ul>
-                  </>
+                  </ul>
+                </>
+              )  : getInputType(field) === 'file' ? (
+                <>
+                  <input
+                    id={field}
+                    type="file"
+                    name={field}
+                    className="mt-1 block w-full"
+                    onChange={(e) => setData(field, e.target.files[0])}
+                  />
+
+                  <ul className="instruciton">
+                    <li>The image dimensions should not exceed 500x500 pixels.
+                      The image size must not exceed 300 KB.
+                      The image must be a file of type: jpg, jpeg, png.</li>
+                  </ul>
+                </>
               ) : getInputType(field) === 'select' ? (
-                  <select
-                      id={field}
-                      name={field}
-                      value={data[field]}
-                      className="mt-1 block w-full"
-                      onChange={(e) => setData(field, e.target.value)}
-                  >
-                    {getOptions(field).map((option, optionIndex) => (
-                        <option key={optionIndex} value={option}>
-                          {option}
-                        </option>
-                    ))}
-                  </select>
+                <select
+                  id={field}
+                  name={field}
+                  value={data[field]}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData(field, e.target.value)}
+                >
+                  {getOptions(field).map((option, optionIndex) => (
+                    <option key={optionIndex} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               ) : (
                 <TextInput
                   id={field}

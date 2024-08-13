@@ -80,15 +80,8 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                     >
                       <span className="white">Name</span>
                     </TableHeading>
-                    <TableHeading
-                      name="section"
-                      sort_field={queryParams.sort_field}
-                      sort_direction={queryParams.sort_direction}
-                      sortChanged={sortChanged}
-                    >
-                      <span className="white">Section</span>
-                    </TableHeading>
-
+                    <th className="px-3 py-3 ">Department</th>
+                    <th className="px-3 py-3 ">Designation</th>
                     <th className="px-3 py-3 ">Actions</th>
                   </tr>
                   </thead>
@@ -110,15 +103,15 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                     <th className="px-3 py-3">
                       <TextInput
                         className="w-full"
-                        defaultValue={queryParams.section}
-                        placeholder="Section"
+                        defaultValue={queryParams.department}
+                        placeholder="Department"
                         onBlur={(e) =>
-                          searchFieldChanged("section", e.target.value)
+                          searchFieldChanged("department", e.target.value)
                         }
-                        onKeyPress={(e) => onKeyPress("section", e)}
+                        onKeyPress={(e) => onKeyPress("department", e)}
                       />
                     </th>
-
+                    <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
                   </tr>
                   </thead>
@@ -140,7 +133,7 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
 
 
                       </th>
-                      <td className="px-3 py-3">{singleItem.section}</td>
+                      <td className="px-3 py-3">{singleItem.department}</td>
                       <td className="px-3 py-3">
                         <Link
 

@@ -8,7 +8,26 @@ import {getOptions} from "@/functions";
 export default function Edit({ auth, item, dynamicParam }) {
   const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
-    section: item.section || "",
+    email: item.email || "",
+    phone: item.phone || "",
+    gender: item.gender || "",
+    dob: item.dob || "", // Date of Birth
+    city: item.city || "",
+    address: item.address || "",
+
+    employee_id: item.employee_id || "", // Unique ID for the teacher
+    department: item.department || "", // Department or subject area
+    designation: item.designation || "", // Job title (e.g., "Professor", "Lecturer")
+    qualification: item.qualification || "", // Educational qualifications (e.g., "M.Sc., Ph.D.")
+    experience: item.experience || "", // Years of teaching experience
+    subjects_taught: item.subjects_taught || "", // List of subjects the teacher teaches
+    joining_date: item.joining_date || "", // Date of joining the institution
+
+    emergency_name: item.emergency_name || "",
+    emergency_phone: item.emergency_phone || "",
+    medical_conditions: item.medical_conditions || "",
+    notes: item.notes || "", // Any additional notes or comments
+    image: "",
     _method: "PUT",
 
   });
@@ -50,9 +69,9 @@ export default function Edit({ auth, item, dynamicParam }) {
       <h2 className="text-black text-2xl font-semibold">Edit {dynamicParam.name}</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
 
-        {item.profile_picture && (
+        {item.image && (
           <div className="mb-4">
-            <img  src={`/storage/${item.profile_picture}`} className="w-64" />
+            <img  src={`/storage/${item.image}`} className="w-64" />
           </div>
         )}
         <form onSubmit={handleSubmit}>
@@ -62,12 +81,12 @@ export default function Edit({ auth, item, dynamicParam }) {
             <div className="mt-4" key={index}>
               <label className="block text-gray-700">
                 {getInputType(field) === "method_put" ? (
-                    <></>
-                  ) : (
-                    <>
-                      {field.replace("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}:
-                    </>
-                      )}
+                  <></>
+                ) : (
+                  <>
+                    {field.replace("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}:
+                  </>
+                )}
               </label>
               {getInputType(field) === "textarea" ? (
                 <textarea
@@ -81,13 +100,13 @@ export default function Edit({ auth, item, dynamicParam }) {
                 <></>
               ) : getInputType(field) === 'file' ? (
                 <>
-                <input
-                  id={field}
-                  type="file"
-                  name={field}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData(field, e.target.files[0])}
-                />
+                  <input
+                    id={field}
+                    type="file"
+                    name={field}
+                    className="mt-1 block w-full"
+                    onChange={(e) => setData(field, e.target.files[0])}
+                  />
                   <ul className="instruciton">
                     <li>The image dimensions should not exceed 500x500 pixels.
                       The image size must not exceed 300 KB.

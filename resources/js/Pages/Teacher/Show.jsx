@@ -2,7 +2,8 @@ import { Head, Link } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Show({ auth, item, dynamicParam }) {
-  const keysToUnset = ['created_at', 'id' , 'updated_at' , 'school_id'];
+  const keysToUnset = ['created_at', 'id' , 'updated_at' , 'school_id' , ];
+
   keysToUnset.forEach(key => {
     delete item.data[key];
   });
@@ -16,9 +17,9 @@ export default function Show({ auth, item, dynamicParam }) {
           <div className="">
             <h2 className="text-2xl font-semibold  mb-6">Show {dynamicParam.name}</h2>
 
-            {item.profile_picture && (
+            {item.image && (
               <div className="mb-4">
-                <img  src={`/storage/${item.profile_picture}`} className="w-64" />
+                <img  src={`/storage/${item.image}`} className="w-64" />
               </div>
             )}
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
