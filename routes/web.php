@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
@@ -43,6 +45,8 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     Route::resource('student', StudentController::class);
     Route::resource('class', ClassesController::class);
     Route::resource('teacher', TeacherController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('item', ItemController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });

@@ -77,24 +77,34 @@ export default function SchoolMenu() {
 
       <li className="menu-item">
         <a href="#"
-           className={`menu-link menu-toggle ${isActive(menuLink.student , menuLink.class) ? 'open' : ''} ${openSubMenus['student.index'] ? 'open' : ''}`}
-           onClick={() => toggleSubMenu('student.index')}>
+           className={`menu-link menu-toggle ${isActive('category') ? 'open' : ''} ${openSubMenus['category.index'] ? 'open' : ''}`}
+           onClick={() => toggleSubMenu('category.index')}>
           <i className="menu-icon tf-icons bx bx-user"/>
           <div className="text-truncate" data-i18n="Layouts">
-            Academics
+            Inventory
           </div>
         </a>
 
         <ul
-          className={`menu-sub ${isActive(menuLink.student) ? 'open' : ''} ${openSubMenus['student.index'] ? 'open' : ''}`}>
+          className={`menu-sub ${isActive('category') ? 'open' : ''} ${openSubMenus['category.index'] ? 'open' : ''}`}>
           <li className="menu-item">
             <NavLink
-              href={route("student.create")}
-              active={route().current("student.create")}
+              href={route("category.index")}
+              active={route().current("category.index")}
               className={'menu-link text-truncate'}
             >
               <i className="menu-icon tf-icons bx bx-home-smile"/>
-              Dummy
+              Category
+            </NavLink>
+          </li>
+          <li className="menu-item">
+            <NavLink
+              href={route("item.index")}
+              active={route().current("item.index")}
+              className={'menu-link text-truncate'}
+            >
+              <i className="menu-icon tf-icons bx bx-home-smile"/>
+              Items
             </NavLink>
           </li>
         </ul>

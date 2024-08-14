@@ -29,7 +29,5 @@ export const getOptions = (field) => {
 
 export const isActive = (routeParam) => {
   const currentRoute = route().current();
-  console.log(currentRoute);
-  console.log(routeParam);
   return  routeParam.includes(currentRoute);
 }
