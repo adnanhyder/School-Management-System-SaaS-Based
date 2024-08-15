@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->string('description')->nullable();
             $table->string('location')->nullable();
+            $table->integer('quantity')->default(1);
+            $table->text('serial_number');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('school_id')->constrained(school_prefix().'schools')->onDelete('cascade');
             $table->timestamps();

@@ -9,7 +9,9 @@ export default function Edit({ auth, item, dynamicParam }) {
   const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
     description: item.description || "",
-    image: "",
+    quantity: item.quantity || "",
+    serial_number: item.serial_number || "",
+    location: item.location || "",
     _method: "PUT",
 
   });
@@ -25,8 +27,9 @@ export default function Edit({ auth, item, dynamicParam }) {
         return "email";
       case "phone":
       case "parent_phone":
-      case "emergency_contact_phone":
+      case "emergency_phone":
       case "roll_number":
+      case "quantity":
         return "number";
       case "dob":
       case "admission_date":

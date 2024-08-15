@@ -80,6 +80,8 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                     >
                       <span className="white">Name</span>
                     </TableHeading>
+                    <th className="px-3 py-3 ">Quantity</th>
+                    <th className="px-3 py-3 ">Serial Number</th>
                     <th className="px-3 py-3 ">Description</th>
                     <th className="px-3 py-3 ">Actions</th>
                   </tr>
@@ -102,6 +104,8 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
 
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
                   </tr>
                   </thead>
 
@@ -122,6 +126,8 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
 
 
                       </th>
+                      <td className="px-3 py-3">{singleItem.quantity}</td>
+                      <td className="px-3 py-3">{singleItem.serial_number}</td>
                       <td className="px-3 py-3">{singleItem.description}</td>
                       <td className="px-3 py-3">
                         <Link

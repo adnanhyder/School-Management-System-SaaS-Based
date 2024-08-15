@@ -6,6 +6,8 @@ export default function Create({ auth, dynamicParam ,categories }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     description: "",
+    quantity: "",
+    serial_number: "",
     location: "",
     category: "",
   });
@@ -23,6 +25,7 @@ console.log(categories);
       case "parent_phone":
       case "emergency_phone":
       case "roll_number":
+      case "quantity":
         return "number";
       case "dob":
       case "joining_date":
