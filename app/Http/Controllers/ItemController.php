@@ -79,6 +79,7 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required',
             'category' => 'required',
+            'serial_number' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
 
         ], $this->imageError);
@@ -119,6 +120,8 @@ class ItemController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'serial_number' => 'required',
+            'category' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
 
         ], $this->imageError);
@@ -139,8 +142,8 @@ class ItemController extends Controller
 
     public function destroy(Item $item)
     {
-        if ($item->profile_picture) {
-            Storage::disk('public')->delete($item->profile_picture);
+        if ($item->image) {
+            Storage::disk('public')->delete($item->image);
         }
         $item->delete();
         $success = " $this->success_rep  was Deleted";

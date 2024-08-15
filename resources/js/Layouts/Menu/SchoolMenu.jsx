@@ -107,6 +107,16 @@ export default function SchoolMenu() {
               Items
             </NavLink>
           </li>
+          <li className="menu-item">
+            <NavLink
+              href={route("gatepass.index")}
+              active={route().current("gatepass.index")}
+              className={'menu-link text-truncate'}
+            >
+              <i className="menu-icon tf-icons bx bx-home-smile"/>
+              Gatepass
+            </NavLink>
+          </li>
         </ul>
       </li>
 

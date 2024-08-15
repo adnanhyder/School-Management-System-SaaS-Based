@@ -119,3 +119,10 @@ textarea , select {
 .active.menu-link.text-truncate {
     color: #0b25ff;
 }
+tbody a {
+    text-transform: capitalize;
+}
+
+main h2 {
+    text-transform: capitalize;
+}

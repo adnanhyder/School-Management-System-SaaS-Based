@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryResource;
-use App\Models\Category;
+use App\Http\Resources\GatepassResource;
+use App\Models\Gatepass;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class GatepassController extends Controller
 {
     protected $dynamicParam = [
-        'name' => 'category'
+        'name' => 'gatepass'
     ];
     protected $success_rep;
     protected $index_route;
@@ -35,7 +36,8 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $query = Category::query();
+
+        $query = Gatepass::query();
 
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -50,7 +52,7 @@ class CategoryController extends Controller
         $route = $this->success_rep . '/Index';
         return inertia($route,
             [
-                'receivedItem' => CategoryResource::collection($recivedItem),
+                'receivedItem' => GatepassResource::collection($recivedItem),
                 'dynamicParam' => $this->dynamicParam,
                 'queryParams' => request()->query() ?: null,
                 'success' => session('success'),
@@ -62,9 +64,12 @@ class CategoryController extends Controller
     public function create()
     {
         $route = $this->success_rep . '/Create';
+        $items = Item::where('school_id', $this->school_id)->get(['id', 'name']);
         return inertia($route,
             [
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'items' => $items,
+
             ]
         );
     }
@@ -72,9 +77,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
-
+            'description' => 'required',
+            'item_id' => 'required',
+            'quantity' => 'required',
         ], $this->imageError);
 
 
@@ -87,17 +92,17 @@ class CategoryController extends Controller
 
             $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
         }
-        Category::create($data);
+        Gatepass::create($data);
 
         $success = " $this->success_rep  was created";
 
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function edit(Category $category)
+    public function edit(Gatepass $gatepass)
     {
 
-        $get_item = new CategoryResource($category);
+        $get_item = new GatepassResource($gatepass);
         $data = $get_item->toArray(request());
         $route = $this->success_rep . '/Edit';
 
@@ -108,41 +113,42 @@ class CategoryController extends Controller
         );
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Gatepass $gatepass)
     {
         $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
+            'description' => 'required',
+            'item_id' => 'required',
+            'quantity' => 'required',
 
         ], $this->imageError);
         $data = $request->all();
 
         $image = $data['image'] ?? null;
         if ($image) {
-            if ($category->image) {
-                Storage::disk('public')->delete($category->image);
+            if ($gatepass->image) {
+                Storage::disk('public')->delete($gatepass->image);
             }
             $filename = Str::random() . '.' . $image->getClientOriginalExtension();
             $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
         }
-        $category->update($data);
+        $gatepass->update($data);
         $success = " $this->success_rep  was updated";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function destroy(Category $category)
+    public function destroy(Gatepass $gatepass)
     {
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
+        if ($gatepass->image) {
+            Storage::disk('public')->delete($gatepass->image);
         }
-        $category->delete();
+        $gatepass->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function show(Category $category)
+    public function show(Gatepass $gatepass)
     {
-        $data = new CategoryResource($category);
+        $data = new GatepassResource($gatepass);
         $route = $this->success_rep . '/Show';
         return inertia($route, [
             'item' => $data,

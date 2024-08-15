@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GatepassController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -47,6 +48,7 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     Route::resource('teacher', TeacherController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('item', ItemController::class);
+    Route::resource('gatepass', GatepassController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });

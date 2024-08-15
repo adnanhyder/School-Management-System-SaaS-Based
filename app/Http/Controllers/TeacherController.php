@@ -135,8 +135,8 @@ class TeacherController extends Controller
 
     public function destroy(Teacher $teacher)
     {
-        if ($teacher->profile_picture) {
-            Storage::disk('public')->delete($teacher->profile_picture);
+        if ($teacher->image) {
+            Storage::disk('public')->delete($teacher->image);
         }
         $teacher->delete();
         $success = " $this->success_rep  was Deleted";
