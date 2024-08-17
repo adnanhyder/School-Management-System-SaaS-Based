@@ -159,4 +159,5 @@ class ItemController extends Controller
             'dynamicParam' => $this->dynamicParam
         ]);
     }
+
 }

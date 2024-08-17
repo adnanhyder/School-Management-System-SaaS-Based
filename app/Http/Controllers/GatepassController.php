@@ -68,7 +68,6 @@ class GatepassController extends Controller
         return inertia($route,
             [
                 'dynamicParam' => $this->dynamicParam,
-                'items' => $items,
 
             ]
         );
@@ -79,6 +78,7 @@ class GatepassController extends Controller
         $request->validate([
             'description' => 'required',
             'item_id' => 'required',
+            'serial_number' => 'required',
             'quantity' => 'required',
         ], $this->imageError);
 
