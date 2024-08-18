@@ -2,7 +2,7 @@ import { Head, Link } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
 
 export default function Show({ auth, item, dynamicParam }) {
-  const keysToUnset = ['created_at', 'id' , 'updated_at' , 'school_id' , 'item_id' ];
+  const keysToUnset = [ 'id' , 'updated_at' , 'school_id' , 'item_id' ];
 
   keysToUnset.forEach(key => {
     delete item.data[key];

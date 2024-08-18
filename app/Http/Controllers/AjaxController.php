@@ -16,4 +16,16 @@ class AjaxController extends Controller
 
         return response()->json($items);
     }
+    public function getItemsById($id)
+    {
+
+        $item = Item::find($id);
+
+        // Check if the item exists
+        if ($item) {
+            return response()->json(['name' => $item->name], 200);
+        } else {
+            return response()->json(['error' => 'Item not found'], 404);
+        }
+    }
 }

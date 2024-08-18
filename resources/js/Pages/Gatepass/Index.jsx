@@ -3,8 +3,9 @@ import TextInput from "@/Components/TextInput";
 import AdminLayout from "@/Layouts/AdminLayout";
 import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
+import React, { useEffect, useState } from 'react';
 
-export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success}) {
+export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success , item}) {
   queryParams = queryParams || {};
 
   const searchFieldChanged = (name, value) => {
@@ -45,6 +46,30 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
     router.delete(route(`${dynamicParam.name}.destroy`, item.id));
   };
 
+
+  const ItemRow = ({ itemId }) => {
+    const [itemName, setItemName] = useState('');
+
+    useEffect(() => {
+      // Replace with your actual API call
+      const fetchItemName = async () => {
+        try {
+          const response = await fetch(`/api/items-by-id/${itemId}`);
+          const data = await response.json();
+          setItemName(data.name);
+        } catch (error) {
+          console.error('Error fetching item:', error);
+        }
+      };
+
+      fetchItemName();
+    }, [itemId]);
+
+    return (
+      <td className="px-3 py-3">{itemName || 'Loading...'}</td>
+    );
+  };
+
   return (
     <AdminLayout
       user={auth.user}
@@ -72,40 +97,11 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                   <thead>
                   <tr className="text-nowrap">
                     <th className="px-3 py-3 white">Id</th>
-                    <TableHeading
-                      name="name"
-                      sort_field={queryParams.sort_field}
-                      sort_direction={queryParams.sort_direction}
-                      sortChanged={sortChanged}
-                    >
-                      <span className="white">Name</span>
-                    </TableHeading>
-                    <th className="px-3 py-3 ">Quantity</th>
-                    <th className="px-3 py-3 ">Serial Number</th>
                     <th className="px-3 py-3 ">Description</th>
+                    <td className="px-3 py-3 white">Item</td>
+                    <th className="px-3 py-3 ">Quantity</th>
+                    <th className="px-3 py-3 ">Date</th>
                     <th className="px-3 py-3 ">Actions</th>
-                  </tr>
-                  </thead>
-
-                  <thead>
-                  <tr>
-                    <th className="px-3 py-3"></th>
-                    <th className="px-3 py-3">
-                      <TextInput
-                        className="w-full"
-                        defaultValue={queryParams.name}
-                        placeholder="Name"
-                        onBlur={(e) =>
-                          searchFieldChanged("name", e.target.value)
-                        }
-                        onKeyPress={(e) => onKeyPress("name", e)}
-                      />
-                    </th>
-
-                    <th className="px-3 py-3"></th>
-                    <th className="px-3 py-3"></th>
-                    <th className="px-3 py-3"></th>
-                    <th className="px-3 py-3"></th>
                   </tr>
                   </thead>
 
@@ -116,27 +112,22 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                       key={singleItem.id}
                     >
                       <td className="px-3 py-3">{singleItem.id}</td>
-                      <th className="px-3 py-3 ">
+                      <td className="px-3 py-3">
                         <Link
                           href={route(`${dynamicParam.name}.show`, singleItem.id)}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                         >
-                          {singleItem.name}
+                          {singleItem.description}
                         </Link>
 
-
-                      </th>
-                      <td className="px-3 py-3">{singleItem.quantity}</td>
-                      <td className="px-3 py-3">{singleItem.serial_number}</td>
-                      <td className="px-3 py-3">{singleItem.description}</td>
+                       </td>
                       <td className="px-3 py-3">
-                        <Link
+                        <ItemRow itemId={singleItem.item_id} />
+                      </td>
+                      <td className="px-3 py-3">{singleItem.quantity}</td>
+                      <td className="px-3 py-3">  {new Date(singleItem.created_at).toLocaleString()}</td>
 
-                          href={route(`${dynamicParam.name}.edit`, singleItem.id)}
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                        >
-                          Edit
-                        </Link>
+                      <td className="px-3 py-3">
                         <button
                           onClick={(e) => deleteItem(singleItem)}
                           className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"

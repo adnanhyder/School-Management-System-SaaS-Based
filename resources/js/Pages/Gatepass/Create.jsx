@@ -8,6 +8,8 @@ export default function Create({ auth, dynamicParam  }) {
     description: "",
     quantity: "",
   });
+
+
   const [loading, setLoading] = useState(false); // State for loader
   const [fetchedItems, setFetchedItems] = useState([]); // State for fetched items
   const [isSuggestionVisible, setSuggestionVisible] = useState(false); // State for suggestion visibility
@@ -35,10 +37,14 @@ export default function Create({ auth, dynamicParam  }) {
   };
 
   const handleItemClick = (item) => {
-    setData("item_id", item.id);
-    setData("serial_number", item.serial_number  +" "+ item.name); // Update serial number input with selected item name
+    setData({
+      ...data,
+      item_id: item.id,
+      serial_number: item.serial_number + " " + item.name
+    });
     setSuggestionVisible(false); // Hide suggestions after selecting item
   };
+
 
 
   const handleSubmit = (e) => {
@@ -68,8 +74,9 @@ export default function Create({ auth, dynamicParam  }) {
       case "status":
       case "gender":
       case "category":
-      case "item_id":
         return "select";
+      case "item_id":
+        return "button";
       default:
         return "text";
     }
@@ -172,14 +179,8 @@ export default function Create({ auth, dynamicParam  }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >
-                  <option  value="">
-                    Select Item
-                  </option>
-                  {items.map((option, optionIndex) => (
-                    <option key={optionIndex} value={option.id}>
-                      {option.name}
-                    </option>
-                  ))}
+
+
                 </select>
               ) : (
                   <>

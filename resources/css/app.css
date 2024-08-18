@@ -126,3 +126,7 @@ tbody a {
 main h2 {
     text-transform: capitalize;
 }
+
+#item_id {
+    text-align: left;
+}

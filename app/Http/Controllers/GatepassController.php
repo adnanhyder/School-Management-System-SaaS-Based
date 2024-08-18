@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
 class GatepassController extends Controller
 {
     protected $dynamicParam = [
-        'name' => 'gatepass'
+        'name' => 'gatepass',
+        'cant' => 'not allowed please delete instead of edit.'
     ];
     protected $success_rep;
     protected $index_route;
@@ -21,10 +22,12 @@ class GatepassController extends Controller
     protected $school_id;
 
     protected $imageError;
+    protected $cant_edit;
 
     public function __construct()
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
+        $this->cant_edit = ucfirst($this->dynamicParam['cant']);
         $this->index_route = $this->dynamicParam['name'] . '.index';
         $this->school_id = Auth::user()->getDefaultSchool()->id;
         $this->imageError = [
@@ -84,15 +87,23 @@ class GatepassController extends Controller
 
 
         $data = $request->all();
-
         $data['school_id'] = $this->school_id;
-        $image = $data['image'] ?? null;
-        if ($image) {
-            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
+        $item_id = $data['item_id'];
+        $qty = $data['quantity'];
+        $items = Item::where('id', $item_id)->first();
+        $total_qty = $items->quantity;
 
-            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
+        if ($qty > $total_qty) {
+            return redirect()->back()->withErrors(['quantity' => 'The quantity should not exceed the available items in stock.']);
         }
+
+        unset($data['serial_number']);
         Gatepass::create($data);
+        $new_qty = $total_qty - $qty;
+
+        // Update the item's quantity in the database
+        $items->quantity = $new_qty;
+        $items->save();
 
         $success = " $this->success_rep  was created";
 
@@ -101,46 +112,24 @@ class GatepassController extends Controller
 
     public function edit(Gatepass $gatepass)
     {
+        return to_route($this->index_route)->with('success', $this->cant_edit);
 
-        $get_item = new GatepassResource($gatepass);
-        $data = $get_item->toArray(request());
-        $route = $this->success_rep . '/Edit';
-
-        return inertia($route, [
-                'item' => $data,
-                'dynamicParam' => $this->dynamicParam
-            ]
-        );
     }
 
     public function update(Request $request, Gatepass $gatepass)
     {
-        $request->validate([
-            'description' => 'required',
-            'item_id' => 'required',
-            'quantity' => 'required',
-
-        ], $this->imageError);
-        $data = $request->all();
-
-        $image = $data['image'] ?? null;
-        if ($image) {
-            if ($gatepass->image) {
-                Storage::disk('public')->delete($gatepass->image);
-            }
-            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
-            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
-        }
-        $gatepass->update($data);
-        $success = " $this->success_rep  was updated";
-        return to_route($this->index_route)->with('success', $success);
+        return to_route($this->index_route)->with('success', $this->cant_edit);
     }
 
     public function destroy(Gatepass $gatepass)
     {
-        if ($gatepass->image) {
-            Storage::disk('public')->delete($gatepass->image);
-        }
+        $item_id = $gatepass->item_id;
+        $qty = $gatepass->quantity;
+        $items = Item::where('id', $item_id)->first();
+        $total_qty = $items->quantity;
+        $new_qty = $total_qty + $qty;
+        $items->quantity = $new_qty;
+        $items->save();
         $gatepass->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
