@@ -2,10 +2,11 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam }) {
+export default function Create({ auth, dynamicParam , classes }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     email: "",
+    class_id : "",
     phone: "",
     gender: "",
     roll_number : "",
@@ -28,7 +29,7 @@ export default function Create({ auth, dynamicParam }) {
     notes: "",
     image: "",
   });
-
+console.log(classes)
   const handleSubmit = (e) => {
     e.preventDefault();
     post(route(`${dynamicParam.name}.store`));
@@ -52,6 +53,7 @@ export default function Create({ auth, dynamicParam }) {
         return "file";
       case "status":
       case "gender":
+      case "class_id":
         return "select";
       default:
         return "text";
@@ -109,19 +111,42 @@ export default function Create({ auth, dynamicParam }) {
                     </ul>
                   </>
               ) : getInputType(field) === 'select' ? (
-                  <select
-                      id={field}
-                      name={field}
-                      value={data[field]}
-                      className="mt-1 block w-full"
-                      onChange={(e) => setData(field, e.target.value)}
-                  >
-                    {getOptions(field).map((option, optionIndex) => (
-                        <option key={optionIndex} value={option}>
-                          {option}
-                        </option>
-                    ))}
-                  </select>
+                <>
+                  {field === 'class_id' ? (
+                    <>
+                      <select
+                        id={field}
+                        name={field}
+                        value={data[field]}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.value)}
+                      >
+                        <option value="">Select Class</option>
+                        {classes.map((option, optionIndex) => (
+                          <option key={optionIndex} value={option.id}>
+                            {option.name} -- {option.section}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  ) : (
+                    <>
+                      <select
+                        id={field}
+                        name={field}
+                        value={data[field]}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.value)}
+                      >
+                        {getOptions(field).map((option, optionIndex) => (
+                          <option key={optionIndex} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                </>
               ) : (
                 <TextInput
                   id={field}

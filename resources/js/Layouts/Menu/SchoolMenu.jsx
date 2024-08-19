@@ -64,16 +64,7 @@ export default function SchoolMenu() {
           Class
         </NavLink>
       </li>
-      <li className="menu-item">
-        <NavLink
-          href={route("student.create")}
-          active={route().current("student.create")}
-          className={'menu-link text-truncate'}
-        >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
-          Assign Class
-        </NavLink>
-      </li>
+
 
       <li className="menu-item">
         <a href="#"

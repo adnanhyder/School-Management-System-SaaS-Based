@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\StudentResource;
+use App\Models\Classes;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,9 +67,11 @@ class StudentController extends Controller
     public function create()
     {
         $route = $this->success_rep . '/Create';
+        $classes = Classes::where('school_id', $this->school_id)->get();
         return inertia($route,
             [
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'classes' => $classes
             ]
         );
     }

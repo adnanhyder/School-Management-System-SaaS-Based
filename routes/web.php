@@ -43,6 +43,9 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     //only for test purpose
     Route::get('/dashboard', [DashboardController::class, 'school'])
         ->name('dashboard.school');
+
+
+
     Route::resource('student', StudentController::class);
     Route::resource('class', ClassesController::class);
     Route::resource('teacher', TeacherController::class);

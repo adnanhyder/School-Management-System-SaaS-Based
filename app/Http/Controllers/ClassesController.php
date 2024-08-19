@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Resources\ClassesResource;
+use App\Http\Resources\StudentResource;
 use App\Models\Classes;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -133,4 +135,23 @@ class ClassesController extends Controller
             'dynamicParam' => $this->dynamicParam
         ]);
     }
+
+    public function assign()
+    {
+        $query = Student::query();
+        $students = $query->where("school_id", $this->school_id)->get();
+        $data_students = StudentResource::collection($students);
+        $query = Classes::query();
+        $classes = $query->where("school_id", $this->school_id)->get();
+        $data_classes = ClassesResource::collection($classes);
+        $route = $this->success_rep . '/assign';
+        return inertia($route, [
+            'students' => $data_students,
+            'classes' => $data_classes,
+            'dynamicParam' => $this->dynamicParam
+        ]);
+    }
+
+
+
 }

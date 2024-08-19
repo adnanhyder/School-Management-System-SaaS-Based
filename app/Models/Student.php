@@ -41,6 +41,7 @@ class Student extends Model
         'sports',
         'profile_picture',
         'status',
+        'class_id',
         'notes'
     ];
 
