@@ -80,7 +80,7 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                     >
                       <span className="white">Name</span>
                     </TableHeading>
-                    <th className="px-3 py-3 ">start date</th>
+                    <th className="px-3 py-3 ">Start date</th>
                     <th className="px-3 py-3 ">End date</th>
                     <th className="px-3 py-3 ">Actions</th>
                   </tr>
