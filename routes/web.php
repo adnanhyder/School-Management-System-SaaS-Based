@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeacherController;
@@ -52,6 +53,7 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     Route::resource('category', CategoryController::class);
     Route::resource('item', ItemController::class);
     Route::resource('gatepass', GatepassController::class);
+    Route::resource('sessions', SessionsController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });

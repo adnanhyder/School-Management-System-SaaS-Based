@@ -64,6 +64,16 @@ export default function SchoolMenu() {
           Class
         </NavLink>
       </li>
+      <li className="menu-item">
+        <NavLink
+          href={route("sessions.index")}
+          active={route().current("sessions.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Sessions
+        </NavLink>
+      </li>
 
 
       <li className="menu-item">

@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table(school_prefix().'school_user', function (Blueprint $table) {
+        Schema::table(school_prefix().'students', function (Blueprint $table) {
             $table->dropColumn('class_id');
         });
     }
