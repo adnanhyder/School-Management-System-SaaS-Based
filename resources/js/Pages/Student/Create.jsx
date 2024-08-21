@@ -2,10 +2,11 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam , classes }) {
+export default function Create({ auth, dynamicParam , classes , sessions }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     email: "",
+    session_id : "",
     class_id : "",
     phone: "",
     gender: "",
@@ -53,6 +54,7 @@ console.log(classes)
         return "file";
       case "status":
       case "gender":
+      case "session_id":
       case "class_id":
         return "select";
       default:
@@ -124,11 +126,26 @@ console.log(classes)
                         <option value="">Select Class</option>
                         {classes.map((option, optionIndex) => (
                           <option key={optionIndex} value={option.id}>
-                            {option.name} -- {option.section}
+                            {option.name}  {option.section}
                           </option>
                         ))}
                       </select>
                     </>
+                  ): field === "session_id" ? (
+                    <select
+                      id={field}
+                      name={field}
+                      value={data[field]}
+                      className="mt-1 block w-full"
+                      onChange={(e) => setData(field, e.target.value)}
+                    >
+                      <option value="">Select Session</option>\
+                      {sessions.map((option, optionIndex) => (
+                        <option key={optionIndex} value={option.id}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
                   ) : (
                     <>
                       <select

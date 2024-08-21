@@ -5,13 +5,14 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import {getOptions} from "@/functions";
 
-export default function Edit({ auth, item, dynamicParam }) {
+export default function Edit({ auth, item, dynamicParam , categories }) {
   const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
     description: item.description || "",
     quantity: item.quantity || "",
     serial_number: item.serial_number || "",
     location: item.location || "",
+    category_id:  item.category_id || "",
     _method: "PUT",
 
   });
@@ -42,6 +43,7 @@ export default function Edit({ auth, item, dynamicParam }) {
         return "file";
       case "status":
       case "gender":
+      case "category_id":
         return "select";
       default:
         return "text";
@@ -98,7 +100,7 @@ export default function Edit({ auth, item, dynamicParam }) {
                       The image must be a file of type: jpg, jpeg, png.</li>
                   </ul>
                 </>
-              )  : getInputType(field) === 'select' ? (
+              ) : getInputType(field) === 'select' ? (
                 <select
                   id={field}
                   name={field}
@@ -106,9 +108,12 @@ export default function Edit({ auth, item, dynamicParam }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >
-                  {getOptions(field).map((option, optionIndex) => (
-                    <option key={optionIndex} value={option}>
-                      {option}
+                  <option  value="">
+                    Select Category
+                  </option>
+                  {categories.map((option, optionIndex) => (
+                    <option key={optionIndex} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>

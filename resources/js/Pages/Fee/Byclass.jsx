@@ -2,7 +2,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam ,categories }) {
+export default function Create({ auth, dynamicParam  }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     description: "",
@@ -11,7 +11,7 @@ export default function Create({ auth, dynamicParam ,categories }) {
     location: "",
     category: "",
   });
-
+console.log(categories);
   const handleSubmit = (e) => {
     e.preventDefault();
     post(route(`${dynamicParam.name}.store`));
@@ -106,11 +106,11 @@ export default function Create({ auth, dynamicParam ,categories }) {
                   <option  value="">
                     Select Category
                   </option>
-                  {categories.map((option, optionIndex) => (
-                    <option key={optionIndex} value={option.id}>
-                      {option.name}
-                    </option>
-                  ))}
+                  {/*{categories.map((option, optionIndex) => (*/}
+                  {/*  <option key={optionIndex} value={option.id}>*/}
+                  {/*    {option.name}*/}
+                  {/*  </option>*/}
+                  {/*))}*/}
                 </select>
               ) : (
                 <TextInput

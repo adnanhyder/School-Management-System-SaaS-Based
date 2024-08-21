@@ -107,11 +107,13 @@ class ItemController extends Controller
 
         $get_item = new ItemResource($item);
         $data = $get_item->toArray(request());
+        $category = Category::where('school_id', $this->school_id)->get(['id', 'name']);
         $route = $this->success_rep . '/Edit';
 
         return inertia($route, [
                 'item' => $data,
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'categories' => $category
             ]
         );
     }
@@ -121,7 +123,7 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required',
             'serial_number' => 'required',
-            'category' => 'required',
+            'category_id' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
 
         ], $this->imageError);

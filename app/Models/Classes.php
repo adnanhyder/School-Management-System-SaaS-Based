@@ -17,4 +17,6 @@ class Classes extends Model
         parent::__construct($attributes);
         $this->table = school_prefix().'classes';
     }
+
+
 }

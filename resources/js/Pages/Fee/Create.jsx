@@ -2,14 +2,11 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam ,categories }) {
+export default function Create({ auth, dynamicParam  }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
-    description: "",
-    quantity: "",
-    serial_number: "",
-    location: "",
-    category: "",
+    start_date: "",
+    end_date: "",
   });
 
   const handleSubmit = (e) => {
@@ -30,6 +27,8 @@ export default function Create({ auth, dynamicParam ,categories }) {
       case "dob":
       case "joining_date":
       case "admission_date":
+      case "start_date":
+      case "end_date":
         return "date";
       case "notes":
       case "description":
@@ -95,23 +94,6 @@ export default function Create({ auth, dynamicParam ,categories }) {
                       The image must be a file of type: jpg, jpeg, png.</li>
                   </ul>
                 </>
-              ) : getInputType(field) === 'select' ? (
-                <select
-                  id={field}
-                  name={field}
-                  value={data[field]}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData(field, e.target.value)}
-                >
-                  <option  value="">
-                    Select Category
-                  </option>
-                  {categories.map((option, optionIndex) => (
-                    <option key={optionIndex} value={option.id}>
-                      {option.name}
-                    </option>
-                  ))}
-                </select>
               ) : (
                 <TextInput
                   id={field}

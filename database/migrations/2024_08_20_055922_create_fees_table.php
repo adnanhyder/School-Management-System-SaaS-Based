@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create(school_prefix().'fees', function (Blueprint $table) {
             $table->id();
-            $table->integer('student_id'); // Foreign key to students table
-            $table->integer('session_id'); // Foreign key to sessions table
-            $table->decimal('amount', 10, 2); // Fee amount
-            $table->boolean('paid')->default(false); // Payment status
-            $table->foreignId('school_id')->constrained(school_prefix().'schools')->onDelete('cascade');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('school_id');
+            $table->unsignedBigInteger('class_id');
+            $table->unsignedBigInteger('session_id');
+            $table->decimal('amount', 10, 2);
+            $table->date('due_date');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

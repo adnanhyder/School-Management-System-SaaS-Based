@@ -11,3 +11,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/items-by-serial-number', [AjaxController::class, 'getItemsBySerialNumber']);
 Route::get('/items-by-id/{id}', [AjaxController::class, 'getItemsById']);
+Route::get('/students-by-name', [AjaxController::class, 'getStudentByName']);

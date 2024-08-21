@@ -31,3 +31,8 @@ export const isActive = (routeParam) => {
   const currentRoute = route().current();
   return  routeParam.includes(currentRoute);
 }
+
+
+export const ucfirst = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

@@ -3,7 +3,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {getOptions} from "@/functions";
 import { useState } from "react";
-export default function Create({ auth, dynamicParam  }) {
+export default function Create({ auth, dynamicParam ,school }) {
   const { data, setData, post, errors, reset } = useForm({
     description: "",
     quantity: "",
@@ -14,7 +14,7 @@ export default function Create({ auth, dynamicParam  }) {
   const [fetchedItems, setFetchedItems] = useState([]); // State for fetched items
   const [isSuggestionVisible, setSuggestionVisible] = useState(false); // State for suggestion visibility
 
-  const fetchItemsBySerialNumber = async (serialNumber) => {
+  const fetchItemsBySerialNumber = async (serialNumber ) => {
     if (serialNumber.trim() === "") {
       setSuggestionVisible(false);
       return;
@@ -23,7 +23,7 @@ export default function Create({ auth, dynamicParam  }) {
     setLoading(true); // Show loader
     try {
       const response = await axios.get(`/api/items-by-serial-number`, {
-        params: { serial_number: serialNumber },
+        params: { serial_number: serialNumber , school_id : school },
       });
 
       const fetchedItems = response.data;

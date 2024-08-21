@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\StudentResource;
 use App\Models\Classes;
+use App\Models\Sessions;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +19,14 @@ class StudentController extends Controller
     protected $success_rep;
     protected $index_route;
 
-    protected $school_id ;
+    protected $school_id;
 
-    protected $imageError ;
+    protected $imageError;
 
     public function __construct()
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
-        $this->index_route = $this->dynamicParam['name'].'.index';
+        $this->index_route = $this->dynamicParam['name'] . '.index';
         $this->school_id = Auth::user()->getDefaultSchool()->id;
         $this->imageError = [
             'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
@@ -46,11 +47,12 @@ class StudentController extends Controller
         }
         if (request("phone")) {
             $query->where("phone", "like", "%" . request("phone") . "%");
-        }  if (request("roll_number")) {
+        }
+        if (request("roll_number")) {
             $query->where("roll_number", "like", "%" . request("roll_number") . "%");
         }
 
-        $student = $query->where("school_id",$this->school_id )->orderBy($sortField, $sortDirection)->paginate(10)
+        $student = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
@@ -68,10 +70,12 @@ class StudentController extends Controller
     {
         $route = $this->success_rep . '/Create';
         $classes = Classes::where('school_id', $this->school_id)->get();
+        $sessions = Sessions::where('school_id', $this->school_id)->get();
         return inertia($route,
             [
                 'dynamicParam' => $this->dynamicParam,
-                'classes' => $classes
+                'classes' => $classes,
+                'sessions' => $sessions
             ]
         );
     }
@@ -80,10 +84,11 @@ class StudentController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'address' => 'nullable',
-            'phone' => 'numeric',
+            'phone' => 'numeric|required',
+            'class_id' => 'numeric|required',
+            'session_id' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
-        ],$this->imageError);
+        ], $this->imageError);
 
 
         $data = $request->all();
@@ -93,7 +98,7 @@ class StudentController extends Controller
         if ($image) {
             $filename = Str::random() . '.' . $image->getClientOriginalExtension();
 
-            $data['profile_picture'] = $image->storeAs($this->dynamicParam['name'],$filename, 'public');
+            $data['profile_picture'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
         }
 
         Student::create($data);
@@ -108,10 +113,14 @@ class StudentController extends Controller
 
         $get_item = new StudentResource($student);
         $data = $get_item->toArray(request());
+        $classes = Classes::where('school_id', $this->school_id)->get();
+        $sessions = Sessions::where('school_id', $this->school_id)->get();
         $route = $this->success_rep . '/Edit';
         return inertia($route, [
                 'item' => $data,
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'classes' => $classes,
+                'sessions' => $sessions
             ]
         );
     }
@@ -120,18 +129,19 @@ class StudentController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'address' => 'nullable',
-            'phone' => 'nullable',
+            'phone' => 'numeric|required',
+            'class_id' => 'numeric|required',
+            'session_id' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
-        ] , $this->imageError);
-        $data =  $request->all();
+        ], $this->imageError);
+        $data = $request->all();
         $image = $data['image'] ?? null;
         if ($image) {
             if ($student->profile_picture) {
                 Storage::disk('public')->delete($student->profile_picture);
             }
             $filename = Str::random() . '.' . $image->getClientOriginalExtension();
-            $data['profile_picture'] = $image->storeAs($this->dynamicParam['name'],$filename, 'public');
+            $data['profile_picture'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
         }
         $student->update($data);
         $success = " $this->success_rep  was updated";

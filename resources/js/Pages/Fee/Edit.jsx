@@ -1,20 +1,22 @@
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
+import { Head, Link, useForm } from "@inertiajs/react";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam ,categories }) {
+
+export default function Edit({ auth, item, dynamicParam }) {
   const { data, setData, post, errors, reset } = useForm({
-    name: "",
-    description: "",
-    quantity: "",
-    serial_number: "",
-    location: "",
-    category: "",
+    name: item.name || "",
+    start_date: item.start_date || "",
+    end_date: item.end_date || "",
+    _method: "PUT",
+
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route(`${dynamicParam.name}.store`));
+    post(route(`${dynamicParam.name}.update`, item.id));
   };
 
   const getInputType = (field) => {
@@ -28,33 +30,49 @@ export default function Create({ auth, dynamicParam ,categories }) {
       case "quantity":
         return "number";
       case "dob":
-      case "joining_date":
       case "admission_date":
+      case "start_date":
+      case "end_date":
         return "date";
       case "notes":
-      case "description":
         return "textarea";
+      case "_method":
+        return "method_put";
       case "image":
         return "file";
       case "status":
       case "gender":
-      case "category":
         return "select";
       default:
         return "text";
     }
   };
 
-
   return (
     <AdminLayout user={auth.user}>
-      <Head title={`Create ${dynamicParam.name}`} />
-      <h2 className="text-black text-2xl font-semibold">Create {dynamicParam.name}</h2>
+      <Head title={`Edit ${dynamicParam.name}`} />
+      <h2 className="text-black text-2xl font-semibold">Edit {dynamicParam.name}</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+
+        {item.image && (
+          <div className="mb-4">
+            <img  src={`/storage/${item.image}`} className="w-64" />
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           {Object.keys(data).map((field, index) => (
+
+
             <div className="mt-4" key={index}>
-              <label className="block text-gray-700">{field.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase())}:</label>
+              <label className="block text-gray-700">
+                {getInputType(field) === "method_put" ? (
+                  <></>
+                ) : (
+                  <>
+                    {field.replace("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}:
+                  </>
+                )}
+              </label>
               {getInputType(field) === "textarea" ? (
                 <textarea
                   id={field}
@@ -63,7 +81,9 @@ export default function Create({ auth, dynamicParam ,categories }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 />
-              ): getInputType(field) === 'file' ? (
+              ) : getInputType(field) === "method_put" ? (
+                <></>
+              ) : getInputType(field) === 'file' ? (
                 <>
                   <input
                     id={field}
@@ -72,30 +92,13 @@ export default function Create({ auth, dynamicParam ,categories }) {
                     className="mt-1 block w-full"
                     onChange={(e) => setData(field, e.target.files[0])}
                   />
-
                   <ul className="instruciton">
                     <li>The image dimensions should not exceed 500x500 pixels.
                       The image size must not exceed 300 KB.
                       The image must be a file of type: jpg, jpeg, png.</li>
                   </ul>
                 </>
-              )  : getInputType(field) === 'file' ? (
-                <>
-                  <input
-                    id={field}
-                    type="file"
-                    name={field}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData(field, e.target.files[0])}
-                  />
-
-                  <ul className="instruciton">
-                    <li>The image dimensions should not exceed 500x500 pixels.
-                      The image size must not exceed 300 KB.
-                      The image must be a file of type: jpg, jpeg, png.</li>
-                  </ul>
-                </>
-              ) : getInputType(field) === 'select' ? (
+              )  : getInputType(field) === 'select' ? (
                 <select
                   id={field}
                   name={field}
@@ -103,12 +106,9 @@ export default function Create({ auth, dynamicParam ,categories }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >
-                  <option  value="">
-                    Select Category
-                  </option>
-                  {categories.map((option, optionIndex) => (
-                    <option key={optionIndex} value={option.id}>
-                      {option.name}
+                  {getOptions(field).map((option, optionIndex) => (
+                    <option key={optionIndex} value={option}>
+                      {option}
                     </option>
                   ))}
                 </select>

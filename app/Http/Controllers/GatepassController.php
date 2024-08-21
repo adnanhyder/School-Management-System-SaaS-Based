@@ -67,10 +67,11 @@ class GatepassController extends Controller
     public function create()
     {
         $route = $this->success_rep . '/Create';
-        $items = Item::where('school_id', $this->school_id)->get(['id', 'name']);
+        $school = $this->school_id;
         return inertia($route,
             [
                 'dynamicParam' => $this->dynamicParam,
+                'school' => $school,
 
             ]
         );
