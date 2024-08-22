@@ -5,10 +5,10 @@ import {ucfirst} from "@/functions";
 import { useState } from "react";
 export default function Create({ auth, dynamicParam , school  }) {
   const { data, setData, post, errors, reset } = useForm({
-    description: "",
+    month: "",
     quantity: "",
   });
-  let class_name = "";
+
 
   const [loading, setLoading] = useState(false); // State for loader
   const [fetchedItems, setFetchedItems] = useState([]); // State for fetched items
@@ -39,8 +39,8 @@ export default function Create({ auth, dynamicParam , school  }) {
   const handleItemClick = (item) => {
     setData({
       ...data,
-      item_id: item.id,
-      serial_number: item.serial_number + " " + item.name
+      student: item.id,
+      name: item.roll_number + " - " + item.name + " - " + item.phone + " - " + item.class_name +" - " + item.section
     });
     setSuggestionVisible(false); // Hide suggestions after selecting item
   };
@@ -57,6 +57,7 @@ export default function Create({ auth, dynamicParam , school  }) {
       case "email":
         return "email";
       case "item_id":
+      case "name":
         return "button";
       default:
         return "text";
@@ -80,7 +81,7 @@ export default function Create({ auth, dynamicParam , school  }) {
               id="serial_number"
               type="text"
               autoComplete="off"
-              name="serial_number"
+              name="name"
               value={data.name || ""}
               className="mt-1 block w-full"
               onChange={(e) => {

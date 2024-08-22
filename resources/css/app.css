@@ -127,6 +127,24 @@ main h2 {
     text-transform: capitalize;
 }
 
-#item_id {
+
+.layout-page form input[type="button"] {
     text-align: left;
+}
+.menu-item.child-menu {
+    padding-left: 15px;
+}
+.menu-header.small.text-uppercase {
+    margin: 0;
+    padding: 0 19px;
+    border: 3px dotted #00000036;
+    color: #000;
+}
+.menu-header .menu-header-text {
+    color: #1675e8;
+    font-size: 17px;
+}
+#layout-menu {
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
