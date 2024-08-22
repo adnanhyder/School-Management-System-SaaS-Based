@@ -14,6 +14,7 @@ export default function Create({ auth, dynamicParam , classes , sessions }) {
     blood_group: "",
     city: "",
     address: "",
+    fee_amount: "",
     dob: "",
     parent_name: "",
     parent_phone: "",

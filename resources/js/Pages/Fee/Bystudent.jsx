@@ -5,15 +5,14 @@ import {ucfirst} from "@/functions";
 import { useState } from "react";
 export default function Create({ auth, dynamicParam , school  }) {
   const { data, setData, post, errors, reset } = useForm({
-    month: "",
-    quantity: "",
+    fee_categories: [],
   });
 
 
   const [loading, setLoading] = useState(false); // State for loader
   const [fetchedItems, setFetchedItems] = useState([]); // State for fetched items
   const [isSuggestionVisible, setSuggestionVisible] = useState(false); // State for suggestion visibility
-
+  const [feeCategories, setFeeCategories] = useState([]);
   const fetch = async (name) => {
     if (name.trim() === "") {
       setSuggestionVisible(false);
@@ -28,6 +27,7 @@ export default function Create({ auth, dynamicParam , school  }) {
 
       const fetchedItems = response.data;
       setFetchedItems(fetchedItems);
+      setFeeCategories(fetchedItems.fee_categories);
       setSuggestionVisible(true); // Show suggestions
     } catch (error) {
       console.error("Failed to fetch items:", error);
@@ -39,9 +39,16 @@ export default function Create({ auth, dynamicParam , school  }) {
   const handleItemClick = (item) => {
     setData({
       ...data,
-      student: item.id,
+      fee : item.fee_amount,
+      discount : "",
+      fine : "",
+      month: "",
+      student_id: item.id,
       name: item.roll_number + " - " + item.name + " - " + item.phone + " - " + item.class_name +" - " + item.section
     });
+    const voucher = (item) => {
+     let student_id = item.id
+    }
     setSuggestionVisible(false); // Hide suggestions after selecting item
   };
 
@@ -52,12 +59,31 @@ export default function Create({ auth, dynamicParam , school  }) {
     post(route(`${dynamicParam.name}.store`));
   };
 
+  const handleCategoryChange = (categoryId) => {
+    const updatedCategories = [...data.fee_categories];
+    const categoryIndex = updatedCategories.indexOf(categoryId);
+
+    if (categoryIndex === -1) {
+      // Add category ID if not already selected
+      updatedCategories.push(categoryId);
+    } else {
+      // Remove category ID if already selected
+      updatedCategories.splice(categoryIndex, 1);
+    }
+
+    setData("fee_categories", updatedCategories);
+  };
+
   const getInputType = (field) => {
     switch (field) {
       case "email":
         return "email";
+        case "month":
+        return "month";
       case "item_id":
+      case "student_id":
       case "name":
+      case "fee":
         return "button";
       default:
         return "text";
@@ -93,9 +119,9 @@ export default function Create({ auth, dynamicParam , school  }) {
               <div className="mt-2 text-gray-500">Loading...</div>
             )}
 
-            {isSuggestionVisible && fetchedItems.length > 0 && (
+            {isSuggestionVisible && fetchedItems.students.length > 0 && (
               <ul className="absolute z-10 bg-white border border-gray-300 rounded-md mt-1 w-full max-h-60 overflow-y-auto shadow-lg">
-                {fetchedItems.map((item) => (
+                {fetchedItems.students.map((item) => (
                   <li
                     key={item.id}
                     className="cursor-pointer p-2 hover:bg-gray-100"
@@ -112,7 +138,13 @@ export default function Create({ auth, dynamicParam , school  }) {
             )}
           </div>
 
-          {Object.keys(data).map((field, index) => (
+
+
+          {Object.keys(data).map((field, index) => {
+            if (field === "name" || field === "fee_categories" || field === "student_id" ) {
+              return null;
+            }
+            return (
             <div className="mt-4" key={index}>
               {(!(field === 'serial_number') && (
                 <label className="block text-gray-700">{field.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase())}:</label>
@@ -125,7 +157,24 @@ export default function Create({ auth, dynamicParam , school  }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 />
-              ): getInputType(field) === 'file' ? (
+              ): getInputType(field) === 'month' ? (
+                  <>
+                    <select
+                      id="month"
+                      name="month"
+                      value={data.month || ""}
+                      className="mt-1 block w-full"
+                      onChange={(e) => setData("month", e.target.value)}
+                    >
+                      <option value="">--Select Month--</option>
+                      {Array.from({ length: 12 }, (e, i) => (
+                        <option key={i} value={i + 1}>
+                          {new Date(0, i).toLocaleString("en", { month: "long" })}
+                        </option>
+                      ))}
+                    </select>
+                  </>
+                )  :  getInputType(field) === 'file' ? (
                 <>
                   <input
                     id={field}
@@ -185,7 +234,32 @@ export default function Create({ auth, dynamicParam , school  }) {
               )}
               {errors[field] && <div className="text-red-600">{errors[field]}</div>}
             </div>
-          ))}
+            )})}
+          {/* Fee Categories Section */}
+          {feeCategories.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-gray-700">Fee Categories</h3>
+              <ul className="mt-2">
+                {feeCategories.map((category) => (
+                  <li key={category.id} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={`category-${category.id}`}
+                      className="form-checkbox"
+                      checked={data.fee_categories.includes(category.id)}
+                      onChange={() =>
+                        handleCategoryChange(category.id)
+                      }
+                    />
+                    <label htmlFor={`category-${category.id}`}>
+                      {category.name} - {category.amount}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div className="mt-4 text-right">
             <Link
               href={route(`${dynamicParam.name}.index`)}

@@ -18,6 +18,7 @@ export default function Edit({ auth, item, dynamicParam , classes , sessions }) 
     city: item.city || "",
     address: item.address || "",
     dob: item.dob || "",
+    fee_amount: item.fee_amount || "",
     parent_name: item.parent_name || "",
     parent_phone: item.parent_phone || "",
     parent_email: item.parent_email || "",

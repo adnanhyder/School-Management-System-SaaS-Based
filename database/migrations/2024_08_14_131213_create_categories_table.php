@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('image')->nullable();
-            //$table->tinyInteger('module_type')
-                //->comment('1 = inventory, 2 = fee, 3 = accounts');
             $table->foreignId('school_id')->constrained(school_prefix().'schools')->onDelete('cascade');
             $table->timestamps();
         });

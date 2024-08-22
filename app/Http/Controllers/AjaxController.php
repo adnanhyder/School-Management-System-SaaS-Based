@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FeeCategory;
 use App\Models\Item;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -54,6 +55,10 @@ class AjaxController extends Controller
             )
             ->orderBy(school_prefix().'students.roll_number', 'asc')
             ->get();
-        return response()->json($items);
+        $feeCategories = FeeCategory::where('school_id', $schoolId)->get();
+        return response()->json([
+            'students' => $items,
+            'fee_categories' => $feeCategories
+        ]);
     }
 }

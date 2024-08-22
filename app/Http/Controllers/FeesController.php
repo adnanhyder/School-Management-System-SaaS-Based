@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\FeesResource;
+use App\Models\Category;
 use App\Models\Fees;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,27 +129,39 @@ class FeesController extends Controller
         }
     }
 
-    public function create()
-    {
+    public function Categories(){
 
+        $query = Category::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+
+
+        $recivedItem = $query->where("school_id", $this->school_id)->where("module_type", 2)->orderBy($sortField, $sortDirection)->paginate(10)
+            ->onEachSide(1);
+        $route = $this->success_rep . '/Category';
+        return inertia($route,
+            [
+                'receivedItem' => CategoryResource::collection($recivedItem),
+                'dynamicParam' => $this->dynamicParam,
+                'queryParams' => request()->query() ?: null,
+                'success' => session('success'),
+            ]
+        );
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
+        $request->validate([
+            'name' => 'required',
 
+        ], $this->imageError);
+        $data = $request->all();
+        dd($data);
     }
 
-    public function edit()
-    {
-    }
 
-    public function update()
-    {
-
-    }
-
-    public function destroy()
-    {
-
-    }
 }

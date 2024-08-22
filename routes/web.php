@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeeCategoryController;
 use App\Http\Controllers\FeesController;
 use App\Http\Controllers\GatepassController;
 use App\Http\Controllers\ItemController;
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
         ->name('fee.createbyclass');
     Route::get('/feebystudent', [FeesController::class, 'generateByStudent'])
         ->name('fee.createbystudnet');
+    Route::resource('feeCategory', FeeCategoryController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });

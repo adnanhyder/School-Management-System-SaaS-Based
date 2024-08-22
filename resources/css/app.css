@@ -148,3 +148,14 @@ main h2 {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+.form-checkbox {
+    border-radius: 0px;
+    background: #0000 !important;
+    background-image: none !important;
+    border: 1px solid !important;
+    appearance: checkbox !important;
+}
+.form-checkbox:checked {
+    background-image: unset !important;
+    appearance: checkbox !important;
+}

@@ -28,6 +28,7 @@ class Student extends Model
         'city',
         'address',
         'dob',
+        'fee_amount',
         'roll_number',
         'parent_name',
         'parent_phone',

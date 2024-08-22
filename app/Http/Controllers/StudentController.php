@@ -86,6 +86,7 @@ class StudentController extends Controller
             'name' => 'required',
             'phone' => 'numeric|required',
             'class_id' => 'numeric|required',
+            'fee_amount' => 'numeric|required',
             'session_id' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
         ], $this->imageError);
@@ -131,6 +132,7 @@ class StudentController extends Controller
             'name' => 'required',
             'phone' => 'numeric|required',
             'class_id' => 'numeric|required',
+            'fee_amount' => 'numeric|required',
             'session_id' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
         ], $this->imageError);

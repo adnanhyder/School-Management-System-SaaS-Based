@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table(school_prefix().'students', function (Blueprint $table) {
             $table->integer('class_id')->nullable();
             $table->integer('session_id')->nullable();
+            $table->integer('fee_amount')->nullable();
         });
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table(school_prefix().'students', function (Blueprint $table) {
             $table->dropColumn('session_id');
             $table->dropColumn('class_id');
+            $table->dropColumn('fee_amount');
         });
     }
 };

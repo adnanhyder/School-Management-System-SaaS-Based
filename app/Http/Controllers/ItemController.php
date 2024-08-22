@@ -162,4 +162,29 @@ class ItemController extends Controller
         ]);
     }
 
+
+    public function Categories(){
+        $query = Category::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+
+
+        $recivedItem = $query->where("school_id", $this->school_id)->where("module_type", 1)->orderBy($sortField, $sortDirection)->paginate(10)
+            ->onEachSide(1);
+        $route = $this->success_rep . '/Category';
+        return inertia($route,
+            [
+                'receivedItem' => CategoryResource::collection($recivedItem),
+                'dynamicParam' => $this->dynamicParam,
+                'queryParams' => request()->query() ?: null,
+                'success' => session('success'),
+            ]
+        );
+    }
+
 }
