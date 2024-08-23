@@ -55,7 +55,7 @@ class FeesController extends Controller
                 $q->where('roll_number', 'like', '%' . request("roll_number") . '%');
             });
         }
-
+//@tod bug class // not by class
         $query->with(['student', 'classes', 'sessions']);
 
         if (request("class")) {
