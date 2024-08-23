@@ -35,6 +35,7 @@ class FeesController extends Controller
             'image.mimes' => 'Please upload jpg, jpeg, png.',
         ];
     }
+
     public function index()
     {
         $query = Fees::query();
@@ -43,26 +44,30 @@ class FeesController extends Controller
         $sortDirection = request("sort_direction", "desc");
 
         if (request("name")) {
-            $query->whereHas('student', function($q) {
+            $query->whereHas('student', function ($q) {
                 $q->where('name', 'like', '%' . request("name") . '%');
             });
         }
-        if (request("phone")) {
-            $query->whereHas('student', function($q) {
-                $q->where('phone', 'like', '%' . request("phone") . '%');
-            });
-        }
+
+
         if (request("roll_number")) {
-            $query->whereHas('student', function($q) {
+            $query->whereHas('student', function ($q) {
                 $q->where('roll_number', 'like', '%' . request("roll_number") . '%');
             });
         }
 
-        $fee = $query->with(['student', 'classes' , 'sessions'])
-            ->where('school_id', $this->school_id)
+        $query->with(['student', 'classes', 'sessions']);
+
+        if (request("class")) {
+            $query->whereHas('student.classes', function ($q) {
+                $q->where('name', 'like', '%' . request("class") . '%');
+            });
+        }
+        $fee = $query->where('school_id', $this->school_id)
             ->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
+
         $recivedItem = FeesResource::collection($fee);
         $route = $this->success_rep . '/Index';
         return inertia($route, [
@@ -140,7 +145,8 @@ class FeesController extends Controller
         }
     }
 
-    public function Categories(){
+    public function Categories()
+    {
 
         $query = Category::query();
 
@@ -165,7 +171,8 @@ class FeesController extends Controller
         );
     }
 
-    public function generateVoucher(Request $request){
+    public function generateVoucher(Request $request)
+    {
         $request->validate([
             'name' => 'required',
 
@@ -173,7 +180,9 @@ class FeesController extends Controller
         $data = $request->all();
 
     }
-    public function store(Request $request){
+
+    public function store(Request $request)
+    {
         $request->validate([
             'name' => 'required',
 
@@ -181,12 +190,12 @@ class FeesController extends Controller
         $data = $request->all();
         $student_id = $data['student_id'];
         $feeCategories = $data['fee_categories'];
-        $student = Student::with(['classes', 'session'])->where('id' , $student_id)->first();
+        $student = Student::with(['classes', 'session'])->where('id', $student_id)->first();
         $categories = FeeCategory::whereIn('id', $feeCategories)->get();
-        $fine = (int) $data['fine'];
-        $discount = (int) $data['discount'];
-        $month = (int) $data['month'];
-        $total_amount = ($student->fee_amount + $fine) - $discount ;
+        $fine = (int)$data['fine'];
+        $discount = (int)$data['discount'];
+        $month = (int)$data['month'];
+        $total_amount = ($student->fee_amount + $fine) - $discount;
 
         $data['school_id'] = $this->school_id;
         $data['student_id'] = $student->id;
@@ -194,16 +203,16 @@ class FeesController extends Controller
         $data['session_id'] = $student->session_id;
 
         $data['month'] = $month;
-        $additional=[];
+        $additional = [];
         $totalCatAmount = 0;
-        foreach ($categories as $single){
+        foreach ($categories as $single) {
             $additional[] = [
                 'id' => $single->id,
                 'name' => $single->name,
             ];
             $totalCatAmount += $single->amount;
         }
-        $total_amount = $totalCatAmount +  $total_amount;
+        $total_amount = $totalCatAmount + $total_amount;
         $data['amount'] = $total_amount;
         $data['additional'] = json_encode($additional);
         $existingFee = Fees::where('student_id', $data['student_id'])
@@ -225,6 +234,24 @@ class FeesController extends Controller
         $success = " $this->success_rep  was created";
 
         return to_route($this->index_route)->with('success', $success);
+    }
+
+    public function destroy(Fees $fee)
+    {
+        $fee->delete();
+        $success = " $this->success_rep  was Deleted";
+        return to_route($this->index_route)->with('success', $success);
+    }
+
+    public function show(Fees $fee)
+    {
+        // @todo print voucher
+        $data = new FeesResource($fee);
+        $route = $this->success_rep . '/Show';
+        return inertia($route, [
+            'item' => $data,
+            'dynamicParam' => $this->dynamicParam
+        ]);
     }
 
 

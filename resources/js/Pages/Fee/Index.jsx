@@ -88,8 +88,9 @@ console.log(receivedItem);
                     >
                       <span className="white">Name</span>
                     </TableHeading>
-                    <th className="px-3 py-3 ">Class</th>
+
                     <th className="px-3 py-3 ">Roll Number</th>
+                    <th className="px-3 py-3 ">Class</th>
                     <th className="px-3 py-3 ">Amount</th>
                     <th className="px-3 py-3 ">Month</th>
                     <th className="px-3 py-3 ">Session</th>
@@ -114,26 +115,27 @@ console.log(receivedItem);
                       />
                     </th>
 
+
                     <th className="px-3 py-3">
                       <TextInput
                         className="w-full"
-                        defaultValue={queryParams.name}
-                        placeholder="Class"
+                        defaultValue={queryParams.roll_number}
+                        placeholder="Roll number"
                         onBlur={(e) =>
-                          searchFieldChanged("class", e.target.value)
+                          searchFieldChanged("roll_number", e.target.value)
                         }
-                        onKeyPress={(e) => onKeyPress("class", e)}
+                        onKeyPress={(e) => onKeyPress("roll_number", e)}
                       />
                     </th>
                     <th className="px-3 py-3">
                       <TextInput
                         className="w-full"
-                        defaultValue={queryParams.name}
-                        placeholder="rollnumber"
+                        defaultValue={queryParams.class}
+                        placeholder="Class"
                         onBlur={(e) =>
-                          searchFieldChanged("rollnumber", e.target.value)
+                          searchFieldChanged("class", e.target.value)
                         }
-                        onKeyPress={(e) => onKeyPress("rollnumber", e)}
+                        onKeyPress={(e) => onKeyPress("class", e)}
                       />
                     </th>
                     <th className="px-3 py-3"></th>
@@ -162,8 +164,9 @@ console.log(receivedItem);
 
 
                       </th>
-                      <td className="px-3 py-3">{ucfirst(singleItem.classes.name)} {singleItem.classes.section}</td>
                       <td className="px-3 py-3">{singleItem.student.roll_number}</td>
+                      <td className="px-3 py-3">{ucfirst(singleItem.classes.name)} {singleItem.classes.section}</td>
+
                       <td className="px-3 py-3">{singleItem.amount}</td>
                       <td className="px-3 py-3">{new Date(0, singleItem.month - 1).toLocaleString('en-US', { month: 'long' })}</td>
                       <td className="px-3 py-3">{singleItem.sessions.name}</td>
