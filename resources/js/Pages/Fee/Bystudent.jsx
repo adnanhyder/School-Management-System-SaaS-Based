@@ -2,8 +2,8 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {ucfirst} from "@/functions";
-import { useState } from "react";
-export default function Create({ auth, dynamicParam , school  }) {
+import {useEffect, useState} from "react";
+export default function Create({ auth, dynamicParam , school ,success }) {
   const { data, setData, post, errors, reset } = useForm({
     fee_categories: [],
   });
@@ -37,12 +37,14 @@ export default function Create({ auth, dynamicParam , school  }) {
   };
 
   const handleItemClick = (item) => {
+    const currentMonth = new Date().getMonth() + 1; // Get current month (0-indexed, so +1)
+
     setData({
       ...data,
       fee : item.fee_amount,
       discount : "",
       fine : "",
-      month: "",
+      month: currentMonth,
       student_id: item.id,
       name: item.roll_number + " - " + item.name + " - " + item.phone + " - " + item.class_name +" - " + item.section
     });
@@ -90,14 +92,17 @@ export default function Create({ auth, dynamicParam , school  }) {
     }
   };
 
-
   return (
     <AdminLayout user={auth.user}>
       <Head title={`Create ${dynamicParam.name}`} />
       <h2 className="text-black text-2xl font-semibold">Create {dynamicParam.name}</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
 
-
+        {success && (
+          <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
 

@@ -18,5 +18,8 @@ class Classes extends Model
         $this->table = school_prefix().'classes';
     }
 
-
+    public function fee()
+    {
+        return $this->hasMany(Fees::class, 'class_id');
+    }
 }

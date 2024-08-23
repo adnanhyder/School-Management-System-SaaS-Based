@@ -3,10 +3,11 @@ import TextInput from "@/Components/TextInput";
 import AdminLayout from "@/Layouts/AdminLayout";
 import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
+import {ucfirst} from "@/functions";
 
 export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success}) {
   queryParams = queryParams || {};
-
+console.log(receivedItem);
   const searchFieldChanged = (name, value) => {
     if (value) {
       queryParams[name] = value;
@@ -90,7 +91,10 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                     <th className="px-3 py-3 ">Class</th>
                     <th className="px-3 py-3 ">Roll Number</th>
                     <th className="px-3 py-3 ">Amount</th>
+                    <th className="px-3 py-3 ">Month</th>
+                    <th className="px-3 py-3 ">Session</th>
                     <th className="px-3 py-3 ">Status</th>
+                    <th className="px-3 py-3 ">View</th>
                     <th className="px-3 py-3 ">Actions</th>
                   </tr>
                   </thead>
@@ -135,6 +139,9 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
+                    <th className="px-3 py-3"></th>
                   </tr>
                   </thead>
 
@@ -150,25 +157,39 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                           href={route(`${dynamicParam.name}.show`, singleItem.id)}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                         >
-                          {singleItem.name}
+                          {singleItem.student.name}
                         </Link>
 
 
                       </th>
-                      <td className="px-3 py-3">{singleItem.quantity}</td>
-                      <td className="px-3 py-3">{singleItem.serial_number}</td>
-                      <td className="px-3 py-3">{singleItem.description}</td>
+                      <td className="px-3 py-3">{ucfirst(singleItem.classes.name)} {singleItem.classes.section}</td>
+                      <td className="px-3 py-3">{singleItem.student.roll_number}</td>
+                      <td className="px-3 py-3">{singleItem.amount}</td>
+                      <td className="px-3 py-3">{new Date(0, singleItem.month - 1).toLocaleString('en-US', { month: 'long' })}</td>
+                      <td className="px-3 py-3">{singleItem.sessions.name}</td>
+                      <td className="px-3 py-3">{singleItem.status}</td>
                       <td className="px-3 py-3">
                         <Link
 
                           href={route(`${dynamicParam.name}.edit`, singleItem.id)}
                           className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                         >
-                          Edit
+                          Print Voucher
                         </Link>
+
+                      </td>
+                      <td className="px-3 py-3 text-center">
+
                         <button
                           onClick={(e) => deleteItem(singleItem)}
-                          className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
+                          className=" bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        >
+                          Mark Payment
+                        </button>
+
+                        <button
+                          onClick={(e) => deleteItem(singleItem)}
+                          className="text-center font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                         >
                           Delete
                         </button>

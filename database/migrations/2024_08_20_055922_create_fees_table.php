@@ -18,9 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('class_id');
             $table->unsignedBigInteger('session_id');
             $table->decimal('amount', 10, 2);
-            $table->date('due_date');
+            $table->integer('month');
             $table->string('status')->default('pending');
             $table->timestamps();
+            $table->string('additional');
         });
     }
 

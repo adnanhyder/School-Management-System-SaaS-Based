@@ -61,6 +61,9 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
         ->name('fee.createbyclass');
     Route::get('/feebystudent', [FeesController::class, 'generateByStudent'])
         ->name('fee.createbystudnet');
+//    Route::post('/generateVoucher', [FeesController::class, 'generateVoucher'])
+//        ->name('fee.generateVoucher');
+
     Route::resource('feeCategory', FeeCategoryController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');

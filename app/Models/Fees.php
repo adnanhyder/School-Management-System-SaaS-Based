@@ -16,7 +16,7 @@ class Fees extends Model
     }
 
     protected $fillable = [
-        'student_id', 'school_id', 'class_id', 'session_id', 'amount', 'due_date', 'status'
+        'student_id', 'school_id', 'class_id', 'session_id', 'amount', 'month', 'status' , 'additional'
     ];
 
     public function markAsPaid()
@@ -29,5 +29,20 @@ class Fees extends Model
         if ($this->due_date < Carbon::now()) {
             $this->update(['status' => 'overdue']);
         }
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function classes()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
+    }
+
+    public function sessions()
+    {
+        return $this->belongsTo(Sessions::class, 'session_id');
     }
 }
