@@ -125,7 +125,7 @@ export default function Create({ auth, dynamicParam , school ,success }) {
             )}
 
             {isSuggestionVisible && fetchedItems.students.length > 0 && (
-              <ul className="absolute z-10 bg-white border border-gray-300 rounded-md mt-1 w-full max-h-60 overflow-y-auto shadow-lg">
+              <ul className="box-suggestion card">
                 {fetchedItems.students.map((item) => (
                   <li
                     key={item.id}

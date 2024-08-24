@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SchoolController extends Controller
 {
@@ -19,11 +21,17 @@ class SchoolController extends Controller
     ];
     protected $success_rep;
     protected $index_route;
+    protected $imageError;
 
     public function __construct()
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
         $this->index_route = $this->dynamicParam['name'].'.index';
+        $this->imageError = [
+            'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
+            'image.max' => 'Please upload image that has size under 300 KB.',
+            'image.mimes' => 'Please upload jpg, jpeg, png.',
+        ];
     }
 
     public function index()
@@ -59,12 +67,19 @@ class SchoolController extends Controller
             'address' => 'nullable',
             'phone' => 'numeric',
             'assignedUser' => 'required|exists:users,id',
-        ]);
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
+        ], $this->imageError);
+
         $data = $request->all();
 
         $data['created_by'] = auth()->id();
         $user_id = $data['assignedUser'] ;
+        $image = $data['image'] ?? null;
+        if ($image) {
+            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
 
+            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
+        }
         $school_id = School::create($data);
         $this->assignSchool( $user_id ,$school_id );
         $this->assignRole( $user_id );
@@ -97,10 +112,19 @@ class SchoolController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'address' => 'nullable',
-            'phone' => 'nullable',
-        ]);
-        $data = $request->only(['name', 'address', 'phone']);
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
+        ], $this->imageError);
+        $data = $request->only(['name', 'address', 'phone' , 'image']);
+
+        $image = $data['image'] ?? null;
+        if ($image) {
+            if ($school->image) {
+                Storage::disk('public')->delete($school->image);
+            }
+            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
+            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
+        }
+
         $school->update($data);
         $user_id = $request->input('assignedUser');
         if($user_id) {
@@ -172,7 +196,7 @@ class SchoolController extends Controller
             ->where('school_id', $school_id)
             ->update(['selected_school_id' => 1]);
 
-        $defaultSchool = $user->getDefaultSchool();
+        $defaultSchool = $user->getDefault();
         $success = " $this->success_rep  was updated";
 
         return to_route('dashboard.'.$this->dynamicParam['name'])->with('success', $success);

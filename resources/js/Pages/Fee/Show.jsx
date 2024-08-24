@@ -1,54 +1,99 @@
 import { Head, Link } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
+import {ucfirst} from "@/functions";
+import PrintButton from "@/Components/PrintButton";
 
-export default function Show({ auth, item, dynamicParam }) {
-  const keysToUnset = ['created_at', 'id' , 'updated_at' , 'school_id' , ];
-
-  keysToUnset.forEach(key => {
-    delete item.data[key];
-  });
-  item = item.data;
-
+export default function Show({ auth, item, dynamicParam , additional }) {
+  const fee = item;
+  const school = auth.default;
+  const titleOfPrint = `${ucfirst(fee.student.name)} - ${ucfirst(fee.student.roll_number)} - ${ucfirst(fee.classes.name)} - ${ucfirst(fee.classes.section)}`;
   return (
     <AdminLayout user={auth.user}>
       <Head title={`Show ${dynamicParam.name}`} />
       <div className=" mx-auto sm:px-6 lg:px-8">
-        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-          <div className="">
-            <h2 className="text-2xl font-semibold  mb-6">Show {dynamicParam.name}</h2>
+        <div className="container recipt-fee" id="print-section">
+          <header>
+            <div className="header-info">
+              <div className="bx-pull-left">
+              {school.image && (
 
-            {item.image && (
-              <div className="mb-4">
-                <img  src={`/storage/${item.image}`} className="w-64" />
+                <img  src={`/storage/${school.image}`} className="w-64 school-logo" />
+
+              )}
               </div>
-            )}
-            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {Object.keys(item).map((field, index) => (
-                <div key={index} className="bg-white dark:bg-gray-800 p-4 rounded shadow-sm">
-                  {field === 'profile_picture' && item[field] ? (
-                    <></>
-                  ) : (
-                    <label className="block text-lg font-bold text-gray-700 dark:text-gray-300">
-                      {field.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase())}
-                    </label>
-                  )}
+              <div className="bx-pull-left w-75">
+              <h1 className="text-uppercase">{ucfirst(school.name)}</h1>
+              <p className="text-uppercase">{school.address}</p>
+              </div>
+              <div className='clearfix'></div>
+            </div>
+          </header>
 
-                  {field === 'profile_picture' && item[field] ? (
-                 <></>
-                  ) : (
-                    <p className="mt-2 text-gray-900 dark:text-gray-100">{item[field]}</p>
-                  )}
-                </div>
-              ))}
+          <section className="receipt-details">
+            <div className="receipt-info">
+              <p>Receipt No: <span>{fee.id}</span></p>
+              <p>Date: <span>{ new Date(fee.created_at).toLocaleDateString('en-GB', {day: '2-digit',month: 'long', year: 'numeric'})}</span></p>
+              <p>Class: <span>{ucfirst(fee.classes.name)}</span></p>
+              <p>Section: <span>{ucfirst(fee.classes.section)}</span></p>
+              <p>Session: <span>{ucfirst(fee.sessions.name)}</span></p>
             </div>
-            <div className="mt-6 text-right">
-              <Link
-                href={route(`${dynamicParam.name}.index`)}
-                className="bg-gray-200 dark:bg-gray-700 py-2 px-4 text-gray-900 dark:text-gray-100 rounded shadow hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
-              >
-                Back
-              </Link>
+            <div className="student-info">
+              <p>Name: <span>{ucfirst(fee.student.name)}</span></p>
+              <p>Parent Name: <span>{ucfirst(fee.student.parent_name)}</span></p>
+              <p>Mobile: <span>{ucfirst(fee.student.phone)}</span></p>
+              <p>Fee Month: <span>{new Date(0, fee.month - 1).toLocaleString('en-US', { month: 'long' })}</span></p>
             </div>
+            <div className="profile-pic">
+              {fee.student.profile_picture && (
+
+                <img  src={`/storage/${fee.student.profile_picture}`} className="w250" />
+
+              )}
+            </div>
+          </section>
+          <table>
+            <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>PARTICULARS</th>
+              <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr key="fixed">
+              <td>1</td>
+              <td>Academic/Tuition Fee</td>
+              <td>{fee.student.fee_amount}</td>
+            </tr>
+            {additional.map((fee, index) => (
+              <tr key={index+1}>
+                <td>{index + 2}</td>
+                <td>{fee.name}</td>
+                <td>{fee.amount}</td>
+              </tr>
+            ))}
+            <tr key="total">
+              <td></td>
+              <td><b>Total</b></td>
+              <td><b>{fee.amount}</b></td>
+            </tr>
+
+            </tbody>
+          </table>
+          <div className="fee-summary">
+            <div className="summary-left">
+              <p>Total Fee: <span>{fee.amount}</span></p>
+
+            </div>
+            <div className="summary-right">
+              <div className="payment-info">
+                <p>Payment Mode: <span>Cash</span></p>
+              </div>
+              <div className="received-by">
+                <p>Status : <span>{ucfirst(fee.status)} </span></p>
+              </div>
+            </div>
+            <PrintButton schoolName={ucfirst(school.name)} id={titleOfPrint}/>
           </div>
         </div>
       </div>

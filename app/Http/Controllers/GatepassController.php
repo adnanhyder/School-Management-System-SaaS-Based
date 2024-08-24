@@ -29,7 +29,7 @@ class GatepassController extends Controller
         $this->success_rep = ucfirst($this->dynamicParam['name']);
         $this->cant_edit = ucfirst($this->dynamicParam['cant']);
         $this->index_route = $this->dynamicParam['name'] . '.index';
-        $this->school_id = Auth::user()->getDefaultSchool()->id;
+        $this->school_id = Auth::user()->getDefault()->id;
         $this->imageError = [
             'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
             'image.max' => 'Please upload image that has size under 300 KB.',

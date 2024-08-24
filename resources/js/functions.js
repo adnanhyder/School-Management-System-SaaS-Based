@@ -33,6 +33,9 @@ export const isActive = (routeParam) => {
 }
 
 
-export const ucfirst = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+export const ucfirst = (value) => {
+  if (typeof value === 'string' && value.trim() !== '') {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+  return value;
+};

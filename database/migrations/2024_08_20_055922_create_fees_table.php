@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('month');
             $table->string('status')->default('pending');
             $table->timestamps();
-            $table->string('additional');
+            $table->json('additional');
         });
     }
 

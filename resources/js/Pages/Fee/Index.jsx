@@ -7,7 +7,7 @@ import {ucfirst} from "@/functions";
 
 export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success}) {
   queryParams = queryParams || {};
-console.log(receivedItem);
+console.log(auth);
   const searchFieldChanged = (name, value) => {
     if (value) {
       queryParams[name] = value;

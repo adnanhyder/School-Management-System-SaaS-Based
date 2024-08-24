@@ -28,7 +28,7 @@ class FeesController extends Controller
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
         $this->index_route = $this->dynamicParam['name'] . '.index';
-        $this->school_id = Auth::user()->getDefaultSchool()->id;
+        $this->school_id = Auth::user()->getDefault()->id;
         $this->imageError = [
             'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
             'image.max' => 'Please upload image that has size under 300 KB.',
@@ -55,7 +55,7 @@ class FeesController extends Controller
                 $q->where('roll_number', 'like', '%' . request("roll_number") . '%');
             });
         }
-//@tod bug class // not by class
+
         $query->with(['student', 'classes', 'sessions']);
 
         if (request("class")) {
@@ -113,74 +113,6 @@ class FeesController extends Controller
 
     }
 
-    public function generateFeeByClass($classId, $amount, $dueDate)
-    {
-        $students = Student::where('class_id', $classId)->get();
-
-        foreach ($students as $student) {
-            Fee::create([
-                'student_id' => $student->id,
-                'school_id' => $student->school_id,
-                'class_id' => $student->class_id,
-                'session_id' => $student->session_id,
-                'amount' => $amount,
-                'due_date' => $dueDate,
-            ]);
-        }
-    }
-
-    public function generateFeeByStudent($studentId, $amount, $dueDate)
-    {
-        $student = Student::find($studentId);
-
-        if ($student) {
-            Fee::create([
-                'student_id' => $student->id,
-                'school_id' => $student->school_id,
-                'class_id' => $student->class_id,
-                'academic_session_id' => $student->academic_session_id,
-                'amount' => $amount,
-                'due_date' => $dueDate,
-            ]);
-        }
-    }
-
-    public function Categories()
-    {
-
-        $query = Category::query();
-
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-
-        if (request("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-
-
-        $recivedItem = $query->where("school_id", $this->school_id)->where("module_type", 2)->orderBy($sortField, $sortDirection)->paginate(10)
-            ->onEachSide(1);
-        $route = $this->success_rep . '/Category';
-        return inertia($route,
-            [
-                'receivedItem' => CategoryResource::collection($recivedItem),
-                'dynamicParam' => $this->dynamicParam,
-                'queryParams' => request()->query() ?: null,
-                'success' => session('success'),
-            ]
-        );
-    }
-
-    public function generateVoucher(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-
-        ], $this->imageError);
-        $data = $request->all();
-
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -209,12 +141,22 @@ class FeesController extends Controller
             $additional[] = [
                 'id' => $single->id,
                 'name' => $single->name,
+                'amount' => $single->amount,
             ];
             $totalCatAmount += $single->amount;
         }
+        $additional[] = [
+            'name' => 'Fine',
+            'amount' => $fine,
+        ];
+        $additional[] = [
+            'name' => 'Discount',
+            'amount' => $discount,
+        ];
+        $data['additional'] = json_encode($additional);
         $total_amount = $totalCatAmount + $total_amount;
         $data['amount'] = $total_amount;
-        $data['additional'] = json_encode($additional);
+
         $existingFee = Fees::where('student_id', $data['student_id'])
             ->where('school_id', $data['school_id'])
             ->where('class_id', $data['class_id'])
@@ -243,14 +185,15 @@ class FeesController extends Controller
         return to_route($this->index_route)->with('success', $success);
     }
 
-    public function show(Fees $fee)
+    public function show($fee)
     {
-        // @todo print voucher
-        $data = new FeesResource($fee);
+
+        $data = Fees::with(['student', 'classes', 'sessions'])->findOrFail($fee);
         $route = $this->success_rep . '/Show';
         return inertia($route, [
             'item' => $data,
-            'dynamicParam' => $this->dynamicParam
+            'dynamicParam' => $this->dynamicParam,
+            'additional' => json_decode($data->additional),
         ]);
     }
 
