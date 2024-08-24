@@ -36,7 +36,7 @@ class FeesController extends Controller
         ];
     }
 
-    public function index()
+    public function index($printId = null, $success = null)
     {
         $query = Fees::query();
 
@@ -48,7 +48,6 @@ class FeesController extends Controller
                 $q->where('name', 'like', '%' . request("name") . '%');
             });
         }
-
 
         if (request("roll_number")) {
             $query->whereHas('student', function ($q) {
@@ -63,21 +62,32 @@ class FeesController extends Controller
                 $q->where('name', 'like', '%' . request("class") . '%');
             });
         }
+
         $fee = $query->where('school_id', $this->school_id)
             ->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
 
-        $recivedItem = FeesResource::collection($fee);
+        $receivedItem = FeesResource::collection($fee);
         $route = $this->success_rep . '/Index';
-        return inertia($route, [
-            'receivedItem' => $recivedItem,
-            'dynamicParam' => $this->dynamicParam,
-            'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
-        ]);
 
+        $printData = "";
+        $additional = "";
+        if ($printId) {
+            $printData = Fees::with(['student', 'classes', 'sessions'])->findOrFail($printId);
+            $additional =  json_decode($printData->additional);
+        }
+
+        return inertia($route, [
+            'receivedItem' => $receivedItem,
+            'dynamicParam' => $this->dynamicParam,
+            'printData' => $printData,
+            'printAdditionalData' => $additional,
+            'queryParams' => request()->query() ?: null,
+            'success' => $success,
+        ]);
     }
+
 
     public function generateByClass()
     {
@@ -190,11 +200,31 @@ class FeesController extends Controller
 
         $data = Fees::with(['student', 'classes', 'sessions'])->findOrFail($fee);
         $route = $this->success_rep . '/Show';
+
         return inertia($route, [
             'item' => $data,
             'dynamicParam' => $this->dynamicParam,
             'additional' => json_decode($data->additional),
         ]);
+    }
+
+    public function markPayment()
+    {
+
+        if (request()->has('id')) {
+            $id = request('id');
+            $fee = Fees::with(['student', 'classes', 'sessions'])->findOrFail($id);
+            $fee->status = 'paid';
+            $fee->save();
+            $success = "Payment Marked";
+            $this->index($id, $success);
+            return to_route($this->index());
+
+        } else {
+            $success = "Something Went Wrong";
+
+            return back()->with('success', $success);
+        }
     }
 
 
