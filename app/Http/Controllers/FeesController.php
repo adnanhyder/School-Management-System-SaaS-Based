@@ -217,8 +217,8 @@ class FeesController extends Controller
             $fee->status = 'paid';
             $fee->save();
             $success = "Payment Marked";
-            $this->index($id, $success);
-            return to_route($this->index());
+            return $this->index($id, $success);
+
 
         } else {
             $success = "Something Went Wrong";

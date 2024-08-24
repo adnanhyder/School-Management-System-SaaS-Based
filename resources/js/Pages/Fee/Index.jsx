@@ -5,9 +5,18 @@ import {Head, Link, router} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
 import {ucfirst} from "@/functions";
 import Voucher from "@/Pages/Fee/Voucher";
+import {useEffect, useRef, useState} from "react";
 
 
 export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success, printData, printAdditionalData}) {
+  const [isVoucherLoaded, setIsVoucherLoaded] = useState(false);
+  const voucherRef = useRef(null);
+
+  const handleVoucherLoad = () => {
+    setIsVoucherLoaded(true);
+  };
+
+
   queryParams = queryParams || {};
 
   const searchFieldChanged = (name, value) => {
@@ -159,9 +168,13 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
     }
   };
 
-  if(printData){
-    printContent();
-  }
+  useEffect(() => {
+    console.log(printData);
+    console.log(isVoucherLoaded);
+    if (printData && isVoucherLoaded) {
+      printContent();
+    }
+  }, [printData, isVoucherLoaded]);
 
   return (
     <>
@@ -330,10 +343,12 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
       <div id="print-sections" style={{ display: 'none' }}>
         {printData && (
           <Voucher
+            auth={auth}
             item={printData}
             additional={printAdditionalData}
-            auth={auth}
             printBtn={false}
+            onLoad={handleVoucherLoad}
+            ref={voucherRef}
           />
         )}
 

@@ -1,23 +1,20 @@
-import {ucfirst} from "@/functions";
+import React, { forwardRef } from 'react';
+import { ucfirst } from "@/functions";
 import PrintButton from "@/Components/PrintButton";
-import {useEffect, useRef} from "react";
 
-export default function Voucher({auth , item , additional  , printBtn}) {
+const Voucher = forwardRef(({ auth, item, additional, printBtn }, ref) => {
   const fee = item;
   const school = auth.default;
   const titleOfPrint = `${ucfirst(fee.student.name)} - ${ucfirst(fee.student.roll_number)} - ${ucfirst(fee.classes.name)} - ${ucfirst(fee.classes.section)}`;
 
-
-  return(
+  return (
     <>
-      <div className="container recipt-fee" id="print-section">
+      <div className="container recipt-fee" id="print-section" ref={ref}>
         <header>
           <div className="header-info">
             <div className="bx-pull-left">
               {school.image && (
-
-                <img  src={`/storage/${school.image}`} className="w-64 school-logo" />
-
+                <img src={`/storage/${school.image}`} className="w-64 school-logo" />
               )}
             </div>
             <div className="bx-pull-left w-75">
@@ -31,7 +28,7 @@ export default function Voucher({auth , item , additional  , printBtn}) {
         <section className="receipt-details">
           <div className="receipt-info">
             <p>Receipt No: <span>{fee.id}</span></p>
-            <p>Date: <span>{ new Date(fee.created_at).toLocaleDateString('en-GB', {day: '2-digit',month: 'long', year: 'numeric'})}</span></p>
+            <p>Date: <span>{new Date(fee.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}</span></p>
             <p>Class: <span>{ucfirst(fee.classes.name)}</span></p>
             <p>Section: <span>{ucfirst(fee.classes.section)}</span></p>
             <p>Session: <span>{ucfirst(fee.sessions.name)}</span></p>
@@ -44,9 +41,7 @@ export default function Voucher({auth , item , additional  , printBtn}) {
           </div>
           <div className="profile-pic">
             {fee.student.profile_picture && (
-
-              <img  src={`/storage/${fee.student.profile_picture}`} className="w250" />
-
+              <img src={`/storage/${fee.student.profile_picture}`} className="w250" />
             )}
           </div>
         </section>
@@ -65,7 +60,7 @@ export default function Voucher({auth , item , additional  , printBtn}) {
             <td>{fee.student.fee_amount}</td>
           </tr>
           {additional.map((fee, index) => (
-            <tr key={index+1}>
+            <tr key={index + 1}>
               <td>{index + 2}</td>
               <td>{fee.name}</td>
               <td>{fee.amount}</td>
@@ -76,13 +71,11 @@ export default function Voucher({auth , item , additional  , printBtn}) {
             <td><b>Total</b></td>
             <td><b>{fee.amount}</b></td>
           </tr>
-
           </tbody>
         </table>
         <div className="fee-summary">
           <div className="summary-left">
             <p>Total Fee: <span>{fee.amount}</span></p>
-
           </div>
           <div className="summary-right">
             <div className="payment-info">
@@ -92,16 +85,15 @@ export default function Voucher({auth , item , additional  , printBtn}) {
               <p>Status : <span>{ucfirst(fee.status)} </span></p>
             </div>
           </div>
-
-
         </div>
       </div>
       <div className="bx-pull-right">
-      {printBtn && (
-        <PrintButton schoolName={ucfirst(school.name)} id={titleOfPrint}/>
-      )
-      }
+        {printBtn && (
+          <PrintButton schoolName={ucfirst(school.name)} id={titleOfPrint} />
+        )}
       </div>
     </>
-  )
-}
+  );
+});
+
+export default Voucher;
