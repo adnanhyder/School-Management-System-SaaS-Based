@@ -50,6 +50,7 @@ export default function Edit({ auth, item, dynamicParam , classes , sessions }) 
       case "parent_phone":
       case "emergency_contact_phone":
       case "roll_number":
+      case "fee_amount":
         return "number";
       case "dob":
       case "admission_date":

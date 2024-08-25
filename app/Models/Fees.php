@@ -16,7 +16,7 @@ class Fees extends Model
     }
 
     protected $fillable = [
-        'student_id', 'school_id', 'class_id', 'session_id', 'amount', 'month', 'status' , 'additional'
+        'student_id', 'school_id', 'class_id', 'session_id', 'amount', 'month', 'status' ,'tid', 'received_by', 'additional'
     ];
 
     public function markAsPaid()

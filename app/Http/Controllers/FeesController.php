@@ -36,8 +36,21 @@ class FeesController extends Controller
         ];
     }
 
-    public function index($printId = null, $success = null)
+    public function index()
     {
+        $data = session('data');
+        if(empty($data)) {
+            $data = $this->makeQuery();
+        }
+        $route = $this->success_rep . '/Index';
+        return inertia($route,
+            $data
+        );
+    }
+
+    public function makeQuery($printId = null, $success = null)
+    {
+
         $query = Fees::query();
 
         $sortField = request("sort_field", 'created_at');
@@ -69,23 +82,23 @@ class FeesController extends Controller
             ->onEachSide(1);
 
         $receivedItem = FeesResource::collection($fee);
-        $route = $this->success_rep . '/Index';
+
 
         $printData = "";
         $additional = "";
         if ($printId) {
             $printData = Fees::with(['student', 'classes', 'sessions'])->findOrFail($printId);
-            $additional =  json_decode($printData->additional);
+            $additional = json_decode($printData->additional);
         }
-
-        return inertia($route, [
-            'receivedItem' => $receivedItem,
-            'dynamicParam' => $this->dynamicParam,
-            'printData' => $printData,
-            'printAdditionalData' => $additional,
-            'queryParams' => request()->query() ?: null,
-            'success' => $success,
-        ]);
+        return $data =
+            [
+                'receivedItem' => $receivedItem,
+                'dynamicParam' => $this->dynamicParam,
+                'printData' => $printData,
+                'printAdditionalData' => $additional,
+                'queryParams' => request()->query() ?: null,
+                'success' => $success,
+            ];
     }
 
 
@@ -210,15 +223,31 @@ class FeesController extends Controller
 
     public function markPayment()
     {
+        $dataSaved = [
+            'tid' => rand(),
+            'tid_time' => time(),
+            'name_user' => Auth::user()->name,
+            'name_email' => Auth::user()->email
+        ];
 
         if (request()->has('id')) {
             $id = request('id');
             $fee = Fees::with(['student', 'classes', 'sessions'])->findOrFail($id);
-            $fee->status = 'paid';
-            $fee->save();
-            $success = "Payment Marked";
-            return $this->index($id, $success);
+            $status = $fee->status;
 
+            if ($status === 'pending') {
+                $fee->status = 'paid';
+                $fee->received_by = 'TID_' . $dataSaved['tid'] . '' . $dataSaved['tid_time'] . '_' . $dataSaved['name_email'];
+                $fee->tid = $dataSaved['tid'];
+                $fee->save();
+                $success = "Payment Marked For Voucher Number " . $id;
+                $data = $this->makeQuery($id, $success);
+            } else {
+                $data = $this->makeQuery();
+                $success = "Payment Already Marked For Voucher Number " . $id;
+            }
+
+            return to_route('fee.index')->with('data', $data)->with('success', $success);
 
         } else {
             $success = "Something Went Wrong";

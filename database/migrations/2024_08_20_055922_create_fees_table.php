@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->integer('month');
             $table->string('status')->default('pending');
+            $table->string('received_by')->default('')->nullable();
+            $table->unsignedBigInteger('tid')->default(0);
             $table->timestamps();
             $table->json('additional');
         });

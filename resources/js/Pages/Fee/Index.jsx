@@ -1,20 +1,35 @@
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import AdminLayout from "@/Layouts/AdminLayout";
-import {Head, Link, router} from "@inertiajs/react";
+import {Head, Link, router, usePage} from "@inertiajs/react";
 import TableHeading from "@/Components/TableHeading";
-import {ucfirst} from "@/functions";
+import {printArea, ucfirst} from "@/functions";
 import Voucher from "@/Pages/Fee/Voucher";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 
+export default function Index({
+                                auth,
+                                receivedItem,
+                                dynamicParam,
+                                queryParams = null,
+                                success,
+                                printData,
+                                printAdditionalData
+                              }) {
 
-export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success, printData, printAdditionalData}) {
-  const [isVoucherLoaded, setIsVoucherLoaded] = useState(false);
-  const voucherRef = useRef(null);
+  useEffect(() => {
+    const hasPrinted = localStorage.getItem("hasPrinted");
+    if (hasPrinted !== "true") {
+      if (printData) {
+        const schoolToPass = ucfirst(auth.default.name);
+        const titleOfPrint = `${ucfirst(printData.student.name)} - ${ucfirst(printData.student.roll_number)} - ${ucfirst(printData.classes.name)} - ${ucfirst(printData.classes.section)}`;
 
-  const handleVoucherLoad = () => {
-    setIsVoucherLoaded(true);
-  };
+        printArea(schoolToPass, titleOfPrint)
+        localStorage.setItem("hasPrinted", "true");
+      }
+
+    }
+  }, [printData]);
 
 
   queryParams = queryParams || {};
@@ -61,120 +76,13 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
     if (!window.confirm("Please Confirm Cash Received")) {
       return;
     }
+
+    localStorage.setItem("hasPrinted", "false");
     router.post(route(`${dynamicParam.name}.markPayment`), {
       id: item.id,
     });
   };
 
-
-  /*print logic*/
-  const printContent = () => {
-    const printSection = document.getElementById('print-sections');
-    if (printSection) {
-      const printHTML = printSection.innerHTML;
-      const newWindow = window.open('', '', 'height=800,width=1024');
-      const pageTitle = `${printData.id} - ${auth.schoolName}`; // Adjust as needed
-
-      const style = `
-        .school-logo {
-          width: 100px;
-          height: 100px;
-          margin-right: 20px;
-        }
-        .header-info {
-        }
-        .header-info h1 {
-          margin: 0 auto;
-          font-size: 50px;
-        }
-        .header-info p {
-          margin: 5px 0;
-          display: inline;
-        }
-        .receipt-details {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 20px;
-          color: blue;
-        }
-        .receipt-details p span {
-          color: black;
-        }
-        .receipt-info, .student-info {
-          width: 48%;
-        }
-        .profile-pic img {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-        }
-        .receipt-info p, .student-info p {
-          margin: 5px 0;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-top: 20px;
-        }
-        table th, table td {
-          border: 1px solid #AEA1EA;
-          padding: 8px;
-          text-align: left;
-        }
-        #t-rup {
-          color: brown;
-        }
-        #w-rup {
-          color: rgb(77, 165, 42);
-        }
-        .fee-summary {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 20px;
-        }
-        .summary-left p, .payment-info p, .received-by p {
-          margin: 5px 0;
-        }
-        .recipt-fee header {
-          text-align: center;
-        }
-        .w250 {
-          width: 100px !important;
-          height: 100px !important;
-        }
-        .bx-pull-left.w-75 {
-          text-align: center;
-        }
-        .clearfix {
-          clear: both;
-        }
-        .text-uppercase {
-          text-transform: uppercase !important;
-        }
-        .bx-pull-left {
-          float: left;
-          margin-right: 0.3em !important;
-        }
-      `;
-
-      newWindow.document.write('<html><head><title>' + pageTitle + '</title>');
-      newWindow.document.write('<style>' + style + 'body { font-family: Arial, sans-serif; }</style>');
-      newWindow.document.write('</head><body>');
-      newWindow.document.write(printHTML);
-      newWindow.document.write('</body></html>');
-      newWindow.document.close();
-      newWindow.focus();
-      newWindow.print();
-    }
-  };
-
-  useEffect(() => {
-    console.log(printData);
-    console.log(isVoucherLoaded);
-    if (printData && isVoucherLoaded) {
-      printContent();
-    }
-  }, [printData, isVoucherLoaded]);
 
   return (
     <>
@@ -182,12 +90,7 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
         user={auth.user}
 
       >
-        <Link
-          href={route(`${dynamicParam.name}.createbyclass`)}
-          className="bx-pull-right bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-        >
-          Add Fee Classwise
-        </Link>
+
         <Link
           href={route(`${dynamicParam.name}.createbystudnet`)}
           className="bx-pull-right bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
@@ -304,24 +207,29 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                         <td className="px-3 py-3">{singleItem.sessions.name}</td>
                         <td className="px-3 py-3">{ucfirst(singleItem.status)}</td>
                         <td className="px-3 py-3">
+
                           <Link
 
-                            href={route(`${dynamicParam.name}.show`, singleItem.id)}
+                            href={route(`${dynamicParam.name}.show`, {
+                              id: singleItem.id,
+                            })}
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                           >
                             Print Voucher
                           </Link>
 
+
                         </td>
                         <td className="px-3 py-3 text-center">
-
+                          {singleItem.status === 'pending' && (
                           <button
                             onClick={(e) => MarkPayment(singleItem)}
                             className=" bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
                           >
                             Mark Payment
                           </button>
-
+                          )
+                          }
                           <button
                             onClick={(e) => deleteItem(singleItem)}
                             className="text-center font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
@@ -340,19 +248,18 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
           </div>
         </div>
       </AdminLayout>
-      <div id="print-sections" style={{ display: 'none' }}>
+      <div id="print-sections" style={{display: 'none'}}>
         {printData && (
-          <Voucher
-            auth={auth}
-            item={printData}
-            additional={printAdditionalData}
-            printBtn={false}
-            onLoad={handleVoucherLoad}
-            ref={voucherRef}
-          />
+          <>
+
+            <Voucher
+              auth={auth}
+              item={printData}
+              additional={printAdditionalData}
+              printBtn={false}
+            />
+          </>
         )}
-
-
       </div>
     </>
   );

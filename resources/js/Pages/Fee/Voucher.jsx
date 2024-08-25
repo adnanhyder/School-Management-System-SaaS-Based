@@ -1,15 +1,16 @@
 import React, { forwardRef } from 'react';
 import { ucfirst } from "@/functions";
 import PrintButton from "@/Components/PrintButton";
+import {Link} from "@inertiajs/react";
 
-const Voucher = forwardRef(({ auth, item, additional, printBtn }, ref) => {
+const Voucher =({ auth, item, additional, printBtn }) => {
   const fee = item;
   const school = auth.default;
   const titleOfPrint = `${ucfirst(fee.student.name)} - ${ucfirst(fee.student.roll_number)} - ${ucfirst(fee.classes.name)} - ${ucfirst(fee.classes.section)}`;
 
   return (
     <>
-      <div className="container recipt-fee" id="print-section" ref={ref}>
+      <div className="container recipt-fee" id="print-section">
         <header>
           <div className="header-info">
             <div className="bx-pull-left">
@@ -86,14 +87,29 @@ const Voucher = forwardRef(({ auth, item, additional, printBtn }, ref) => {
             </div>
           </div>
         </div>
+        <p>Recived by :
+          <span>
+            {fee.received_by}
+          </span>
+        </p>
       </div>
       <div className="bx-pull-right">
         {printBtn && (
           <PrintButton schoolName={ucfirst(school.name)} id={titleOfPrint} />
         )}
+
+      </div>
+      <div className="bx-pull-left">
+        <Link
+
+          href={route('fee.index')}
+          className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+        >
+          Back
+        </Link>
       </div>
     </>
   );
-});
+};
 
 export default Voucher;

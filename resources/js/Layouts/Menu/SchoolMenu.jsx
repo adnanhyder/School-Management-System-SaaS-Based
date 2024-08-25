@@ -77,8 +77,19 @@ export default function SchoolMenu() {
           Teachers
         </NavLink>
       </li>
-
-
+      <li className="menu-header small text-uppercase">
+        <span className="menu-header-text">Attendance</span>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("attendance.index")}
+          active={route().current("attendance.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Student Attendance
+        </NavLink>
+      </li>
 
 
       <li className="menu-header small text-uppercase">

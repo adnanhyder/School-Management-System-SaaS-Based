@@ -45,6 +45,7 @@ console.log(classes)
       case "parent_phone":
       case "emergency_contact_phone":
       case "roll_number":
+      case "fee_amount":
         return "number";
       case "dob":
       case "admission_date":

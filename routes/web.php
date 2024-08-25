@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\DashboardController;
@@ -63,8 +64,10 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
         ->name('fee.createbystudnet');
     Route::post('/markPayment', [FeesController::class, 'markPayment'])
         ->name('fee.markPayment');
+    Route::get('/markPayment', [FeesController::class, 'index']);
 
     Route::resource('feeCategory', FeeCategoryController::class);
+    Route::resource('attendance', AttendanceController::class);
 
     Route::patch('/selectSchool', [SchoolController::class, 'selectSchool'])->name('school.selectSchool');
 });

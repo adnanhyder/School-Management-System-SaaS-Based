@@ -60,7 +60,9 @@ export const printArea = (schoolName , id) => {
     margin: 0px auto;
     font-size: 50px;
 }
-
+.bx-pull-left.w-75 {
+width: 75%;
+}
 .header-info p {
     margin: 5px 0;
     display: inline;
