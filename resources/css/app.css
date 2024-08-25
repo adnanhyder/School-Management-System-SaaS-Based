@@ -159,6 +159,9 @@ main h2 {
     background-image: unset !important;
     appearance: checkbox !important;
 }
+[type="checkbox"] {
+    appearance: checkbox !important;
+}
 .box-suggestion {
     height: 150px;
     overflow-y: scroll;

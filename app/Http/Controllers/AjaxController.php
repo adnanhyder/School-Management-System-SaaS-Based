@@ -61,4 +61,11 @@ class AjaxController extends Controller
             'fee_categories' => $feeCategories
         ]);
     }
+    public function getStudentAttandnace(Request $request)
+    {
+        $students = Student::where('session_id', $request->session_id)
+            ->where('class_id', $request->class_id)
+            ->get(['id', 'name', 'roll_number']);
+        return response()->json(['students' => $students]);
+    }
 }

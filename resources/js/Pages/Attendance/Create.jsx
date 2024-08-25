@@ -1,50 +1,63 @@
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
-import TextInput from "@/Components/TextInput";
-import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam ,categories }) {
-  const { data, setData, post, errors, reset } = useForm({
-    name: "",
-    description: "",
-    quantity: "",
-    serial_number: "",
-    location: "",
-    category: "",
+import {Head, Link, useForm} from "@inertiajs/react";
+import {useEffect, useState} from "react";
+import axios from "axios";
+
+export default function Create({auth, dynamicParam, sessions, classes}) {
+  const {data, setData, post, errors, reset} = useForm({
+    session_id: '',
+    class_id: '',
+    date: '',
+    attendance: {}  // Store attendance data
   });
+
+  const [students, setStudents] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route(`${dynamicParam.name}.store`));
+    post(route(`${dynamicParam.name}.store`), {
+      data: {
+        ...data,
+        attendance: Object.entries(data.attendance).map(([student_id, present]) => ({
+          student_id,
+          present,
+        }))
+      }
+    });
   };
 
-  const getInputType = (field) => {
+  useEffect(() => {
+    if (data.session_id && data.class_id && data.date) {
+      axios.get(`/api/studentsFetch`, {
+        params: { session_id: data.session_id, class_id: data.class_id , date: data.date },
+      })
+
+        .then(response => {
+          setStudents(response.data.students);
+        })
+        .catch(error => {
+          console.error("There was an error fetching the students!", error);
+        });
+    }
+  }, [data.session_id, data.class_id , data.date]);
+
+  const handleCheckboxChange = (studentId) => {
+    setData('attendance', {
+      ...data.attendance,
+      [studentId]: !data.attendance[studentId]
+    });
+  };
+
+  const getOptions = (field) => {
     switch (field) {
-      case "email":
-        return "email";
-      case "phone":
-      case "parent_phone":
-      case "emergency_phone":
-      case "roll_number":
-      case "quantity":
-        return "number";
-      case "dob":
-      case "joining_date":
-      case "admission_date":
-        return "date";
-      case "notes":
-      case "description":
-        return "textarea";
-      case "image":
-        return "file";
-      case "status":
-      case "gender":
-      case "category":
-        return "select";
+      case "session_id":
+        return sessions;
+      case "class_id":
+        return classes;
       default:
-        return "text";
+        return [];
     }
   };
-
 
   return (
     <AdminLayout user={auth.user}>
@@ -52,50 +65,21 @@ export default function Create({ auth, dynamicParam ,categories }) {
       <h2 className="text-black text-2xl font-semibold">Create {dynamicParam.name}</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
         <form onSubmit={handleSubmit}>
-          {Object.keys(data).map((field, index) => (
+          {["session_id", "class_id", "date"].map((field, index) => (
             <div className="mt-4" key={index}>
-              <label className="block text-gray-700">{field.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase())}:</label>
-              {getInputType(field) === "textarea" ? (
-                <textarea
+              <label className="block text-gray-700">
+                {field.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase())}:
+              </label>
+              {field === "date" ? (
+                <input
+                  type="date"
                   id={field}
                   name={field}
                   value={data[field]}
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 />
-              ): getInputType(field) === 'file' ? (
-                <>
-                  <input
-                    id={field}
-                    type="file"
-                    name={field}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData(field, e.target.files[0])}
-                  />
-
-                  <ul className="instruciton">
-                    <li>The image dimensions should not exceed 500x500 pixels.
-                      The image size must not exceed 300 KB.
-                      The image must be a file of type: jpg, jpeg, png.</li>
-                  </ul>
-                </>
-              )  : getInputType(field) === 'file' ? (
-                <>
-                  <input
-                    id={field}
-                    type="file"
-                    name={field}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData(field, e.target.files[0])}
-                  />
-
-                  <ul className="instruciton">
-                    <li>The image dimensions should not exceed 500x500 pixels.
-                      The image size must not exceed 300 KB.
-                      The image must be a file of type: jpg, jpeg, png.</li>
-                  </ul>
-                </>
-              ) : getInputType(field) === 'select' ? (
+              ) : (
                 <select
                   id={field}
                   name={field}
@@ -103,29 +87,48 @@ export default function Create({ auth, dynamicParam ,categories }) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >
-                  <option  value="">
-                    Select Category
-                  </option>
-                  {categories.map((option, optionIndex) => (
+                  <option value="">Select Value</option>
+                  {getOptions(field).map((option, optionIndex) => (
                     <option key={optionIndex} value={option.id}>
-                      {option.name}
+                      {option.name} {option.section}
                     </option>
                   ))}
                 </select>
-              ) : (
-                <TextInput
-                  id={field}
-                  type={getInputType(field)}
-                  name={field}
-                  value={data[field]}
-                  className="mt-1 block w-full"
-                  isFocused={index === 0}
-                  onChange={(e) => setData(field, e.target.value)}
-                />
               )}
               {errors[field] && <div className="text-red-600">{errors[field]}</div>}
             </div>
           ))}
+
+          {students.length > 0 && (
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold">Mark Attendance:</h3>
+              <table className="min-w-full bg-white">
+                <thead>
+                <tr>
+                  <th className="px-4 py-2">Roll Number</th>
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Present</th>
+                </tr>
+                </thead>
+                <tbody>
+                {students.map(student => (
+                  <tr key={student.id}>
+                    <td className="border px-4 py-2">{student.roll_number}</td>
+                    <td className="border px-4 py-2">{student.name}</td>
+                    <td className="border px-4 py-2">
+                      <input
+                        type="checkbox"
+                        checked={data.attendance[student.id] || false}
+                        onChange={() => handleCheckboxChange(student.id)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
           <div className="mt-4 text-right">
             <Link
               href={route(`${dynamicParam.name}.index`)}

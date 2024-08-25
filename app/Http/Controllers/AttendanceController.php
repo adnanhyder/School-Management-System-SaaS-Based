@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AttendanceResource;
 use App\Models\Attendance;
+use App\Models\Classes;
+use App\Models\Sessions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -62,9 +64,14 @@ class AttendanceController extends Controller
 
     public function create()
     {
+        $sessions = Sessions::where("school_id", $this->school_id)->get(['id', 'name']);
+        $classes = Classes::where("school_id", $this->school_id)->get();
+
         $route = $this->success_rep . '/Create';
         return inertia($route,
             [
+                'sessions' => $sessions,
+                'classes' => $classes,
                 'dynamicParam' => $this->dynamicParam
             ]
         );
@@ -72,27 +79,31 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
+        dd($request);
+        $validatedData = $request->validate([
+            'session_id' => 'required|exists:sch_sessions,id',
+            'class_id' => 'required|exists:sch_classes,id',
+            'date' => 'required|date',
 
-        ], $this->imageError);
+        ]);
 
-
-        $data = $request->all();
-
-        $data['school_id'] = $this->school_id;
-        $image = $data['image'] ?? null;
-        if ($image) {
-            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
-
-            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
+        foreach ($validatedData['attendance'] as $attendanceData) {
+            Attendance::updateOrCreate(
+                [
+                    'school_id' => $this->school_id,
+                    'session_id' => $validatedData['session_id'],
+                    'class_id' => $validatedData['class_id'],
+                    'date' => $validatedData['date'],
+                    'student_id' => $attendanceData['student_id'],
+                ],
+                [
+                    'present' => $attendanceData['present'],
+                ]
+            );
         }
-        Attendance::create($data);
 
-        $success = " $this->success_rep  was created";
 
-        return to_route($this->index_route)->with('success', $success);
+        return to_route($this->index_route)->with('success', 'Attendance recorded successfully');
     }
 
     public function edit(Attendance $attendance)
