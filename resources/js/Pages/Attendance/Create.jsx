@@ -2,6 +2,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import {Head, Link, useForm} from "@inertiajs/react";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {ucfirst} from "@/functions";
 
 export default function Create({auth, dynamicParam, sessions, classes}) {
   const {data, setData, post, errors, reset} = useForm({
@@ -28,6 +29,11 @@ export default function Create({auth, dynamicParam, sessions, classes}) {
 
   useEffect(() => {
     if (data.session_id && data.class_id && data.date) {
+      setStudents({
+        id : 'loading....',
+        roll_number : 'loading....',
+        name : 'loading....'
+      })
       axios.get(`/api/studentsFetch`, {
         params: { session_id: data.session_id, class_id: data.class_id , date: data.date },
       })
@@ -90,7 +96,7 @@ export default function Create({auth, dynamicParam, sessions, classes}) {
                   <option value="">Select Value</option>
                   {getOptions(field).map((option, optionIndex) => (
                     <option key={optionIndex} value={option.id}>
-                      {option.name} {option.section}
+                      {ucfirst(option.name)} {option.section}
                     </option>
                   ))}
                 </select>
@@ -116,11 +122,13 @@ export default function Create({auth, dynamicParam, sessions, classes}) {
                     <td className="border px-4 py-2">{student.roll_number}</td>
                     <td className="border px-4 py-2">{student.name}</td>
                     <td className="border px-4 py-2">
+                      {student.id !== 0  && (
                       <input
                         type="checkbox"
                         checked={data.attendance[student.id] || false}
                         onChange={() => handleCheckboxChange(student.id)}
                       />
+                      )}
                     </td>
                   </tr>
                 ))}

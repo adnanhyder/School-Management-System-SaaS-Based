@@ -71,18 +71,10 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                 <table className="col-12">
                   <thead>
                   <tr className="text-nowrap">
-                    <th className="px-3 py-3 white">Id</th>
-                    <TableHeading
-                      name="name"
-                      sort_field={queryParams.sort_field}
-                      sort_direction={queryParams.sort_direction}
-                      sortChanged={sortChanged}
-                    >
-                      <span className="white">Name</span>
-                    </TableHeading>
-                    <th className="px-3 py-3 ">Quantity</th>
-                    <th className="px-3 py-3 ">Serial Number</th>
-                    <th className="px-3 py-3 ">Description</th>
+                    <th className="px-3 py-3 white">Date</th>
+                    <th className="px-3 py-3 ">Student Name</th>
+                    <th className="px-3 py-3 ">Class</th>
+                    <th className="px-3 py-3 ">status</th>
                     <th className="px-3 py-3 ">Actions</th>
                   </tr>
                   </thead>
@@ -90,18 +82,6 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                   <thead>
                   <tr>
                     <th className="px-3 py-3"></th>
-                    <th className="px-3 py-3">
-                      <TextInput
-                        className="w-full"
-                        defaultValue={queryParams.name}
-                        placeholder="Name"
-                        onBlur={(e) =>
-                          searchFieldChanged("name", e.target.value)
-                        }
-                        onKeyPress={(e) => onKeyPress("name", e)}
-                      />
-                    </th>
-
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
                     <th className="px-3 py-3"></th>
@@ -115,28 +95,17 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                       key={singleItem.id}
                     >
-                      <td className="px-3 py-3">{singleItem.id}</td>
-                      <th className="px-3 py-3 ">
-                        <Link
-                          href={route(`${dynamicParam.name}.show`, singleItem.id)}
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                        >
-                          {singleItem.name}
-                        </Link>
-
-
-                      </th>
-                      <td className="px-3 py-3">{singleItem.quantity}</td>
-                      <td className="px-3 py-3">{singleItem.serial_number}</td>
-                      <td className="px-3 py-3">{singleItem.description}</td>
+                      <td className="px-3 py-3">{singleItem.date}</td>
+                      <td className="px-3 py-3">{singleItem.student_id}</td>
+                      <td className="px-3 py-3">{singleItem.class_id}</td>
                       <td className="px-3 py-3">
-                        <Link
-
-                          href={route(`${dynamicParam.name}.edit`, singleItem.id)}
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                        >
-                          Edit
-                        </Link>
+                        {singleItem.status === 0 ? (
+                          <span>Absent</span>
+                        ) : (
+                          <span>Present</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-3">
                         <button
                           onClick={(e) => deleteItem(singleItem)}
                           className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"

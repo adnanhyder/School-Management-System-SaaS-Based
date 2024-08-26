@@ -79,25 +79,25 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+
         $validatedData = $request->validate([
             'session_id' => 'required|exists:sch_sessions,id',
             'class_id' => 'required|exists:sch_classes,id',
             'date' => 'required|date',
-
+            'attendance' => 'array',
         ]);
 
-        foreach ($validatedData['attendance'] as $attendanceData) {
+        foreach ($validatedData['attendance'] as $id => $attendanceData) {
             Attendance::updateOrCreate(
                 [
                     'school_id' => $this->school_id,
                     'session_id' => $validatedData['session_id'],
                     'class_id' => $validatedData['class_id'],
                     'date' => $validatedData['date'],
-                    'student_id' => $attendanceData['student_id'],
+                    'student_id' => $id,
                 ],
                 [
-                    'present' => $attendanceData['present'],
+                    'present' => 1,
                 ]
             );
         }
@@ -109,46 +109,18 @@ class AttendanceController extends Controller
     public function edit(Attendance $attendance)
     {
 
-        $get_item = new AttendanceResource($attendance);
-        $data = $get_item->toArray(request());
-        $route = $this->success_rep . '/Edit';
 
-        return inertia($route, [
-                'item' => $data,
-                'dynamicParam' => $this->dynamicParam
-            ]
-        );
     }
 
     public function update(Request $request, Attendance $attendance)
     {
 
-        $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
 
-        ], $this->imageError);
-        $data = $request->all();
-
-        $image = $data['image'] ?? null;
-        if ($image) {
-            if ($attendance->image) {
-                Storage::disk('public')->delete($category->image);
-            }
-            $filename = Str::random() . '.' . $image->getClientOriginalExtension();
-            $data['image'] = $image->storeAs($this->dynamicParam['name'], $filename, 'public');
-        }
-        $category->update($data);
-        $success = " $this->success_rep  was updated";
-        return to_route($this->index_route)->with('success', $success);
     }
 
     public function destroy(Attendance $attendance)
     {
 
-        if ($attendance->image) {
-            Storage::disk('public')->delete($attendance->image);
-        }
         $attendance->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
@@ -156,12 +128,7 @@ class AttendanceController extends Controller
 
     public function show(Attendance $attendance)
     {
-        $data = new AttendanceResource($attendance);
-        $route = $this->success_rep . '/Show';
-        return inertia($route, [
-            'item' => $data,
-            'dynamicParam' => $this->dynamicParam
-        ]);
+
     }
 
 }
