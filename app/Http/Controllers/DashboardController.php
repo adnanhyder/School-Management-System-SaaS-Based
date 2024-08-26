@@ -77,7 +77,7 @@ class DashboardController extends Controller
         ];
         $user = Auth::user();
 
-        $defaultSchool = $user->getDefaultSchool();
+        $defaultSchool = $user->getDefault();
 
         return inertia('DashboardSchool',
             [

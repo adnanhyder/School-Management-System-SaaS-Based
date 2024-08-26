@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TeacherResource;
+use App\Models\Sessions;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class TeacherController extends Controller
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
         $this->index_route = $this->dynamicParam['name'] . '.index';
-        $this->school_id = Auth::user()->getDefaultSchool()->id;
+        $this->school_id = Auth::user()->getDefault()->id;
         $this->imageError = [
             'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
             'image.max' => 'Please upload image that has size under 300 KB.',
@@ -48,7 +49,7 @@ class TeacherController extends Controller
         }
 
 
-        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
+        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
@@ -65,9 +66,11 @@ class TeacherController extends Controller
     public function create()
     {
         $route = $this->success_rep . '/Create';
+        $sessions = Sessions::where('school_id', $this->school_id)->get();
         return inertia($route,
             [
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                'sessions' => $sessions
             ]
         );
     }
@@ -76,6 +79,8 @@ class TeacherController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'session_id' => 'numeric |required',
+            'salary' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500', // Validate image type and size
 
         ], $this->imageError);
@@ -102,11 +107,13 @@ class TeacherController extends Controller
 
         $get_item = new TeacherResource($teacher);
         $data = $get_item->toArray(request());
+        $sessions = Sessions::where('school_id', $this->school_id)->get();
         $route = $this->success_rep . '/Edit';
 
         return inertia($route, [
                 'item' => $data,
-                'dynamicParam' => $this->dynamicParam
+                'dynamicParam' => $this->dynamicParam,
+                    'sessions' => $sessions
             ]
         );
     }
@@ -115,6 +122,8 @@ class TeacherController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'session_id' => 'numeric |required',
+            'salary' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
 
         ], $this->imageError);
@@ -135,8 +144,8 @@ class TeacherController extends Controller
 
     public function destroy(Teacher $teacher)
     {
-        if ($teacher->profile_picture) {
-            Storage::disk('public')->delete($teacher->profile_picture);
+        if ($teacher->image) {
+            Storage::disk('public')->delete($teacher->image);
         }
         $teacher->delete();
         $success = " $this->success_rep  was Deleted";

@@ -5,7 +5,7 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import {getOptions} from "@/functions";
 
-export default function Edit({ auth, item, dynamicParam }) {
+export default function Edit({ auth, item, dynamicParam ,sessions }) {
   const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
     email: item.email || "",
@@ -15,11 +15,13 @@ export default function Edit({ auth, item, dynamicParam }) {
     city: item.city || "",
     address: item.address || "",
 
-    employee_id: item.employee_id || "", // Unique ID for the teacher
+    employee_id: item.employee_id || "",
+    session_id: item.session_id || "",// Unique ID for the teacher
     department: item.department || "", // Department or subject area
     designation: item.designation || "", // Job title (e.g., "Professor", "Lecturer")
     qualification: item.qualification || "", // Educational qualifications (e.g., "M.Sc., Ph.D.")
     experience: item.experience || "", // Years of teaching experience
+    salary: item.salary || "", // Years of teaching experience
     subjects_taught: item.subjects_taught || "", // List of subjects the teacher teaches
     joining_date: item.joining_date || "", // Date of joining the institution
 
@@ -45,6 +47,7 @@ export default function Edit({ auth, item, dynamicParam }) {
       case "parent_phone":
       case "emergency_contact_phone":
       case "roll_number":
+      case "salary":
         return "number";
       case "dob":
       case "admission_date":
@@ -57,6 +60,7 @@ export default function Edit({ auth, item, dynamicParam }) {
         return "file";
       case "status":
       case "gender":
+      case "session_id":
         return "select";
       default:
         return "text";
@@ -113,7 +117,22 @@ export default function Edit({ auth, item, dynamicParam }) {
                       The image must be a file of type: jpg, jpeg, png.</li>
                   </ul>
                 </>
-              )  : getInputType(field) === 'select' ? (
+              ): field === "session_id" ? (
+                <select
+                  id={field}
+                  name={field}
+                  value={data[field]}
+                  className="mt-1 block w-full"
+                  onChange={(e) => setData(field, e.target.value)}
+                >
+                  <option value="">Select Session</option>\
+                  {sessions.map((option, optionIndex) => (
+                    <option key={optionIndex} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+              )    : getInputType(field) === 'select' ? (
                 <select
                   id={field}
                   name={field}

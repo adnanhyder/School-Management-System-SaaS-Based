@@ -2,16 +2,19 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam }) {
+export default function Create({ auth, dynamicParam , classes , sessions }) {
   const { data, setData, post, errors, reset } = useForm({
     name: "",
     email: "",
+    session_id : "",
+    class_id : "",
     phone: "",
     gender: "",
     roll_number : "",
     blood_group: "",
     city: "",
     address: "",
+    fee_amount: "",
     dob: "",
     parent_name: "",
     parent_phone: "",
@@ -28,7 +31,7 @@ export default function Create({ auth, dynamicParam }) {
     notes: "",
     image: "",
   });
-
+console.log(classes)
   const handleSubmit = (e) => {
     e.preventDefault();
     post(route(`${dynamicParam.name}.store`));
@@ -42,6 +45,7 @@ export default function Create({ auth, dynamicParam }) {
       case "parent_phone":
       case "emergency_contact_phone":
       case "roll_number":
+      case "fee_amount":
         return "number";
       case "dob":
       case "admission_date":
@@ -52,6 +56,8 @@ export default function Create({ auth, dynamicParam }) {
         return "file";
       case "status":
       case "gender":
+      case "session_id":
+      case "class_id":
         return "select";
       default:
         return "text";
@@ -109,19 +115,57 @@ export default function Create({ auth, dynamicParam }) {
                     </ul>
                   </>
               ) : getInputType(field) === 'select' ? (
-                  <select
+                <>
+                  {field === 'class_id' ? (
+                    <>
+                      <select
+                        id={field}
+                        name={field}
+                        value={data[field]}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.value)}
+                      >
+                        <option value="">Select Class</option>
+                        {classes.map((option, optionIndex) => (
+                          <option key={optionIndex} value={option.id}>
+                            {option.name}  {option.section}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  ): field === "session_id" ? (
+                    <select
                       id={field}
                       name={field}
                       value={data[field]}
                       className="mt-1 block w-full"
                       onChange={(e) => setData(field, e.target.value)}
-                  >
-                    {getOptions(field).map((option, optionIndex) => (
-                        <option key={optionIndex} value={option}>
-                          {option}
+                    >
+                      <option value="">Select Session</option>\
+                      {sessions.map((option, optionIndex) => (
+                        <option key={optionIndex} value={option.id}>
+                          {option.name}
                         </option>
-                    ))}
-                  </select>
+                      ))}
+                    </select>
+                  ) : (
+                    <>
+                      <select
+                        id={field}
+                        name={field}
+                        value={data[field]}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.value)}
+                      >
+                        {getOptions(field).map((option, optionIndex) => (
+                          <option key={optionIndex} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                </>
               ) : (
                 <TextInput
                   id={field}

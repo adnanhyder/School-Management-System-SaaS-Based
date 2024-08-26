@@ -5,10 +5,12 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import {getOptions} from "@/functions";
 
-export default function Edit({ auth, item, dynamicParam }) {
+export default function Edit({ auth, item, dynamicParam , classes , sessions }) {
   const { data, setData, post, errors, reset } = useForm({
     name: item.name || "",
     email: item.email || "",
+    session_id: item.session_id || "",
+    class_id: item.class_id || "",
     phone: item.phone || "",
     gender: item.gender || "",
     roll_number: item.roll_number || "",
@@ -16,6 +18,7 @@ export default function Edit({ auth, item, dynamicParam }) {
     city: item.city || "",
     address: item.address || "",
     dob: item.dob || "",
+    fee_amount: item.fee_amount || "",
     parent_name: item.parent_name || "",
     parent_phone: item.parent_phone || "",
     parent_email: item.parent_email || "",
@@ -47,6 +50,7 @@ export default function Edit({ auth, item, dynamicParam }) {
       case "parent_phone":
       case "emergency_contact_phone":
       case "roll_number":
+      case "fee_amount":
         return "number";
       case "dob":
       case "admission_date":
@@ -59,6 +63,8 @@ export default function Edit({ auth, item, dynamicParam }) {
         return "file";
       case "status":
       case "gender":
+      case "class_id":
+      case "session_id":
         return "select";
       default:
         return "text";
@@ -115,20 +121,58 @@ export default function Edit({ auth, item, dynamicParam }) {
                       The image must be a file of type: jpg, jpeg, png.</li>
                   </ul>
                 </>
-              )  : getInputType(field) === 'select' ? (
-                <select
-                  id={field}
-                  name={field}
-                  value={data[field]}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData(field, e.target.value)}
-                >
-                  {getOptions(field).map((option, optionIndex) => (
-                    <option key={optionIndex} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+              ) : getInputType(field) === 'select' ? (
+                <>
+                  {field === 'class_id' ? (
+                    <>
+                      <select
+                        id={field}
+                        name={field}
+                        value={data[field]}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.value)}
+                      >
+                        <option value="">Select Class</option>
+                        {classes.map((option, optionIndex) => (
+                          <option key={optionIndex} value={option.id}>
+                            {option.name}  {option.section}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  ): field === "session_id" ? (
+                    <select
+                      id={field}
+                      name={field}
+                      value={data[field]}
+                      className="mt-1 block w-full"
+                      onChange={(e) => setData(field, e.target.value)}
+                    >
+                      <option value="">Select Session</option>\
+                      {sessions.map((option, optionIndex) => (
+                        <option key={optionIndex} value={option.id}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  )  : (
+                    <>
+                      <select
+                        id={field}
+                        name={field}
+                        value={data[field]}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData(field, e.target.value)}
+                      >
+                        {getOptions(field).map((option, optionIndex) => (
+                          <option key={optionIndex} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                </>
               ) : (
                 <TextInput
                   id={field}

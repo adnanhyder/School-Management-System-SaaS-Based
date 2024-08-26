@@ -23,10 +23,12 @@ return new class extends Migration
             $table->string('address')->nullable();
 
             $table->string('employee_id')->unique();
+            $table->integer('session_id')->nullable();
             $table->string('department')->nullable();
             $table->string('designation')->nullable();
             $table->string('qualification')->nullable();
             $table->text('experience')->nullable(); // Years of teaching experience
+            $table->bigInteger('salary')->nullable(); // Years of teaching experience
             $table->text('subjects_taught')->nullable(); // List of subjects (can be stored as JSON or a long string)
             $table->date('joining_date')->nullable();
 

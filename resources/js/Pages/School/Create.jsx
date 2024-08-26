@@ -11,6 +11,7 @@ export default function Create({ auth , dynamicParam , users  }) {
     address: "",
     phone: "",
     assignedUser: "",
+    image: "",
   });
 
   const handleSubmit = (e) => {
@@ -78,6 +79,23 @@ export default function Create({ auth , dynamicParam , users  }) {
             </SelectInput>
 
             <InputError message={errors.assignedUser} className="mt-2" />
+          </div>
+          <div className="mt-4">
+            <label className="col-12">Image</label>
+            <input
+              type="file"
+              name='image'
+              className="mt-1 block w-full"
+              onChange={(e) => setData("image", e.target.files[0])}
+            />
+
+            <ul className="instruciton">
+              <li>The image dimensions should not exceed 500x500 pixels.
+                The image size must not exceed 300 KB.
+                The image must be a file of type: jpg, jpeg, png.</li>
+            </ul>
+
+            <InputError message={errors.image} className="mt-2" />
           </div>
           <div className="mt-4 text-right">
             <Link

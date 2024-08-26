@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Resources\ClassesResource;
+use App\Http\Resources\StudentResource;
 use App\Models\Classes;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +26,7 @@ class ClassesController extends Controller
     {
         $this->success_rep = ucfirst($this->dynamicParam['name']);
         $this->index_route = $this->dynamicParam['name'] . '.index';
-        $this->school_id = Auth::user()->getDefaultSchool()->id;
+        $this->school_id = Auth::user()->getDefault()->id;
         $this->imageError = [
             'image.dimensions' => 'The image dimensions exceeds by 500x500 pixels.',
             'image.max' => 'Please upload image that has size under 300 KB.',
@@ -46,7 +48,7 @@ class ClassesController extends Controller
             $query->where("section", "like", "%" . request("section") . "%");
         }
 
-        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
+        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
@@ -133,4 +135,23 @@ class ClassesController extends Controller
             'dynamicParam' => $this->dynamicParam
         ]);
     }
+
+    public function assign()
+    {
+        $query = Student::query();
+        $students = $query->where("school_id", $this->school_id)->get();
+        $data_students = StudentResource::collection($students);
+        $query = Classes::query();
+        $classes = $query->where("school_id", $this->school_id)->get();
+        $data_classes = ClassesResource::collection($classes);
+        $route = $this->success_rep . '/assign';
+        return inertia($route, [
+            'students' => $data_students,
+            'classes' => $data_classes,
+            'dynamicParam' => $this->dynamicParam
+        ]);
+    }
+
+
+
 }

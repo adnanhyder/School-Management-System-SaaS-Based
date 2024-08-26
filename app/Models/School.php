@@ -10,7 +10,7 @@ class School extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'name' ,'address' , 'phone' , 'created_by' ];
+    protected $fillable = [ 'name' ,'address' , 'phone', 'image' , 'created_by' ];
     protected $table;
 
     public function __construct(array $attributes = [])

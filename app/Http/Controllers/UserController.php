@@ -28,7 +28,7 @@ class UserController extends Controller
         }
 
         $users = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(50)
             ->onEachSide(1);
 
         return inertia("User/Index", [
