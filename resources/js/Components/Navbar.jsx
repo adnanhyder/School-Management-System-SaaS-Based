@@ -73,19 +73,19 @@ export default function Navbar({user}){
                   <i className="bx bx-user bx-md me-3"/>
                   Profile
                 </ResponsiveNavLink>
-                <li>
-                  <a className="dropdown-item" href="#">
-                      <span className="d-flex align-items-center align-middle">
-                        <i className="flex-shrink-0 bx bx-credit-card bx-md me-3"/>
-                        <span className="flex-grow-1 align-middle">
-                          Billing Plan
-                        </span>
-                        <span className="flex-shrink-0 badge rounded-pill bg-danger">
-                          4
-                        </span>
-                      </span>
-                  </a>
-                </li>
+                {/*<li>*/}
+                {/*  <a className="dropdown-item" href="#">*/}
+                {/*      <span className="d-flex align-items-center align-middle">*/}
+                {/*        <i className="flex-shrink-0 bx bx-credit-card bx-md me-3"/>*/}
+                {/*        <span className="flex-grow-1 align-middle">*/}
+                {/*          Billing Plan*/}
+                {/*        </span>*/}
+                {/*        <span className="flex-shrink-0 badge rounded-pill bg-danger">*/}
+                {/*          4*/}
+                {/*        </span>*/}
+                {/*      </span>*/}
+                {/*  </a>*/}
+                {/*</li>*/}
                 <li>
                   <div className="dropdown-divider my-1"/>
                 </li>

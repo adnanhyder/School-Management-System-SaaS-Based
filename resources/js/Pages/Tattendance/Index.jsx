@@ -6,7 +6,6 @@ import {ucfirst} from "@/functions";
 
 export default function Index({auth, receivedItem, dynamicParam, queryParams = null, success}) {
   queryParams = queryParams || {};
-console.log(receivedItem);
   const searchFieldChanged = (name, value) => {
     if (value) {
       queryParams[name] = value;
@@ -72,9 +71,9 @@ console.log(receivedItem);
                   <thead>
                   <tr className="text-nowrap">
                     <th className="px-3 py-3 white">Date</th>
-                    <th className="px-3 py-3 ">Student Name</th>
                     <th className="px-3 py-3 ">Session</th>
-                    <th className="px-3 py-3 ">Class</th>
+                    <th className="px-3 py-3 ">Teacher Name</th>
+                    <th className="px-3 py-3 ">Phone</th>
                     <th className="px-3 py-3 ">status</th>
                     <th className="px-3 py-3 ">Actions</th>
                   </tr>
@@ -89,8 +88,8 @@ console.log(receivedItem);
                     >
                       <td className="px-3 py-3">{singleItem.date} </td>
                       <td className="px-3 py-3">{singleItem.sessions.name} </td>
-                      <td className="px-3 py-3">{singleItem.student.name}</td>
-                      <td className="px-3 py-3">{ucfirst(singleItem.classes.name)} {singleItem.classes.section}</td>
+                      <td className="px-3 py-3">{singleItem.teacher.name}</td>
+                      <td className="px-3 py-3">{ucfirst(singleItem.teacher.phone)}</td>
                       <td className="px-3 py-3">
                         {singleItem.status === 0 ? (
                           <span>Absent</span>

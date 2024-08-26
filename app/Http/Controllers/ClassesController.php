@@ -48,7 +48,7 @@ class ClassesController extends Controller
             $query->where("section", "like", "%" . request("section") . "%");
         }
 
-        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
+        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,

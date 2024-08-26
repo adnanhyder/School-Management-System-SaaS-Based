@@ -36,7 +36,7 @@ class SchoolController extends Controller
 
     public function index()
     {
-        $schools = School::query()->paginate(10)
+        $schools = School::query()->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,

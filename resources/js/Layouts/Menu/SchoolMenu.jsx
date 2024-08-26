@@ -77,6 +77,31 @@ export default function SchoolMenu() {
           Teachers
         </NavLink>
       </li>
+
+      <li className="menu-header small text-uppercase">
+        <span className="menu-header-text">Fee</span>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("feeCategory.index")}
+          active={route().current("feeCategory.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Fee Category
+        </NavLink>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("fee.index")}
+          active={route().current("fee.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Fee
+        </NavLink>
+      </li>
+
       <li className="menu-header small text-uppercase">
         <span className="menu-header-text">Attendance</span>
       </li>
@@ -88,6 +113,16 @@ export default function SchoolMenu() {
         >
           <i className="menu-icon tf-icons bx bx-home-smile"/>
           Student Attendance
+        </NavLink>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("tattendance.index")}
+          active={route().current("tattendance.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Teacher Attendance
         </NavLink>
       </li>
 
@@ -105,52 +140,30 @@ export default function SchoolMenu() {
           Item Categories
         </NavLink>
       </li>
-        <li className="menu-item child-menu">
-          <NavLink
-            href={route("item.index")}
-            active={route().current("item.index")}
-            className={'menu-link text-truncate'}
-          >
-            <i className="menu-icon tf-icons bx bx-home-smile"/>
-            Items
-          </NavLink>
-        </li>
-        <li className="menu-item child-menu">
-          <NavLink
-            href={route("gatepass.index")}
-            active={route().current("gatepass.index")}
-            className={'menu-link text-truncate'}
-          >
-            <i className="menu-icon tf-icons bx bx-home-smile"/>
-            Gate Pass
-          </NavLink>
-        </li>
-
-      <li className="menu-header small text-uppercase">
-        <span className="menu-header-text">Fee</span>
-      </li>
       <li className="menu-item child-menu">
         <NavLink
-          href={route("feeCategory.index")}
-          active={route().current("feeCategory.index")}
+          href={route("item.index")}
+          active={route().current("item.index")}
           className={'menu-link text-truncate'}
         >
           <i className="menu-icon tf-icons bx bx-home-smile"/>
-          Fee Category
+          Items
         </NavLink>
       </li>
-        <li className="menu-item child-menu">
-          <NavLink
-            href={route("fee.index")}
-            active={route().current("fee.index")}
-            className={'menu-link text-truncate'}
-          >
-            <i className="menu-icon tf-icons bx bx-home-smile"/>
-            Fee
-          </NavLink>
-        </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("gatepass.index")}
+          active={route().current("gatepass.index")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          Gate Pass
+        </NavLink>
+      </li>
 
 
-      </>
-      );
-      }
+
+
+    </>
+  );
+}

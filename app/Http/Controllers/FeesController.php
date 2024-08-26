@@ -78,7 +78,7 @@ class FeesController extends Controller
 
         $fee = $query->where('school_id', $this->school_id)
             ->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(50)
             ->onEachSide(1);
 
         $receivedItem = FeesResource::collection($fee);
@@ -107,7 +107,7 @@ class FeesController extends Controller
         $query = Fees::query();
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
-        $fee = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
+        $fee = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Byclass';
         return inertia($route,

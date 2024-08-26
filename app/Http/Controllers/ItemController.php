@@ -48,7 +48,7 @@ class ItemController extends Controller
         }
 
 
-        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
+        $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
@@ -174,7 +174,7 @@ class ItemController extends Controller
         }
 
 
-        $recivedItem = $query->where("school_id", $this->school_id)->where("module_type", 1)->orderBy($sortField, $sortDirection)->paginate(10)
+        $recivedItem = $query->where("school_id", $this->school_id)->where("module_type", 1)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Category';
         return inertia($route,

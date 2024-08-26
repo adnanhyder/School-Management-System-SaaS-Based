@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FeeCategory;
 use App\Models\Item;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 class AjaxController extends Controller
@@ -77,5 +78,21 @@ class AjaxController extends Controller
             ];
         }
         return response()->json(['students' => $students]);
+    }
+
+    public function getTeacherAttandnace(Request $request)
+    {
+        $teachers = Teacher::where('session_id', $request->session_id)
+            ->get(['id', 'name', 'phone' , 'email']);
+
+        if ($teachers->isEmpty()) {
+            $teachers[]= [
+                'id' => 0,
+                'name' => 'No Record Found',
+                'phone' => 0,
+                'email' => 0,
+            ];
+        }
+        return response()->json(['teachers' => $teachers]);
     }
 }

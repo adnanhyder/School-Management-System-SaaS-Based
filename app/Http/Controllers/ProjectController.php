@@ -31,7 +31,7 @@ class ProjectController extends Controller
         }
 
         $projects = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(50)
             ->onEachSide(1);
 
         return inertia("Project/Index", [
@@ -86,7 +86,7 @@ class ProjectController extends Controller
         }
 
         $tasks = $query->orderBy($sortField, $sortDirection)
-            ->paginate(10)
+            ->paginate(50)
             ->onEachSide(1);
         return inertia('Project/Show', [
             'project' => new ProjectResource($project),

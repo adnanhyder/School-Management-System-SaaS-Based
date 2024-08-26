@@ -28,6 +28,8 @@ class Teacher extends Model
         'designation', // Job title (e.g., "Professor", "Lecturer")
         'qualification', // Educational qualifications (e.g., "M.Sc., Ph.D.")
         'experience', // Years of teaching experience
+        'salary',
+        'session_id',
         'subjects_taught', // List of subjects the teacher teaches
         'joining_date', // Date of joining the institution
         'emergency_name',

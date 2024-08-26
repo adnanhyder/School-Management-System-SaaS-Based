@@ -1,37 +1,25 @@
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
+import { Head, Link, useForm } from "@inertiajs/react";
 import {getOptions} from "@/functions";
-export default function Create({ auth, dynamicParam , sessions}) {
+
+export default function Edit({ auth, item, dynamicParam , categories }) {
   const { data, setData, post, errors, reset } = useForm({
-    name: "",
-    email: "",
-    phone: "",
-    gender: "",
-    dob: "", // Date of Birth
-    city: "",
-    address: "",
+    name: item.name || "",
+    description: item.description || "",
+    quantity: item.quantity || "",
+    serial_number: item.serial_number || "",
+    location: item.location || "",
+    category_id:  item.category_id || "",
+    _method: "PUT",
 
-    employee_id: "",
-    session_id : "",// Unique ID for the teacher
-    department: "", // Department or subject area
-    designation: "", // Job title (e.g., "Professor", "Lecturer")
-    qualification: "", // Educational qualifications (e.g., "M.Sc., Ph.D.")
-    experience: "", // Years of teaching experience
-    salary: "", // Years of teaching experience
-    subjects_taught: "", // List of subjects the teacher teaches
-    joining_date: "", // Date of joining the institution
-
-    emergency_name: "",
-    emergency_phone: "",
-    medical_conditions: "",
-    notes: "", // Any additional notes or comments
-    image: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route(`${dynamicParam.name}.store`));
+    post(route(`${dynamicParam.name}.update`, item.id));
   };
 
   const getInputType = (field) => {
@@ -42,35 +30,51 @@ export default function Create({ auth, dynamicParam , sessions}) {
       case "parent_phone":
       case "emergency_phone":
       case "roll_number":
-      case "salary":
+      case "quantity":
         return "number";
       case "dob":
-      case "joining_date":
       case "admission_date":
         return "date";
       case "notes":
         return "textarea";
+      case "_method":
+        return "method_put";
       case "image":
         return "file";
       case "status":
       case "gender":
-      case "session_id":
+      case "category_id":
         return "select";
       default:
         return "text";
     }
   };
 
-
   return (
     <AdminLayout user={auth.user}>
-      <Head title={`Create ${dynamicParam.name}`} />
-      <h2 className="text-black text-2xl font-semibold">Create {dynamicParam.name}</h2>
+      <Head title={`Edit ${dynamicParam.name}`} />
+      <h2 className="text-black text-2xl font-semibold">Edit {dynamicParam.name}</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+
+        {item.image && (
+          <div className="mb-4">
+            <img  src={`/storage/${item.image}`} className="w-64" />
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           {Object.keys(data).map((field, index) => (
+
+
             <div className="mt-4" key={index}>
-              <label className="block text-gray-700">{field.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase())}:</label>
+              <label className="block text-gray-700">
+                {getInputType(field) === "method_put" ? (
+                  <></>
+                ) : (
+                  <>
+                    {field.replace("_", " ").replace(/\b\w/g, (char) => char.toUpperCase())}:
+                  </>
+                )}
+              </label>
               {getInputType(field) === "textarea" ? (
                 <textarea
                   id={field}
@@ -79,7 +83,9 @@ export default function Create({ auth, dynamicParam , sessions}) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 />
-              ): getInputType(field) === 'file' ? (
+              ) : getInputType(field) === "method_put" ? (
+                <></>
+              ) : getInputType(field) === 'file' ? (
                 <>
                   <input
                     id={field}
@@ -88,30 +94,13 @@ export default function Create({ auth, dynamicParam , sessions}) {
                     className="mt-1 block w-full"
                     onChange={(e) => setData(field, e.target.files[0])}
                   />
-
                   <ul className="instruciton">
                     <li>The image dimensions should not exceed 500x500 pixels.
                       The image size must not exceed 300 KB.
                       The image must be a file of type: jpg, jpeg, png.</li>
                   </ul>
                 </>
-              )  : getInputType(field) === 'file' ? (
-                <>
-                  <input
-                    id={field}
-                    type="file"
-                    name={field}
-                    className="mt-1 block w-full"
-                    onChange={(e) => setData(field, e.target.files[0])}
-                  />
-
-                  <ul className="instruciton">
-                    <li>The image dimensions should not exceed 500x500 pixels.
-                      The image size must not exceed 300 KB.
-                      The image must be a file of type: jpg, jpeg, png.</li>
-                  </ul>
-                </>
-              ): field === "session_id" ? (
+              ) : getInputType(field) === 'select' ? (
                 <select
                   id={field}
                   name={field}
@@ -119,24 +108,12 @@ export default function Create({ auth, dynamicParam , sessions}) {
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >
-                  <option value="">Select Session</option>\
-                  {sessions.map((option, optionIndex) => (
+                  <option  value="">
+                    Select Category
+                  </option>
+                  {categories.map((option, optionIndex) => (
                     <option key={optionIndex} value={option.id}>
                       {option.name}
-                    </option>
-                  ))}
-                </select>
-              )   : getInputType(field) === 'select' ? (
-                <select
-                  id={field}
-                  name={field}
-                  value={data[field]}
-                  className="mt-1 block w-full"
-                  onChange={(e) => setData(field, e.target.value)}
-                >
-                  {getOptions(field).map((option, optionIndex) => (
-                    <option key={optionIndex} value={option}>
-                      {option}
                     </option>
                   ))}
                 </select>

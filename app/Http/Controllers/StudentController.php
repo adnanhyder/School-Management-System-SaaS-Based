@@ -52,7 +52,7 @@ class StudentController extends Controller
             $query->where("roll_number", "like", "%" . request("roll_number") . "%");
         }
 
-        $student = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(10)
+        $student = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,

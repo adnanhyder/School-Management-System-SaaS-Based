@@ -38,7 +38,7 @@ class SessionsController extends Controller
     {
 
         $query = Sessions::query();
-        $recivedSessions = $query->where("school_id", $this->school_id)->paginate(10)
+        $recivedSessions = $query->where("school_id", $this->school_id)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';
         return inertia($route,
