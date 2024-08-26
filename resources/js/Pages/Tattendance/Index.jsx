@@ -56,7 +56,7 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
         Add new
       </Link>
       <Head title=""/>
-      <h2 className="text-black text-2xl font-semibold text-first-large">{dynamicParam.name}</h2>
+      <h2 className="text-black text-2xl font-semibold text-first-large">Teacher Attendance</h2>
       <div className="py-1">
         <div className="">
           {success && (

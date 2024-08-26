@@ -66,7 +66,7 @@ export default function Create({auth, dynamicParam, sessions}) {
   return (
     <AdminLayout user={auth.user}>
       <Head title={`Create ${dynamicParam.name}`} />
-      <h2 className="text-black text-2xl font-semibold">Create {dynamicParam.name}</h2>
+      <h2 className="text-black text-2xl font-semibold">Create Teacher Attendance</h2>
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
         <form onSubmit={handleSubmit}>
           {["session_id",  "date"].map((field, index) => (

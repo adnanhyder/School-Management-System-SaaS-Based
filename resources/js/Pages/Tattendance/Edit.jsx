@@ -53,7 +53,9 @@ export default function Edit({ auth, item, dynamicParam , categories }) {
   return (
     <AdminLayout user={auth.user}>
       <Head title={`Edit ${dynamicParam.name}`} />
-      <h2 className="text-black text-2xl font-semibold">Edit {dynamicParam.name}</h2>
+      <h2 className="text-black text-2xl font-semibold">Edit Teacher Attendance</h2>
+
+
       <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
 
         {item.image && (
