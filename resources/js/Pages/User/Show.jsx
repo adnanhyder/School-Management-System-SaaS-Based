@@ -3,7 +3,7 @@ import {Head, Link} from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
 export default function Show({ auth , user }) {
   user = user.data;
-  console.log(user)
+
   return (
     <AdminLayout
       user={auth.user}

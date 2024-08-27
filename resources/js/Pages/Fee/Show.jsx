@@ -7,7 +7,6 @@ import {useEffect} from "react";
 export default function Show({auth, item, dynamicParam, additional, printVoucher}) {
   useEffect(() => {
     const hasReloaded = localStorage.getItem("hasReloaded");
-    console.log(hasReloaded);
     if (!hasReloaded) {
       localStorage.setItem("hasReloaded", "true");
       window.location.reload();

@@ -121,9 +121,9 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                         </Link>
 
                        </td>
-                      <td className="px-3 py-3">
+
                         <ItemRow itemId={singleItem.item_id} />
-                      </td>
+
                       <td className="px-3 py-3">{singleItem.quantity}</td>
                       <td className="px-3 py-3">  {new Date(singleItem.created_at).toLocaleString()}</td>
 

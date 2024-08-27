@@ -122,6 +122,7 @@ export default function Edit({ auth, item, dynamicParam ,sessions }) {
                   id={field}
                   name={field}
                   value={data[field]}
+                  required
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >

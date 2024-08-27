@@ -255,3 +255,22 @@ table td {
     width: 100px !important;
     height: 100px !important;
 }
+.text-icon{
+    font-size: 50px;
+}
+.text-belo-icon{
+    font-size: 36px;
+    margin-left: 10px;
+    padding-left:10px;
+}
+.border.ft-small {
+    font-size: 12px !important;
+
+    margin: 0 auto !important;
+    text-align: center;
+    display: block !important;
+}
+.ft-smallo {
+    width: 250px;
+    font-size: 13px;
+}

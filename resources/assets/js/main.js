@@ -23,7 +23,6 @@ let menu, animate;
 
   // Initialize menu togglers and bind click on each
   let menuToggler = document.querySelectorAll('.layout-menu-toggle');
-  console.log(menuToggler);
   menuToggler.forEach(item => {
     item.addEventListener('click', event => {
       event.preventDefault();

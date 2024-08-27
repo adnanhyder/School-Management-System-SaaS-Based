@@ -73,4 +73,9 @@ class Student extends Model
         return $this->hasMany(FeesController::class);
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'student_id');
+    }
+
 }

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\FeesResource;
 use App\Models\Category;
+use App\Models\Classes;
 use App\Models\FeeCategory;
 use App\Models\Fees;
+use App\Models\Sessions;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,21 +104,17 @@ class FeesController extends Controller
     }
 
 
-    public function generateByClass()
+    public function generateReport()
     {
-        $query = Fees::query();
-        $sortField = request("sort_field", 'created_at');
-        $sortDirection = request("sort_direction", "desc");
-        $fee = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
-            ->onEachSide(1);
-        $route = $this->success_rep . '/Byclass';
+        $sessions = Sessions::where("school_id", $this->school_id)->get(['id', 'name']);
+        $classes = Classes::where("school_id", $this->school_id)->get();
+
+        $route = $this->success_rep . '/Report';
         return inertia($route,
             [
-                'receivedItem' => FeesResource::collection($fee),
-                'dynamicParam' => $this->dynamicParam,
-                'queryParams' => request()->query() ?: null,
-                'success' => session('success'),
-                'categories' => session('success'),
+                'sessions' => $sessions,
+                'classes' => $classes,
+                'dynamicParam' => $this->dynamicParam
             ]
         );
 

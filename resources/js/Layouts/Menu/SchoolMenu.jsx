@@ -43,7 +43,7 @@ export default function SchoolMenu() {
           active={route().current("sessions.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-log-in"/>
           Sessions
         </NavLink>
       </li>
@@ -53,7 +53,7 @@ export default function SchoolMenu() {
           active={route().current("class.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-building-house"/>
           Class
         </NavLink>
       </li>
@@ -63,7 +63,7 @@ export default function SchoolMenu() {
           active={route().current("student.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-user"/>
           Students
         </NavLink>
       </li>
@@ -73,11 +73,43 @@ export default function SchoolMenu() {
           active={route().current("teacher.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bxs-user-rectangle"/>
           Teachers
         </NavLink>
       </li>
-
+      <li className="menu-header small text-uppercase">
+        <span className="menu-header-text">Reports</span>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("fee.Report")}
+          active={route().current("fee.Report")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bxs-bank"/>
+          Fee
+        </NavLink>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("attendance.Report")}
+          active={route().current("attendance.Report")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bxs-badge-dollar"/>
+          Attendance
+        </NavLink>
+      </li>
+      <li className="menu-item child-menu">
+        <NavLink
+          href={route("teacher.salary")}
+          active={route().current("teacher.salary")}
+          className={'menu-link text-truncate'}
+        >
+          <i className="menu-icon tf-icons bx bxs-book-open"/>
+          Salary
+        </NavLink>
+      </li>
       <li className="menu-header small text-uppercase">
         <span className="menu-header-text">Fee</span>
       </li>
@@ -87,7 +119,7 @@ export default function SchoolMenu() {
           active={route().current("feeCategory.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-wallet-alt"/>
           Fee Category
         </NavLink>
       </li>
@@ -97,7 +129,7 @@ export default function SchoolMenu() {
           active={route().current("fee.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bxs-wallet"/>
           Fee
         </NavLink>
       </li>
@@ -111,7 +143,7 @@ export default function SchoolMenu() {
           active={route().current("attendance.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-user-voice"/>
           Student Attendance
         </NavLink>
       </li>
@@ -121,7 +153,7 @@ export default function SchoolMenu() {
           active={route().current("tattendance.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bxs-user-voice"/>
           Teacher Attendance
         </NavLink>
       </li>
@@ -136,7 +168,7 @@ export default function SchoolMenu() {
           active={route().current("category.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-store"/>
           Item Categories
         </NavLink>
       </li>
@@ -146,7 +178,7 @@ export default function SchoolMenu() {
           active={route().current("item.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-book"/>
           Items
         </NavLink>
       </li>
@@ -156,7 +188,7 @@ export default function SchoolMenu() {
           active={route().current("gatepass.index")}
           className={'menu-link text-truncate'}
         >
-          <i className="menu-icon tf-icons bx bx-home-smile"/>
+          <i className="menu-icon tf-icons bx bx-cart"/>
           Gate Pass
         </NavLink>
       </li>
