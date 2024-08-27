@@ -42,8 +42,10 @@ class TattendanceController extends Controller
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
-
+        $query->whereDate("date", ">=", now());
+        //$query->whereDate("date", now());
         $query->with(['teacher', 'sessions']);
+
         $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
         $route = $this->success_rep . '/Index';

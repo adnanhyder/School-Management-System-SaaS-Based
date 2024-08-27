@@ -161,4 +161,13 @@ class TeacherController extends Controller
             'dynamicParam' => $this->dynamicParam
         ]);
     }
+    public function salary()
+    {
+        $data = Teacher::where('school_id', $this->school_id)->get();
+        $route = $this->success_rep . '/salary';
+        return inertia($route, [
+            'receivedItem' => $data,
+            'dynamicParam' => $this->dynamicParam
+        ]);
+    }
 }

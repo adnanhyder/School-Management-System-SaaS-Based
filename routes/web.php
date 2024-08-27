@@ -59,13 +59,16 @@ Route::middleware(['auth', 'verified', 'role:school'])->group(function () {
     Route::resource('gatepass', GatepassController::class);
     Route::resource('sessions', SessionsController::class);
     Route::resource('fee', FeesController::class);
-    Route::get('/feebyclass', [FeesController::class, 'generateByClass'])
-        ->name('fee.createbyclass');
+    Route::get('/feereport', [FeesController::class, 'generateReport'])
+        ->name('fee.Report');
+    Route::get('/attendanceReport', [AttendanceController::class, 'generateReport'])
+        ->name('attendance.Report');
     Route::get('/feebystudent', [FeesController::class, 'generateByStudent'])
         ->name('fee.createbystudnet');
     Route::post('/markPayment', [FeesController::class, 'markPayment'])
         ->name('fee.markPayment');
     Route::get('/markPayment', [FeesController::class, 'index']);
+    Route::get('/salary', [TeacherController::class, 'salary'])->name('teacher.salary');
 
     Route::resource('feeCategory', FeeCategoryController::class);
     Route::resource('attendance', AttendanceController::class);

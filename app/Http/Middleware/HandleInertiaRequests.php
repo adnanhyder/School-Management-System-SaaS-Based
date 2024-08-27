@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'default' => $default,
+                'key' =>  urlencode(base64_encode(100+$default->id)),
             ],
         ];
     }

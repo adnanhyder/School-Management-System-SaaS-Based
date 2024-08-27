@@ -35,7 +35,7 @@ export default function Create({auth, dynamicParam, sessions, classes}) {
         name : 'loading....'
       })
       axios.get(`/api/studentsFetch`, {
-        params: { session_id: data.session_id, class_id: data.class_id , date: data.date },
+        params: { session_id: data.session_id, class_id: data.class_id , date: data.date , key: auth.key },
       })
 
         .then(response => {

@@ -1,13 +1,15 @@
 import AdminLayout from "@/Layouts/AdminLayout"
 import {Head, Link, useForm} from "@inertiajs/react";
 import SelectInput from "@/Components/SelectInput";
+import MdCalendar from "@/Components/MdCalendar";
 import GenerateOptions from "@/Components/GenerateOptions";
 import InputError from "@/Components/InputError";
 import {useEffect} from "react";
+import {ucfirst} from "@/functions";
 
-export default function DashboardAdmin({auth , item , dynamicParam , success  }) {
+export default function DashboardAdmin({auth, item, dynamicParam, success}) {
 
-  const { data, setData, patch, errors, reset } = useForm({
+  const {data, setData, patch, errors, reset} = useForm({
     'school_id': '',
     _method: "PUT",
 
@@ -36,188 +38,127 @@ export default function DashboardAdmin({auth , item , dynamicParam , success  })
           </div>
         )}
       </div>
-      <form>
-        <div className="mt-4">
-          <span className={'text-first-large'}>Previous Selected = {item.name} <br /> </span>
-          <label className="col-12 ">Select New Value</label>
-          <SelectInput
-            name="schoolId"
-            value={data.school_id}
-            onChange={handleChange}
-            className={'text-first-large'}
-          >
-            <GenerateOptions items={auth.user.schools ?? schools } />
-          </SelectInput>
-
-        </div>
-      </form>
-      <hr className="my-5 " />
       <div className="row">
-        <div className="col-8">
-          <div className="card">
-            <h5 className="card-header">Table Basic</h5>
-            <div className="table-responsive text-nowrap">
-              <table className="table">
-                <thead>
-                <tr>
-                  <th>Project</th>
-                  <th>Client</th>
-                  <th>Users</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody className="table-border-bottom-0">
-                <tr>
-                  <td><i className="bx bxl-angular bx-md text-danger me-4"></i> <span>Angular Project</span></td>
-                  <td>Albert Cook</td>
-                  <td>
-                    <ul className="list-unstyled m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Lilian Fuller"
-                          data-bs-original-title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson"
-                          data-bs-original-title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Christina Parker"
-                          data-bs-original-title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td><span className="badge bg-label-primary me-1">Active</span></td>
-                  <td>
-                    <div className="dropdown">
-                      <button type="button" className="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-                        className="bx bx-dots-vertical-rounded"></i></button>
-                      <div className="dropdown-menu">
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-edit-alt me-1"></i> Edit</a>
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-trash me-1"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><i className="bx bxl-react bx-md text-info me-4"></i> <span>React Project</span></td>
-                  <td>Barry Hunter</td>
-                  <td>
-                    <ul className="list-unstyled m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Lilian Fuller"
-                          data-bs-original-title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson"
-                          data-bs-original-title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Christina Parker"
-                          data-bs-original-title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td><span className="badge bg-label-success me-1">Completed</span></td>
-                  <td>
-                    <div className="dropdown">
-                      <button type="button" className="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-                        className="bx bx-dots-vertical-rounded"></i></button>
-                      <div className="dropdown-menu">
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-edit-alt me-2"></i> Edit</a>
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-trash me-2"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><i className="bx bxl-vuejs bx-md text-success me-4"></i> <span>VueJs Project</span></td>
-                  <td>Trevor Baker</td>
-                  <td>
-                    <ul className="list-unstyled m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Lilian Fuller"
-                          data-bs-original-title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson"
-                          data-bs-original-title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Christina Parker"
-                          data-bs-original-title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td><span className="badge bg-label-info me-1">Scheduled</span></td>
-                  <td>
-                    <div className="dropdown">
-                      <button type="button" className="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-                        className="bx bx-dots-vertical-rounded"></i></button>
-                      <div className="dropdown-menu">
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-edit-alt me-2"></i> Edit</a>
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-trash me-2"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><i className="bx bxl-bootstrap bx-md text-primary me-4"></i> <span>Bootstrap Project</span></td>
-                  <td>Jerry Milton</td>
-                  <td>
-                    <ul className="list-unstyled m-0 avatar-group d-flex align-items-center">
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Lilian Fuller"
-                          data-bs-original-title="Lilian Fuller">
-                        <img src="../assets/img/avatars/5.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson"
-                          data-bs-original-title="Sophia Wilkerson">
-                        <img src="../assets/img/avatars/6.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                          className="avatar avatar-xs pull-up" aria-label="Christina Parker"
-                          data-bs-original-title="Christina Parker">
-                        <img src="../assets/img/avatars/7.png" alt="Avatar" className="rounded-circle" />
-                      </li>
-                    </ul>
-                  </td>
-                  <td><span className="badge bg-label-warning me-1">Pending</span></td>
-                  <td>
-                    <div className="dropdown">
-                      <button type="button" className="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
-                        className="bx bx-dots-vertical-rounded"></i></button>
-                      <div className="dropdown-menu">
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-edit-alt me-2"></i> Edit</a>
-                        <a className="dropdown-item" href="javascript:void(0);"><i
-                          className="bx bx-trash me-2"></i> Delete</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+        <div className="col-md-6 col-xl-6">
+          <div className="card bg-black text-white">
+            <div className="card-body">
+              <h5 className="card-title text-white"> Current School</h5>
+              <div className="flex">
+                <i className="bx bx-book text-white flex text-icon"></i>
+                <p className="card-text text-white flex text-belo-icon">
+                  {ucfirst(item.name)}
+                </p>
+              </div>
             </div>
           </div>
         </div>
+        <div className="col-md-6 col-xl-6">
+          <div className="card bg-label-dark text-white">
+            <div className="card-body">
+              <h5 className="card-title text-white"> Change School</h5>
+              <div className="flex">
+                <i className="bx bx-book text-white flex text-icon"></i>
+                <p className="card-text text-white flex text-belo-icon">
+                  <form>
+
+
+                    <div className="">
+                      <SelectInput
+                        name="schoolId"
+                        value={data.school_id}
+                        onChange={handleChange}
+                        className={'text-first-large'}
+                      >
+                        <GenerateOptions items={auth.user.schools ?? schools}/>
+                      </SelectInput>
+
+                    </div>
+                  </form>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
+      <div className="col-12 col-md-12 col-lg-12 col-xxl-12 order-3 order-md-2">
+        <div className="row">
+          <div className="col-4 mb-6">
+            <div className="card h-100">
+              <div className="card-body bg-gray-100">
+                <div className="card-title d-flex align-items-start justify-content-between mb-4">
+                  <div className="avatar flex-shrink-0">
+                    <i className="bx bx-dollar-circle"></i>
+                  </div>
+                  <div className="dropdown">
+                    <button className="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                      <i className="bx bx-dots-vertical-rounded text-muted"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+                      <a className="dropdown-item" href="javascript:void(0);">View More</a>
+                    </div>
+                  </div>
+                </div>
+                <p className="mb-1">Payments Recived Today</p>
+                <h4 className="card-title mb-3">PKR 2,456</h4>
+              </div>
+            </div>
+          </div>
+          <div className="col-4 mb-6">
+            <div className="card h-100">
+              <div className="card-body bg-gray-100">
+                <div className="card-title d-flex align-items-start justify-content-between mb-4">
+                  <div className="avatar flex-shrink-0">
+                    <i className="bx bx-dollar-circle"></i>
+                  </div>
+                  <div className="dropdown">
+                    <button className="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                      <i className="bx bx-dots-vertical-rounded text-muted"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+                      <a className="dropdown-item" href="javascript:void(0);">View More</a>
+                    </div>
+                  </div>
+                </div>
+                <p className="mb-1">Student Absent Today</p>
+                <h4 className="card-title mb-3">5</h4>
+              </div>
+            </div>
+          </div>
+          <div className="col-4 mb-6">
+            <div className="card h-100">
+              <div className="card-body bg-gray-100">
+                <div className="card-title d-flex align-items-start justify-content-between mb-4">
+                  <div className="avatar flex-shrink-0">
+                    <i className="bx bx-dollar-circle"></i>
+                  </div>
+                  <div className="dropdown">
+                    <button className="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                      <i className="bx bx-dots-vertical-rounded text-muted"></i>
+                    </button>
+                    <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+                      <a className="dropdown-item" href="javascript:void(0);">View More</a>
+                    </div>
+                  </div>
+                </div>
+                <p className="mb-1">Teacher Absent Today</p>
+                <h4 className="card-title mb-3">2</h4>
+              </div>
+            </div>
+          </div>
+          <div className="col-12 mb-6">
+
+            <MdCalendar/>
+
+          </div>
+
+        </div>
+      </div>
+
 
     </AdminLayout>
 

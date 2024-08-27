@@ -14,3 +14,5 @@ Route::get('/items-by-id/{id}', [AjaxController::class, 'getItemsById']);
 Route::get('/students-by-name', [AjaxController::class, 'getStudentByName']);
 Route::get('/studentsFetch', [AjaxController::class, 'getStudentAttandnace']);
 Route::get('/teachersFetch', [AjaxController::class, 'getTeacherAttandnace']);
+Route::get('/feeFetch', [AjaxController::class, 'feeFetch']);
+Route::get('/attendFetch', [AjaxController::class, 'attendFetch']);

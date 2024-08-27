@@ -46,7 +46,7 @@ class AttendanceController extends Controller
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
         }
-
+        $query->whereDate("date", ">=", now());
         $query->with(['student', 'classes', 'sessions']);
         $recivedItem = $query->where("school_id", $this->school_id)->orderBy($sortField, $sortDirection)->paginate(50)
             ->onEachSide(1);
@@ -129,6 +129,22 @@ class AttendanceController extends Controller
 
     public function show(Attendance $attendance)
     {
+
+    }
+
+    public function generateReport()
+    {
+        $sessions = Sessions::where("school_id", $this->school_id)->get(['id', 'name']);
+        $classes = Classes::where("school_id", $this->school_id)->get();
+
+        $route = $this->success_rep . '/Report';
+        return inertia($route,
+            [
+                'sessions' => $sessions,
+                'classes' => $classes,
+                'dynamicParam' => $this->dynamicParam
+            ]
+        );
 
     }
 
