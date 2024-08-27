@@ -7,7 +7,7 @@ import InputError from "@/Components/InputError";
 import {useEffect} from "react";
 import {ucfirst} from "@/functions";
 
-export default function DashboardAdmin({auth, item, dynamicParam, success}) {
+export default function DashboardAdmin({auth, item, dynamicParam, success , total_payment}) {
 
   const {data, setData, patch, errors, reset} = useForm({
     'school_id': '',
@@ -84,76 +84,10 @@ export default function DashboardAdmin({auth, item, dynamicParam, success}) {
       </div>
       <div className="col-12 col-md-12 col-lg-12 col-xxl-12 order-3 order-md-2">
         <div className="row">
-          <div className="col-4 mb-6">
-            <div className="card h-100">
-              <div className="card-body bg-gray-100">
-                <div className="card-title d-flex align-items-start justify-content-between mb-4">
-                  <div className="avatar flex-shrink-0">
-                    <i className="bx bx-dollar-circle"></i>
-                  </div>
-                  <div className="dropdown">
-                    <button className="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                      <i className="bx bx-dots-vertical-rounded text-muted"></i>
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                      <a className="dropdown-item" href="javascript:void(0);">View More</a>
-                    </div>
-                  </div>
-                </div>
-                <p className="mb-1">Payments Recived Today</p>
-                <h4 className="card-title mb-3">PKR 2,456</h4>
-              </div>
-            </div>
-          </div>
-          <div className="col-4 mb-6">
-            <div className="card h-100">
-              <div className="card-body bg-gray-100">
-                <div className="card-title d-flex align-items-start justify-content-between mb-4">
-                  <div className="avatar flex-shrink-0">
-                    <i className="bx bx-dollar-circle"></i>
-                  </div>
-                  <div className="dropdown">
-                    <button className="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                      <i className="bx bx-dots-vertical-rounded text-muted"></i>
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                      <a className="dropdown-item" href="javascript:void(0);">View More</a>
-                    </div>
-                  </div>
-                </div>
-                <p className="mb-1">Student Absent Today</p>
-                <h4 className="card-title mb-3">5</h4>
-              </div>
-            </div>
-          </div>
-          <div className="col-4 mb-6">
-            <div className="card h-100">
-              <div className="card-body bg-gray-100">
-                <div className="card-title d-flex align-items-start justify-content-between mb-4">
-                  <div className="avatar flex-shrink-0">
-                    <i className="bx bx-dollar-circle"></i>
-                  </div>
-                  <div className="dropdown">
-                    <button className="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                      <i className="bx bx-dots-vertical-rounded text-muted"></i>
-                    </button>
-                    <div className="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                      <a className="dropdown-item" href="javascript:void(0);">View More</a>
-                    </div>
-                  </div>
-                </div>
-                <p className="mb-1">Teacher Absent Today</p>
-                <h4 className="card-title mb-3">2</h4>
-              </div>
-            </div>
-          </div>
           <div className="col-12 mb-6">
-
+            <div className="mt-5">
             <MdCalendar/>
-
+            </div>
           </div>
 
         </div>

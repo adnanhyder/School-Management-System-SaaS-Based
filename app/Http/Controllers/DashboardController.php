@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TaskResource;
 use App\Models\School;
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -79,12 +81,19 @@ class DashboardController extends Controller
 
         $defaultSchool = $user->getDefault();
 
+        $today = Carbon::today(); // Get today's date
+        $sevenDaysAgo = $today->copy()->subDays(7);
+        $paymentsReceivedToday = DB::table('sch_fees')
+            ->where('status', 'paid')
+            ->whereBetween('created_at', [$sevenDaysAgo, $today])
+            ->get();
+
         return inertia('DashboardSchool',
             [
                 'dynamicParam' => $dynamicParam,
                 'item' => $defaultSchool,
                 'success' => session('success'),
-
+                'totalPayment' => $paymentsReceivedToday
             ]
         );
     }

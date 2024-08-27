@@ -116,6 +116,7 @@ export default function Create({ auth, dynamicParam , sessions}) {
                   id={field}
                   name={field}
                   value={data[field]}
+                  required
                   className="mt-1 block w-full"
                   onChange={(e) => setData(field, e.target.value)}
                 >

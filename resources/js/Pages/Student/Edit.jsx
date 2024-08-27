@@ -130,6 +130,7 @@ export default function Edit({ auth, item, dynamicParam , classes , sessions }) 
                         name={field}
                         value={data[field]}
                         className="mt-1 block w-full"
+                        required
                         onChange={(e) => setData(field, e.target.value)}
                       >
                         <option value="">Select Class</option>
@@ -145,7 +146,7 @@ export default function Edit({ auth, item, dynamicParam , classes , sessions }) 
                       id={field}
                       name={field}
                       value={data[field]}
-                      className="mt-1 block w-full"
+                      className="mt-1 block w-full" required
                       onChange={(e) => setData(field, e.target.value)}
                     >
                       <option value="">Select Session</option>\

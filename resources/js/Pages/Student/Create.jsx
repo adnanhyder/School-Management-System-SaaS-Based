@@ -31,7 +31,7 @@ export default function Create({ auth, dynamicParam , classes , sessions }) {
     notes: "",
     image: "",
   });
-console.log(classes)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     post(route(`${dynamicParam.name}.store`));

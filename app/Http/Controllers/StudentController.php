@@ -136,6 +136,8 @@ class StudentController extends Controller
             'session_id' => 'numeric |required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:300|dimensions:max_width=500,max_height=500'
         ], $this->imageError);
+
+
         $data = $request->all();
         $image = $data['image'] ?? null;
         if ($image) {
