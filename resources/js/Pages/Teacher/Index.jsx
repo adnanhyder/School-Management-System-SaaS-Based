@@ -134,6 +134,7 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
 
                       </th>
                       <td className="px-3 py-3">{singleItem.department}</td>
+                      <td className="px-3 py-3">{singleItem.designation}</td>
                       <td className="px-3 py-3">
                         <Link
 

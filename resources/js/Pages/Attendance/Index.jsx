@@ -88,9 +88,9 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                       key={singleItem.id}
                     >
                       <td className="px-3 py-3">{singleItem.date} </td>
-                      <td className="px-3 py-3">{singleItem.sessions.name} </td>
-                      <td className="px-3 py-3">{singleItem.student.name}</td>
-                      <td className="px-3 py-3">{ucfirst(singleItem.classes.name)} {singleItem.classes.section}</td>
+                      <td className="px-3 py-3">{singleItem.sessions?.name|| "Removed" } </td>
+                      <td className="px-3 py-3">{singleItem.student?.name|| "Removed" }</td>
+                      <td className="px-3 py-3">{ucfirst(singleItem.classes?.name || "")} {singleItem.classes?.section|| "Removed" }</td>
                       <td className="px-3 py-3">
                         {singleItem.status === 0 ? (
                           <span>Absent</span>

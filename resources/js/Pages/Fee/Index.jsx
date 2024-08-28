@@ -193,18 +193,18 @@ export default function Index({
                             href={route(`${dynamicParam.name}.show`, singleItem.id)}
                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
                           >
-                            {singleItem.student.name}
+                            {singleItem.student?.name}
                           </Link>
 
 
                         </th>
-                        <td className="px-3 py-3">{singleItem.student.roll_number}</td>
-                        <td className="px-3 py-3">{ucfirst(singleItem.classes.name)} {singleItem.classes.section}</td>
+                        <td className="px-3 py-3">{singleItem.student?.roll_number|| "Removed" }</td>
+                        <td className="px-3 py-3">{ucfirst(singleItem.classes?.name || "")} {singleItem.classes?.section|| "Removed" }</td>
 
                         <td className="px-3 py-3">{singleItem.amount}</td>
                         <td
                           className="px-3 py-3">{new Date(0, singleItem.month - 1).toLocaleString('en-US', {month: 'long'})}</td>
-                        <td className="px-3 py-3">{singleItem.sessions.name}</td>
+                        <td className="px-3 py-3">{singleItem.sessions?.name}</td>
                         <td className="px-3 py-3">{ucfirst(singleItem.status)}</td>
                         <td className="px-3 py-3">
 

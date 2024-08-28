@@ -86,8 +86,8 @@ export default function Index({auth, receivedItem, dynamicParam, queryParams = n
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                       key={singleItem.id}
                     >
-                      <td className="px-3 py-3">{singleItem.date || ""}</td>
-                      <td className="px-3 py-3">{singleItem.sessions?.name || ""}</td>
+                      <td className="px-3 py-3">{singleItem.date|| "Removed" }</td>
+                      <td className="px-3 py-3">{singleItem.sessions?.name|| "Removed" }</td>
                       <td className="px-3 py-3">{singleItem.teacher?.name || "Teacher Removed"}</td>
                       <td className="px-3 py-3">{ucfirst(singleItem.teacher?.phone || "")}</td>
                       <td className="px-3 py-3">
