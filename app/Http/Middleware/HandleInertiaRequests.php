@@ -29,16 +29,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $default = [];
+        $default = [
+        ];
+        $key = 0;
         if($request->user()){
             $default = $request->user()->getDefault();
+            if($default != null) {
+                $key = $default->id;
+            }
         }
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
                 'default' => $default,
-                'key' =>  urlencode(base64_encode(100+$default->id)),
+                'key' =>  urlencode(base64_encode(100 + $key)),
             ],
         ];
     }
