@@ -207,18 +207,14 @@ export default function Index({
                         <td className="px-3 py-3">{singleItem.sessions?.name}</td>
                         <td className="px-3 py-3">{ucfirst(singleItem.status)}</td>
                         <td className="px-3 py-3">
-
-                          <Link
-
-                            href={route(`${dynamicParam.name}.show`, {
-                              id: singleItem.id,
-                            })}
-                            className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
-                          >
-                            Print Voucher
-                          </Link>
-
-
+                          {(singleItem.student?.id && singleItem.classes?.id && singleItem.sessions?.id) && (
+                            <Link
+                              href={route(`${dynamicParam.name}.show`, { id: singleItem.id })}
+                              className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                            >
+                              Print Voucher
+                            </Link>
+                          )}
                         </td>
                         <td className="px-3 py-3 text-center">
                           {singleItem.status === 'pending' && (
