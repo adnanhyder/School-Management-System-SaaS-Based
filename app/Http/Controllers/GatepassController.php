@@ -127,10 +127,12 @@ class GatepassController extends Controller
         $item_id = $gatepass->item_id;
         $qty = $gatepass->quantity;
         $items = Item::where('id', $item_id)->first();
-        $total_qty = $items->quantity;
-        $new_qty = $total_qty + $qty;
-        $items->quantity = $new_qty;
-        $items->save();
+        if($items > 0){
+            $total_qty = $items->quantity;
+            $new_qty = $total_qty + $qty;
+            $items->quantity = $new_qty;
+            $items->save();
+        }
         $gatepass->delete();
         $success = " $this->success_rep  was Deleted";
         return to_route($this->index_route)->with('success', $success);
